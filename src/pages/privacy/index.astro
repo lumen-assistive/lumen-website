@@ -1,0 +1,51 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout
+  title="Privacy"
+  description="Come Lumen tratta i dati: elaborazione sul dispositivo, consenso esplicito, nessuna condivisione senza permesso."
+  lang="it"
+  altHref="/en/privacy/"
+>
+  <h1>Privacy</h1>
+  <p class="lead">
+    Questa pagina spiega in linguaggio semplice come Lumen tratta i tuoi dati. Non sostituisce
+    un'informativa legale completa.
+  </p>
+
+  <div class="notice">
+    Questa e una sintesi in linguaggio semplice, non un documento legale. Un'informativa sulla
+    privacy completa e conforme al GDPR e in corso di revisione legale e sara pubblicata separatamente
+    prima di qualsiasi rilascio pubblico dell'app.
+  </div>
+
+  <h2>Elaborazione sul dispositivo</h2>
+  <p>
+    Le funzioni essenziali di Lumen funzionano interamente sul telefono, senza connessione a
+    internet. Nessun audio o immagine registrati dalla fotocamera o dal microfono lascia mai il
+    dispositivo, a meno che tu non scelga esplicitamente di condividerlo.
+  </p>
+
+  <h2>Consenso esplicito</h2>
+  <p>
+    Ogni funzione che implica la condivisione di dati, ad esempio con un familiare o caregiver
+    tramite il modulo Famiglia, richiede un consenso esplicito e revocabile in qualsiasi momento.
+    Il riconoscimento facciale nel modulo Ricordare, quando sara disponibile, funzionera solo con il
+    consenso esplicito delle persone riconosciute e solo sul dispositivo.
+  </p>
+
+  <h2>Server opzionale</h2>
+  <p>
+    Un server opzionale (<a href="https://github.com/lumen-assistive/lumen-server">lumen-server</a>)
+    permette la sincronizzazione con i caregiver solo se attivata volontariamente. I dati inviati al
+    server sono cifrati prima di lasciare il dispositivo: il server non e in grado di leggerne il
+    contenuto.
+  </p>
+
+  <h2>Dati medici e di emergenza</h2>
+  <p>
+    Le funzioni mediche e di emergenza di Lumen sono un supporto, non sostituiscono un medico o il
+    numero di emergenza 112, e Lumen non e un dispositivo medico certificato.
+  </p>
+</Layout>

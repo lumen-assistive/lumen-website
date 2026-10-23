@@ -1,0 +1,45 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { modules } from '../../../data/modules';
+---
+
+<Layout
+  title="Modules"
+  description="Lumen's eight modules: which ones exist already and which are planned."
+  lang="en"
+  altHref="/moduli/"
+>
+  <h1>Modules</h1>
+  <p class="lead">
+    Lumen is made of eight independent modules, all built on the same senses engine. Not all of them
+    have been built yet: here is the real status of each one.
+  </p>
+
+  <ul class="module-list">
+    {modules.map((mod) => (
+      <li>
+        <h3>
+          {mod.nameEn}
+          {mod.repo ? (
+            <span class="status available">Repository available</span>
+          ) : (
+            <span class="status planned">Planned</span>
+          )}
+        </h3>
+        <p>{mod.descriptionEn}</p>
+        {mod.repo && (
+          <p>
+            <a href={`https://github.com/lumen-assistive/${mod.repo}`}>
+              github.com/lumen-assistive/{mod.repo}
+            </a>
+          </p>
+        )}
+      </li>
+    ))}
+  </ul>
+
+  <p>
+    Modules marked "Planned" do not have a repository yet: they are created only once their
+    development phase starts, per the project's public roadmap.
+  </p>
+</Layout>

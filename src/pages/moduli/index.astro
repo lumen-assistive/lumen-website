@@ -1,0 +1,45 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { modules } from '../../data/modules';
+---
+
+<Layout
+  title="Moduli"
+  description="Gli otto moduli di Lumen: quali esistono gia e quali sono pianificati."
+  lang="it"
+  altHref="/en/modules/"
+>
+  <h1>Moduli</h1>
+  <p class="lead">
+    Lumen e composto da otto moduli indipendenti, tutti costruiti sullo stesso motore dei sensi.
+    Non tutti sono gia stati realizzati: qui trovi lo stato reale di ciascuno.
+  </p>
+
+  <ul class="module-list">
+    {modules.map((mod) => (
+      <li>
+        <h3>
+          {mod.nameIt}
+          {mod.repo ? (
+            <span class="status available">Repository disponibile</span>
+          ) : (
+            <span class="status planned">Pianificato</span>
+          )}
+        </h3>
+        <p>{mod.descriptionIt}</p>
+        {mod.repo && (
+          <p>
+            <a href={`https://github.com/lumen-assistive/${mod.repo}`}>
+              github.com/lumen-assistive/{mod.repo}
+            </a>
+          </p>
+        )}
+      </li>
+    ))}
+  </ul>
+
+  <p>
+    I moduli segnati come "Pianificato" non hanno ancora una repository: verranno creati solo
+    quando la loro fase di sviluppo avra inizio, secondo la roadmap pubblica del progetto.
+  </p>
+</Layout>

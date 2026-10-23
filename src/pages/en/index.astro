@@ -1,0 +1,49 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout
+  title="Lumen"
+  description="Lumen is an open source, offline-first, privacy-by-design assistant for people with a limitation."
+  lang="en"
+  altHref="/"
+>
+  <h1>Lumen</h1>
+  <p class="lead">
+    An open source, offline-first, privacy-by-design assistant that turns a smartphone into help
+    for people with a limitation: seeing, hearing, speaking, reading and studying, remembering,
+    moving, and staying safe.
+  </p>
+
+  <p>
+    Lumen is built for the <strong>GF Marilli Prize</strong> by HackersGen. A single shared
+    multimodal engine, the "senses engine" (vision, audio, text), powers eight modules delivered as
+    independent plugins.
+  </p>
+
+  <h2>How it works</h2>
+  <p>
+    On first launch, a short "who are you" onboarding (five questions, by voice or by images) turns
+    on only the modules a person needs. The interface adapts accordingly: voice and large buttons
+    for low vision, a fully visual interface with vibration for deaf users, a simplified layout for
+    elderly users, a complete layout for students.
+  </p>
+
+  <div class="notice">
+    Every essential feature works with no network connection. No audio or image ever leaves the
+    device unless the person explicitly chooses to share it.
+  </div>
+
+  <h2>Project status</h2>
+  <p>
+    Lumen is in active, open source development. The senses engine (<a
+      href="https://github.com/lumen-assistive/lumen-core">lumen-core</a
+    >) and the plugin SDK (<a href="https://github.com/lumen-assistive/lumen-sdk">lumen-sdk</a>) are
+    the first published components. See the <a href="/en/modules/">Modules</a> page for the status
+    of each module.
+  </p>
+  <p>
+    We do not publish user data, metrics, or partnerships until they are real and verifiable.
+    Results from real user testing and any collaborations will be published here once available.
+  </p>
+</Layout>

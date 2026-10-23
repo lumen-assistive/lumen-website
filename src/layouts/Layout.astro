@@ -1,0 +1,252 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  lang: 'it' | 'en';
+  altHref: string;
+}
+
+const { title, description, lang, altHref } = Astro.props;
+
+const nav =
+  lang === 'it'
+    ? [
+        { href: '/', label: 'Home' },
+        { href: '/moduli/', label: 'Moduli' },
+        { href: '/privacy/', label: 'Privacy' },
+        { href: '/sdk/', label: 'SDK' },
+        { href: '/download/', label: 'Download' },
+      ]
+    : [
+        { href: '/en/', label: 'Home' },
+        { href: '/en/modules/', label: 'Modules' },
+        { href: '/en/privacy/', label: 'Privacy' },
+        { href: '/en/sdk/', label: 'SDK' },
+        { href: '/en/download/', label: 'Download' },
+      ];
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} — Lumen</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{lang === 'it' ? 'Vai al contenuto' : 'Skip to content'}</a>
+    <header>
+      <div class="bar">
+        <a class="brand" href={lang === 'it' ? '/' : '/en/'}>Lumen</a>
+        <nav aria-label={lang === 'it' ? 'Navigazione principale' : 'Main navigation'}>
+          {nav.map((item) => (
+            <a href={item.href}>{item.label}</a>
+          ))}
+        </nav>
+        <a class="lang-toggle" href={altHref} hreflang={lang === 'it' ? 'en' : 'it'}>
+          {lang === 'it' ? 'English' : 'Italiano'}
+        </a>
+      </div>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer>
+      <p>
+        Lumen &mdash;
+        {lang === 'it'
+          ? 'progetto open source per il GF Marilli Prize di HackersGen.'
+          : 'an open source project for the GF Marilli Prize by HackersGen.'}
+        <a href="https://github.com/lumen-assistive">GitHub</a>
+      </p>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #14171a;
+    --muted: #4a5159;
+    --accent: #0b5fff;
+    --border: #d7dbe0;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #11141a;
+      --fg: #f2f4f7;
+      --muted: #c3c9d1;
+      --accent: #6ea8ff;
+      --border: #2c313a;
+    }
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: -999px;
+    top: 0;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.75rem 1rem;
+    z-index: 10;
+  }
+
+  .skip-link:focus {
+    left: 0.5rem;
+    top: 0.5rem;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .bar {
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .brand {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--fg);
+    text-decoration: none;
+  }
+
+  nav {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    margin-left: auto;
+  }
+
+  nav a,
+  .lang-toggle {
+    color: var(--muted);
+    text-decoration: none;
+    padding: 0.5rem 0.25rem;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  nav a:hover,
+  nav a:focus,
+  .lang-toggle:hover,
+  .lang-toggle:focus {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  .lang-toggle {
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    padding: 0.4rem 0.75rem;
+  }
+
+  main {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 4rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+    margin-top: 2.5rem;
+  }
+
+  a {
+    color: var(--accent);
+  }
+
+  .lead {
+    font-size: 1.2rem;
+    color: var(--muted);
+  }
+
+  .notice {
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 0.25rem;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    background: color-mix(in srgb, var(--accent) 6%, transparent);
+  }
+
+  .module-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .module-list li {
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .module-list h3 {
+    margin: 0 0 0.5rem;
+  }
+
+  .status {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.25rem;
+    margin-left: 0.5rem;
+  }
+
+  .status.available {
+    background: color-mix(in srgb, #0a8a3f 18%, transparent);
+    color: #0a8a3f;
+  }
+
+  .status.planned {
+    background: color-mix(in srgb, var(--muted) 18%, transparent);
+    color: var(--muted);
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 1.25rem;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+</style>
