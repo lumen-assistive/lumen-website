@@ -16,10 +16,11 @@ git config core.hooksPath .githooks
 ```
 
 It rejects any commit message containing an attribution trailer for an AI coding tool, or naming
-one directly. This is not a style preference: no commit, pull request, issue, or line of code or
-documentation in this organization references an AI coding tool, anywhere, ever — including this
-sentence, which deliberately does not name any, to stay consistent with its own rule. CI runs the same check server-side on every push and pull request, since git
-hooks are client-side only and can be bypassed locally.
+one directly. This is not a style preference. No commit, pull request, issue, or line of code or
+documentation in this organization references an AI coding tool, anywhere, ever (including this
+page, which deliberately does not name any, to stay consistent with its own rule). CI runs the
+same check server-side on every push and pull request, since git hooks are client-side only and
+can be bypassed locally.
 
 ## Code standards
 
@@ -42,7 +43,7 @@ that is not.
 
 ## Before sending a pull request
 
-Run that repository's lint, format, analyze, and test commands locally — see
+Run that repository's lint, format, analyze, and test commands locally, see
 [Running tests](/docs/getting-started/running-tests/) for the exact commands per language. CI runs
 the same commands on every push and pull request.
 

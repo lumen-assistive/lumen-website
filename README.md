@@ -1,21 +1,25 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/lumen-assistive/.github/main/profile/assets/logo-wordmark.png" alt="Lumen" width="220">
+</p>
+
 # lumen-website
 
-The project website for [Lumen](https://github.com/lumen-assistive): pitch,
-module status, privacy summary, SDK pointer, and download status. Built with
-[Astro](https://astro.build) and deployed to Vercel.
+The project website for [Lumen](https://github.com/lumen-assistive): pitch, module status,
+privacy summary, SDK pointer, download status, and the full `/docs` documentation wiki. Built with
+[Astro](https://astro.build) and [Starlight](https://starlight.astro.build), deployed to Vercel.
 
-This repository holds the website's code, not Lumen's product
-documentation. Technical documentation for the SDK and the senses engine
-lives in their own repositories
-([lumen-sdk](https://github.com/lumen-assistive/lumen-sdk),
-[lumen-core](https://github.com/lumen-assistive/lumen-core)) and is only
-linked to from here, never duplicated.
+This repository holds the website's code. The marketing pages (home, modules, privacy, SDK,
+download) are intentionally short and link out to the source repositories for anything technical.
+The `/docs` section is different: it is this project's real documentation, written here rather
+than duplicated from elsewhere.
 
 ## Content policy
 
-This site never publishes fabricated user tests, metrics, or partnerships.
-Sections with no real content yet say so plainly instead of being filled
-with placeholder numbers or invented testimonials.
+This site never publishes fabricated user tests, metrics, or partnerships. Sections with no real
+content yet say so plainly instead of being filled with placeholder numbers or invented
+testimonials. The modules list is fetched directly from
+[lumen-plugins](https://github.com/lumen-assistive/lumen-plugins) at build time rather than
+hand-maintained, so it cannot drift from what the repository actually contains.
 
 ## Development
 
@@ -35,12 +39,13 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
 
 ## Structure
 
-- `src/pages/` — Italian pages (default locale) at the site root.
-- `src/pages/en/` — English translations under `/en/`.
-- `src/data/modules.ts` — single source of truth for the modules list
-  shown on the Moduli/Modules page in both languages.
-- `src/layouts/Layout.astro` — shared page shell, navigation, and language
-  toggle.
+- `src/pages/`: Italian pages (default locale) at the site root.
+- `src/pages/en/`: English translations under `/en/`.
+- `src/components/ModulesList.astro`: fetches each module's real description from
+  `lumen-plugins` at build time; shared by the Italian and English modules pages.
+- `src/content/docs/docs/`: the `/docs` documentation wiki, built with Starlight.
+- `src/layouts/Layout.astro`: shared page shell, navigation, and language toggle for the
+  marketing pages.
 
 ## License
 

@@ -48,7 +48,7 @@ packs:
 
 `lumen-core` does not bundle a concrete `ModelDownloader`: the actual download source (a
 `lumen-server` endpoint, a CDN, a bundled asset) is an app-level decision, and no model has been
-converted yet (`lumen-models`'s catalog is empty today — see
+converted yet (`lumen-models`'s catalog is empty today, see
 [Project status](/docs/introduction/status/)).
 
 ## Model tasks

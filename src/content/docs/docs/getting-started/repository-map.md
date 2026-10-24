@@ -5,9 +5,9 @@ description: Every Lumen repository, what it contains, and how to clone them.
 
 All Lumen repositories live under a single GitHub organization,
 [lumen-assistive](https://github.com/lumen-assistive), and are developed side by side in one local
-parent folder. There is no single "monorepo for everything" — `lumen-plugins` is the one exception,
-a monorepo for plugin packages specifically (see [Building a plugin](/docs/contributing/plugins/)
-for why).
+parent folder. There is no single "monorepo for everything." `lumen-plugins` is the one exception: a
+monorepo for plugin packages specifically. See [Building a plugin](/docs/contributing/plugins/) for
+why.
 
 ## Cloning everything
 

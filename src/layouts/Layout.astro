@@ -39,14 +39,16 @@ const nav =
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
-    <title>{title} — Lumen</title>
+    <title>{title} - Lumen</title>
   </head>
   <body>
     <a class="skip-link" href="#main">{lang === 'it' ? 'Vai al contenuto' : 'Skip to content'}</a>
     <header>
       <div class="bar">
         <a class="brand" href={lang === 'it' ? '/' : '/en/'}>
-          <span class="glow" aria-hidden="true"></span>
+          <svg class="mark" viewBox="0 0 48 48" aria-hidden="true">
+            <path d="M 33.2 10.9 A 16 16 0 1 1 14.8 10.9" />
+          </svg>
           Lumen
         </a>
         <nav aria-label={lang === 'it' ? 'Navigazione principale' : 'Main navigation'}>
@@ -83,7 +85,6 @@ const nav =
     --ink: #1c1a16;
     --muted: #6b655a;
     --lumen: #8f5c13;
-    --lumen-glow: #e3a94a;
     --border: #e3ddcc;
     --max: 46rem;
     --max-wide: 58rem;
@@ -97,7 +98,6 @@ const nav =
       --ink: #f3efe2;
       --muted: #b7ae99;
       --lumen: #e3a94a;
-      --lumen-glow: #f4c877;
       --border: #3a3424;
     }
   }
@@ -118,17 +118,6 @@ const nav =
     font-family: var(--font);
     font-size: 1.125rem;
     line-height: 1.6;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .glow {
-      animation: pulse 4s ease-in-out infinite;
-    }
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 0.75; }
-    50% { opacity: 1; }
   }
 
   .skip-link {
@@ -171,13 +160,14 @@ const nav =
     text-decoration: none;
   }
 
-  .glow {
-    width: 0.6rem;
-    height: 0.6rem;
-    border-radius: 50%;
-    background: var(--lumen-glow);
-    box-shadow: 0 0 0.6rem 0.1rem var(--lumen-glow);
+  .mark {
+    width: 1.4rem;
+    height: 1.4rem;
     flex-shrink: 0;
+    fill: none;
+    stroke: var(--lumen);
+    stroke-width: 6;
+    stroke-linecap: round;
   }
 
   nav {

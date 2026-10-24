@@ -76,7 +76,7 @@ host that lists whichever modules the user enabled, settings, and local storage 
 `AppDatabase` interface with an in-memory implementation used throughout tests, and a
 production-ready `sqflite_sqlcipher`-backed implementation not yet wired into the running app). It
 depends on `lumen_sdk` and `lumen_core`, pinned to tagged releases. It does not yet depend on any
-individual plugin package, since plugins ship no Flutter UI of their own yet — the module host is
+individual plugin package, since plugins ship no Flutter UI of their own yet. The module host is
 intentionally generic today rather than presenting fabricated feature screens.
 
 ## Versioning across repositories

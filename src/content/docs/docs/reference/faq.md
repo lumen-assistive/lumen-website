@@ -34,7 +34,7 @@ connected to live hardware yet. See [Architecture overview](/docs/introduction/a
 
 ### Can I add a new module?
 
-Yes — see [Building a plugin](/docs/contributing/plugins/).
+Yes; see [Building a plugin](/docs/contributing/plugins/).
 
 ### What license is the code under?
 

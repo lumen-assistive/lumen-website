@@ -36,10 +36,10 @@ opened, regardless of branch protection settings. You do not need to manually re
 
 ## Getting merged
 
-A pull request is merged once CI is green and the reviewer approves. For a new plugin specifically,
-see the additional requirements in [Building a plugin](/docs/contributing/plugins/) — scope,
-honesty about what is deferred, and depending only on `lumen_sdk` contracts are checked in review,
-not just by CI.
+A pull request is merged once CI is green and the reviewer approves. A new plugin has additional
+requirements, covered in [Building a plugin](/docs/contributing/plugins/): scope, honesty about
+what is deferred, and depending only on `lumen_sdk` contracts are all checked in review, not just
+by CI.
 
 ## If CI fails
 

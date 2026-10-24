@@ -23,7 +23,7 @@ abstract class LumenPlugin {
    does this yet, since no plugin is wired into `lumen-app`; `PluginManager`'s own tests construct
    plugins directly).
 2. **`initialize(context)`**, called once, before `start`. The `PluginContext` passed in is the only
-   way the plugin reaches the event bus, the model registry, or consent state — see
+   way the plugin reaches the event bus, the model registry, or consent state, see
    [Plugin context](#plugin-context) below. Validate that required model handles can be resolved
    here; do not begin consuming sense data yet.
 3. **`start()`**, called when the user enables the module. Subscribe to the event bus and begin
@@ -54,7 +54,7 @@ class PluginManifest {
 registering a plugin whose constraint is not satisfied throws `PluginCompatibilityError` rather
 than risk a silent contract mismatch. `capabilities` lists what `lumen-core` must mediate access to
 (camera, microphone, location, notifications, SMS read or send, contacts, storage) before the
-plugin is allowed to start — see `CapabilityGate` below.
+plugin is allowed to start; see `CapabilityGate` below.
 
 ## Plugin context
 

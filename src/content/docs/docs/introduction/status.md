@@ -33,7 +33,7 @@ underlying infrastructure does not exist yet:
 - **Native sensor bridges** (camera, microphone, accelerometer) in `lumen-core`. Building these
   needs a full Flutter plus Android/Xcode toolchain to implement and verify correctly.
 - **On-device model inference** (TFLite, whisper.cpp). This needs `lumen-models` to have actually
-  converted and benchmarked a model, which has not started — see
+  converted and benchmarked a model, which has not started, see
   [Benchmarks](/docs/reference/benchmarks/).
 - **A signed Android release** of `lumen-app`. No signing keystore or release workflow exists yet.
 - **Manual accessibility testing** (TalkBack, VoiceOver) against `lumen-app`. Semantics labels,

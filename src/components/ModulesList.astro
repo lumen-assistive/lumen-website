@@ -1,0 +1,71 @@
+---
+// Fetches each shipped module's real description directly from its
+// package's pubspec.yaml in lumen-plugins at build time, instead of
+// hand-maintaining a copy that can drift from the actual repository.
+import { parse } from 'yaml';
+
+interface ModuleEntry {
+  id: string;
+  name: string;
+  description: string;
+  repoUrl: string | null;
+}
+
+const SHIPPED_PACKAGE_IDS = ['vedere', 'sentire', 'protezione', 'famiglia'];
+const ROADMAP_ONLY_IDS = ['parlare', 'leggere', 'ricordare', 'muoversi'];
+
+const DISPLAY_NAMES: Record<string, string> = {
+  vedere: 'Vedere (See)',
+  sentire: 'Sentire (Hear)',
+  protezione: 'Protezione (Safety)',
+  famiglia: 'Famiglia e caregiver (Family and caregivers)',
+  parlare: 'Parlare (Speak)',
+  leggere: 'Leggere e Studiare (Read and Study)',
+  ricordare: 'Ricordare (Remember)',
+  muoversi: 'Muoversi (Move)',
+};
+
+async function fetchPackageInfo(id: string): Promise<ModuleEntry> {
+  const url = `https://raw.githubusercontent.com/lumen-assistive/lumen-plugins/main/packages/${id}/pubspec.yaml`;
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch pubspec.yaml for package "${id}": HTTP ${response.status}`);
+  }
+  const yamlText = await response.text();
+  const parsed = parse(yamlText) as { description?: string };
+  return {
+    id,
+    name: DISPLAY_NAMES[id],
+    description: (parsed.description ?? '').trim(),
+    repoUrl: `https://github.com/lumen-assistive/lumen-plugins/tree/main/packages/${id}`,
+  };
+}
+
+const shippedModules = await Promise.all(SHIPPED_PACKAGE_IDS.map(fetchPackageInfo));
+const roadmapModules: ModuleEntry[] = ROADMAP_ONLY_IDS.map((id) => ({
+  id,
+  name: DISPLAY_NAMES[id],
+  description: '',
+  repoUrl: null,
+}));
+const modules: ModuleEntry[] = [...shippedModules, ...roadmapModules];
+---
+
+<ul class="module-list">
+  {modules.map((mod) => (
+    <li>
+      <div class="module-head">
+        <h3>{mod.name}</h3>
+        {mod.repoUrl ? (
+          <span class="status available">Repository available</span>
+        ) : (
+          <span class="status planned">Planned</span>
+        )}
+      </div>
+      {mod.description && <p>{mod.description}</p>}
+      {mod.repoUrl && (
+        <p><a href={mod.repoUrl}>lumen-plugins/packages/{mod.id}</a></p>
+      )}
+    </li>
+  ))}
+</ul>

@@ -64,7 +64,7 @@ packages/<name>/
    `README.md` what is deferred and why. Look at `packages/protezione` or `packages/vedere` in
    `lumen-plugins` for the expected tone. Do not present a feature as working when it is not.
 5. **Licensing**: Apache-2.0, matching the repository root. If your plugin needs a model or
-   dataset, it is not bundled in the plugin package — see
+   dataset, it is not bundled in the plugin package, see
    [Model and dataset licensing](/docs/privacy/licensing/); a plugin only references a model by id
    through `ModelRegistry`.
 6. **No AI tool references, no emoji, English everywhere.**

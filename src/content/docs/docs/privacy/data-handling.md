@@ -36,7 +36,7 @@ Only two things ever leave the device, and both require an explicit, separate ac
 user:
 
 1. **Sharing with a caregiver** through the Famiglia module, gated by
-   `PluginContext.hasConsent` — see [Consent model](/docs/privacy/consent/).
+   `PluginContext.hasConsent`; see [Consent model](/docs/privacy/consent/).
 2. **Syncing with `lumen-server`**, an optional backend. Data sent there is an opaque, encrypted
    blob: `lumen-server`'s own data model
    (`EncryptedBlob`) stores ciphertext only, keyed by device and category, and the server has no

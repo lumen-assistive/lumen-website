@@ -38,7 +38,7 @@ bundle (license varies per voice), and whether the MIT-era Piper release links t
 
 Three currently-permissive candidates exist for features like leaflet question answering: Microsoft
 Phi-3-mini-4k-instruct (MIT), Google's Gemma 4 in its smaller sizes (Apache-2.0, as of its
-2026-04-02 release — earlier Gemma versions used a custom, non-OSI license and are not candidates),
+2026-04-02 release, earlier Gemma versions used a custom, non-OSI license and are not candidates),
 and Qwen2.5-1.5B-Instruct (Apache-2.0). None has been benchmarked yet; the final choice is a
 `lumen-models` benchmarking decision, not a licensing one, since all three are already cleared.
 
