@@ -6,6 +6,39 @@ and this project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-24
+
+### Added
+
+- A full documentation wiki under `/docs`, built with Astro Starlight:
+  architecture overview, complete SDK reference (plugin lifecycle,
+  event bus, model registry, versioning policy), a getting-started
+  guide, contribution workflow, a step-by-step guide to building and
+  submitting a new plugin, the privacy and consent model in technical
+  detail, the model licensing process, an FAQ, an honestly-empty
+  benchmarks page, and a glossary.
+- `@fontsource/atkinson-hyperlegible`, the Braille Institute's
+  low-vision-readability typeface, used as the site's single typeface.
+
+### Changed
+
+- Replaced the generic default visual design (system-ui sans, stock
+  blue accent, shadowed rounded-card list) with an original identity
+  grounded in the product: a warm paper and ink palette with a single
+  amber accent used only where it carries meaning, and a plain divided
+  list instead of a card grid.
+- Module repository links now point at the consolidated
+  `lumen-plugins` monorepo instead of the four now-archived separate
+  plugin repositories.
+- The download page now reflects that `lumen-app` exists (still no
+  signed release).
+
+### Fixed
+
+- `package-lock.json` had gone out of sync with `package.json` after
+  being regenerated on a different platform than CI's runner, missing
+  optional native dependency entries; `npm ci` now succeeds in CI.
+
 ## [0.1.0] - 2026-10-23
 
 ### Added

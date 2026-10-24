@@ -21,8 +21,8 @@ always run:
   [Running tests](/docs/getting-started/running-tests/)), via reusable workflows defined once in
   the [`.github`](https://github.com/lumen-assistive/.github) repository and called from every
   other repository, so CI configuration is maintained in one place.
-- A content guard, grepping every tracked file for AI tool references, `Co-authored-by` trailers,
-  and emoji, failing the build if it finds any.
+- A content guard, grepping every tracked file for AI tool references, AI-attribution commit
+  trailers, and emoji, failing the build if it finds any.
 
 `lumen-plugins` additionally runs its Dart checks as a matrix, once per package
 (`packages/vedere`, `packages/sentire`, `packages/protezione`, `packages/famiglia`, and any new

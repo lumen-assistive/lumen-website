@@ -53,7 +53,7 @@ Install the shared commit message hook once per clone:
 git config core.hooksPath .githooks
 ```
 
-It rejects any commit message mentioning an AI coding tool or containing a `Co-authored-by`
-trailer for one. CI additionally runs a content guard on every push and pull request, grepping
+It rejects any commit message mentioning an AI coding tool or containing an attribution trailer for
+one. CI additionally runs a content guard on every push and pull request, grepping
 tracked files for the same patterns plus emoji, as a server-side backstop since git hooks are
 client-side only.

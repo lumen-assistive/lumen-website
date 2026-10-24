@@ -15,10 +15,10 @@ once per clone:
 git config core.hooksPath .githooks
 ```
 
-It rejects any commit message containing a `Co-authored-by` trailer for an AI tool, or mentioning
-Claude, Anthropic, Codebuff, Cursor, or "Generated with". This is not a style preference: no commit,
-pull request, issue, or line of code or documentation in this organization references an AI coding
-tool, anywhere, ever. CI runs the same check server-side on every push and pull request, since git
+It rejects any commit message containing an attribution trailer for an AI coding tool, or naming
+one directly. This is not a style preference: no commit, pull request, issue, or line of code or
+documentation in this organization references an AI coding tool, anywhere, ever — including this
+sentence, which deliberately does not name any, to stay consistent with its own rule. CI runs the same check server-side on every push and pull request, since git
 hooks are client-side only and can be bypassed locally.
 
 ## Code standards
