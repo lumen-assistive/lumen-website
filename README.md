@@ -1,7 +1,5 @@
 # lumen-website
 
-[Italiano](README.it.md) | English
-
 The project website for [Lumen](https://github.com/lumen-assistive): pitch,
 module status, privacy summary, SDK pointer, and download status. Built with
 [Astro](https://astro.build) and deployed to Vercel.
