@@ -8,23 +8,43 @@ import Layout from '../../layouts/Layout.astro';
   lang="it"
   altHref="/en/sdk/"
 >
-  <h1>SDK</h1>
-  <p class="lead">
-    Lumen e costruito attorno a un SDK di plugin pubblico: chiunque puo scrivere un nuovo modulo
-    seguendo le stesse interfacce usate dai moduli ufficiali.
-  </p>
+  <div class="hero">
+    <h1>SDK</h1>
+    <p class="lead">
+      Lumen e costruito attorno a un SDK di plugin pubblico: chiunque puo scrivere un nuovo modulo
+      seguendo le stesse interfacce usate dai moduli ufficiali.
+    </p>
+  </div>
 
-  <p>
-    La documentazione completa, gli esempi e la guida per i contributori vivono direttamente nella
-    repository dell'SDK, non duplicata qui:
-  </p>
+  <section>
+    <h2>Dove vivono i contratti</h2>
+    <p>
+      Il contratto del plugin (<code>LumenPlugin</code>), l'event bus (<code>LumenEventBus</code>) e
+      il registro dei modelli (<code>ModelRegistry</code>) sono definiti in
+      <a href="https://github.com/lumen-assistive/lumen-sdk">lumen-sdk</a> e implementati in
+      <a href="https://github.com/lumen-assistive/lumen-core">lumen-core</a>. Entrambe le
+      documentazioni vivono direttamente nelle rispettive repository, non duplicate qui.
+    </p>
+  </section>
 
-  <p>
-    <a href="https://github.com/lumen-assistive/lumen-sdk">github.com/lumen-assistive/lumen-sdk</a>
-  </p>
+  <section>
+    <h2>Costruire un plugin</h2>
+    <p>
+      I moduli di Lumen vivono tutti in un'unica repository,
+      <a href="https://github.com/lumen-assistive/lumen-plugins">lumen-plugins</a>, e un nuovo
+      modulo si propone con una pull request. La guida completa, passo per passo, e nella sezione
+      documentazione:
+    </p>
+    <p>
+      <a class="button primary" href="/docs/contributing/plugins/">Guida alla creazione di un plugin</a>
+    </p>
+  </section>
 
-  <p>
-    L'implementazione di riferimento di questi contratti si trova in
-    <a href="https://github.com/lumen-assistive/lumen-core">lumen-core</a>.
-  </p>
+  <section>
+    <h2>Documentazione completa</h2>
+    <p>
+      Architettura, riferimento dell'API e guide per chi contribuisce sono raccolte nella sezione
+      <a href="/docs/">documentazione</a>.
+    </p>
+  </section>
 </Layout>

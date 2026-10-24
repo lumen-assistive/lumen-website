@@ -8,17 +8,28 @@ import Layout from '../../layouts/Layout.astro';
   lang="it"
   altHref="/en/download/"
 >
-  <h1>Download</h1>
-
-  <div class="notice">
-    Non esiste ancora un APK firmato da scaricare. L'app <a
-      href="https://github.com/lumen-assistive/lumen-app">lumen-app</a
-    > non e ancora stata costruita. Un rilascio sara disponibile qui una volta raggiunto il
-    traguardo del prodotto minimo funzionante (MVP).
+  <div class="hero">
+    <h1>Download</h1>
+    <p class="lead">
+      Non esiste ancora un APK firmato da scaricare.
+    </p>
   </div>
 
-  <p>
-    Nel frattempo puoi seguire lo sviluppo del progetto direttamente su
-    <a href="https://github.com/lumen-assistive">GitHub</a>.
-  </p>
+  <section>
+    <div class="notice">
+      L'app (<a href="https://github.com/lumen-assistive/lumen-app">lumen-app</a>) esiste ed e in
+      sviluppo attivo: onboarding, interfaccia adattiva, impostazioni e salvataggio locale sono gia
+      implementati e testati. Manca ancora un rilascio Android firmato: quella fase arrivera una
+      volta raggiunto il traguardo del prodotto minimo funzionante (MVP), quando un APK firmato
+      comparira qui.
+    </div>
+  </section>
+
+  <section>
+    <h2>Nel frattempo</h2>
+    <p>
+      Puoi seguire lo sviluppo del progetto, provare il codice sorgente o aprire una pull request
+      direttamente su <a href="https://github.com/lumen-assistive">GitHub</a>.
+    </p>
+  </section>
 </Layout>

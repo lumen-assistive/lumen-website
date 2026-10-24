@@ -9,37 +9,37 @@ import { modules } from '../../data/modules';
   lang="it"
   altHref="/en/modules/"
 >
-  <h1>Moduli</h1>
-  <p class="lead">
-    Lumen e composto da otto moduli indipendenti, tutti costruiti sullo stesso motore dei sensi.
-    Non tutti sono gia stati realizzati: qui trovi lo stato reale di ciascuno.
-  </p>
+  <div class="hero">
+    <h1>Moduli</h1>
+    <p class="lead">
+      Lumen e composto da otto moduli indipendenti, tutti costruiti sullo stesso motore dei sensi.
+      Non tutti sono gia stati realizzati: qui trovi lo stato reale di ciascuno.
+    </p>
+  </div>
 
-  <ul class="module-list">
-    {modules.map((mod) => (
-      <li>
-        <h3>
-          {mod.nameIt}
-          {mod.repo ? (
-            <span class="status available">Repository disponibile</span>
-          ) : (
-            <span class="status planned">Pianificato</span>
-          )}
-        </h3>
-        <p>{mod.descriptionIt}</p>
-        {mod.repo && (
-          <p>
-            <a href={`https://github.com/lumen-assistive/${mod.repo}`}>
-              github.com/lumen-assistive/{mod.repo}
-            </a>
-          </p>
-        )}
-      </li>
-    ))}
-  </ul>
+  <section class="wide">
+    <ul class="module-list">
+      {modules.map((mod) => (
+        <li>
+          <div class="module-head">
+            <h3>{mod.nameIt}</h3>
+            {mod.repoUrl ? (
+              <span class="status available">Repository disponibile</span>
+            ) : (
+              <span class="status planned">Pianificato</span>
+            )}
+          </div>
+          <p>{mod.descriptionIt}</p>
+          {mod.repoUrl && <p><a href={mod.repoUrl}>{mod.repoLabel}</a></p>}
+        </li>
+      ))}
+    </ul>
 
-  <p>
-    I moduli segnati come "Pianificato" non hanno ancora una repository: verranno creati solo
-    quando la loro fase di sviluppo avra inizio, secondo la roadmap pubblica del progetto.
-  </p>
+    <p>
+      I moduli segnati come "Pianificato" non hanno ancora codice: verranno aggiunti come pacchetto
+      in <a href="https://github.com/lumen-assistive/lumen-plugins">lumen-plugins</a> solo quando la
+      loro fase di sviluppo avra inizio, secondo la roadmap pubblica del progetto. Vuoi contribuirne
+      uno? Vedi la <a href="/docs/contributing/plugins/">guida alla creazione di un plugin</a>.
+    </p>
+  </section>
 </Layout>

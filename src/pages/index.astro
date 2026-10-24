@@ -8,44 +8,63 @@ import Layout from '../layouts/Layout.astro';
   lang="it"
   altHref="/en/"
 >
-  <h1>Lumen</h1>
-  <p class="lead">
-    Un assistente open source, offline-first e rispettoso della privacy che trasforma lo smartphone
-    in un aiuto per chi ha una limitazione: vedere, sentire, parlare, leggere e studiare, ricordare,
-    muoversi e restare al sicuro.
-  </p>
-
-  <p>
-    Lumen e sviluppato per il <strong>GF Marilli Prize</strong> di HackersGen. Un unico motore
-    multimodale condiviso, il "motore dei sensi" (visione, audio, testo), alimenta otto moduli
-    distribuiti come plugin indipendenti.
-  </p>
-
-  <h2>Come funziona</h2>
-  <p>
-    Al primo avvio, una breve fase di configurazione "chi sei tu" (cinque domande, a voce o per
-    immagini) attiva solo i moduli di cui una persona ha bisogno. L'interfaccia si adatta di
-    conseguenza: voce e pulsanti grandi per chi ha una bassa visione, un'interfaccia completamente
-    visiva con vibrazione per chi e sordo, un layout semplificato per le persone anziane, un layout
-    completo per gli studenti.
-  </p>
-
-  <div class="notice">
-    Ogni funzione essenziale funziona senza connessione a internet. Nessun audio o immagine lascia
-    mai il dispositivo, a meno che la persona non scelga esplicitamente di condividerlo.
+  <div class="hero">
+    <h1>Un po' di luce, quando serve.</h1>
+    <p class="lead">
+      Lumen trasforma lo smartphone in un aiuto per chi ha una limitazione nel vedere, sentire,
+      parlare, leggere, ricordare, muoversi o restare al sicuro. Tutto funziona sul telefono, senza
+      bisogno di internet.
+    </p>
+    <div class="cta-row">
+      <a class="button primary" href="/moduli/">Scopri i moduli</a>
+      <a class="button secondary" href="https://github.com/lumen-assistive">Codice su GitHub</a>
+    </div>
   </div>
 
-  <h2>Stato del progetto</h2>
-  <p>
-    Lumen e in sviluppo attivo e open source. Il motore dei sensi (<a
-      href="https://github.com/lumen-assistive/lumen-core">lumen-core</a
-    >) e l'SDK dei plugin (<a href="https://github.com/lumen-assistive/lumen-sdk">lumen-sdk</a>)
-    sono i primi componenti pubblicati. Vedi la pagina <a href="/moduli/">Moduli</a> per lo stato di
-    ciascun modulo.
-  </p>
-  <p>
-    Non pubblichiamo dati di utenti, metriche o partnership finche non sono reali e verificabili.
-    I risultati di test con utenti reali e le eventuali collaborazioni verranno pubblicati qui non
-    appena disponibili.
-  </p>
+  <section>
+    <h2>Un motore, otto moduli</h2>
+    <p>
+      Lumen e costruito per il <strong>GF Marilli Prize</strong> di HackersGen. Un unico motore
+      multimodale condiviso, il "motore dei sensi" (visione, audio, testo), alimenta otto moduli
+      indipendenti, distribuiti come plugin. Un contributore puo scrivere un nuovo modulo senza
+      toccare il motore, seguendo le stesse interfacce usate da quelli ufficiali.
+    </p>
+  </section>
+
+  <section>
+    <h2>Si adatta a chi lo usa</h2>
+    <p>
+      Al primo avvio, cinque domande semplici attivano solo i moduli di cui una persona ha bisogno,
+      e scelgono come l'interfaccia dovra comportarsi: voce e pulsanti grandi per chi ha una bassa
+      visione, un'interfaccia completamente visiva con vibrazione per chi e sordo, un layout
+      semplificato per le persone anziane, un layout completo per chi studia.
+    </p>
+  </section>
+
+  <section>
+    <h2>Resta sul telefono</h2>
+    <p>
+      Ogni funzione essenziale funziona senza connessione a internet. Nessun audio o immagine lascia
+      mai il dispositivo, a meno che la persona non scelga esplicitamente di condividerlo. Un server
+      opzionale permette la sincronizzazione con i caregiver solo se attivata volontariamente, e
+      quello che riceve e cifrato prima ancora di uscire dal telefono.
+    </p>
+  </section>
+
+  <section>
+    <h2>Stato del progetto</h2>
+    <p>
+      Lumen e in sviluppo attivo e open source. Il motore dei sensi (<a
+        href="https://github.com/lumen-assistive/lumen-core">lumen-core</a
+      >), l'SDK dei plugin (<a href="https://github.com/lumen-assistive/lumen-sdk">lumen-sdk</a>) e
+      una prima versione dell'app (<a href="https://github.com/lumen-assistive/lumen-app"
+        >lumen-app</a
+      >) sono gia pubblicati. Vedi <a href="/moduli/">Moduli</a> per lo stato di ciascun modulo.
+    </p>
+    <p>
+      Non pubblichiamo dati di utenti, metriche o partnership finche non sono reali e verificabili.
+      I risultati di test con utenti reali e le eventuali collaborazioni verranno pubblicati qui non
+      appena disponibili.
+    </p>
+  </section>
 </Layout>
