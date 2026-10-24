@@ -1,0 +1,45 @@
+---
+title: Lumen documentation
+description: Architecture, SDK reference, and contributor guides for Lumen.
+template: splash
+hero:
+  tagline: Architecture, SDK reference, and contributor guides for every Lumen repository.
+  actions:
+    - text: What is Lumen
+      link: /docs/introduction/what-is-lumen/
+      icon: right-arrow
+      variant: primary
+    - text: Build a plugin
+      link: /docs/contributing/plugins/
+      icon: external
+      variant: secondary
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid>
+	<Card title="Introduction" icon="open-book">
+		What Lumen is, how the senses engine and plugin architecture fit together, and the current
+		state of every repository. Start [here](/docs/introduction/what-is-lumen/).
+	</Card>
+	<Card title="Getting started" icon="rocket">
+		Clone the workspace, run `lumen-app`, and run the test suite across every repository. Start
+		[here](/docs/getting-started/repository-map/).
+	</Card>
+	<Card title="SDK reference" icon="puzzle">
+		The `LumenPlugin` lifecycle, the `LumenEventBus` contract, and the `ModelRegistry` contract
+		every module is built on. Start [here](/docs/sdk/plugin-lifecycle/).
+	</Card>
+	<Card title="Contributing" icon="pencil">
+		How this project works day to day, and the full guide to proposing and building a new plugin
+		module. Start [here](/docs/contributing/workflow/).
+	</Card>
+	<Card title="Privacy and safety" icon="shield">
+		The technical detail behind the plain-language [privacy page](/privacy/): consent flows, data
+		model, and the model licensing process. Start [here](/docs/privacy/data-handling/).
+	</Card>
+	<Card title="Reference" icon="information">
+		Frequently asked questions, the (currently empty, honestly) benchmark table, and a glossary of
+		project-specific terms. Start [here](/docs/reference/faq/).
+	</Card>
+</CardGrid>

@@ -1,0 +1,32 @@
+/* Ties Starlight's theme to the main site's palette and typeface. */
+@import '@fontsource/atkinson-hyperlegible/400.css';
+@import '@fontsource/atkinson-hyperlegible/700.css';
+
+:root {
+  --sl-font: 'Atkinson Hyperlegible', system-ui, sans-serif;
+  --sl-color-accent-low: #f1ece0;
+  --sl-color-accent: #8f5c13;
+  --sl-color-accent-high: #e3a94a;
+  --sl-color-white: #1c1a16;
+  --sl-color-gray-1: #2a2620;
+  --sl-color-gray-2: #3a3424;
+  --sl-color-gray-3: #6b655a;
+  --sl-color-gray-4: #beb6a2;
+  --sl-color-gray-5: #e3ddcc;
+  --sl-color-gray-6: #f1ece0;
+  --sl-color-black: #fdfbf5;
+}
+
+:root[data-theme='dark'] {
+  --sl-color-accent-low: #2a2314;
+  --sl-color-accent: #e3a94a;
+  --sl-color-accent-high: #f4c877;
+  --sl-color-white: #f3efe2;
+  --sl-color-gray-1: #f3efe2;
+  --sl-color-gray-2: #e8e2d1;
+  --sl-color-gray-3: #b7ae99;
+  --sl-color-gray-4: #5c5541;
+  --sl-color-gray-5: #3a3424;
+  --sl-color-gray-6: #231f16;
+  --sl-color-black: #19170f;
+}
