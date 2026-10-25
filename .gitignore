@@ -25,3 +25,4 @@ pnpm-debug.log*
 
 # web-demo Dart build tool
 tools/web-demo/.dart_tool/
+public/demo/lumen-demo.js.deps

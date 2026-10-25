@@ -1,9 +1,9 @@
 ---
 // A simulated Lumen home screen inside a phone frame. The module list and
 // descriptions are the same real data as the Modules page (see
-// src/lib/modules.ts); the three tools wired up on Vedere, Sentire and
-// Protezione call the real compiled plugin logic from /demo/lumen-demo.js,
-// loaded and wired up by the parent page. Nothing here is a reimplementation.
+// src/lib/modules.ts). Every one of the eight modules below runs real
+// compiled plugin logic from /demo/lumen-demo.js (wired up by the parent
+// page): nothing here is a reimplementation or a static mockup screenshot.
 import { getModules } from '../lib/modules';
 
 const modules = await getModules();
@@ -23,18 +23,28 @@ const ICONS: Record<string, string> = {
 ---
 
 <div class="phone-demo">
-  <div class="phone" role="group" aria-label="Simulated Lumen app">
+  <div class="phone">
+    <div class="phone-side-button phone-side-power" aria-hidden="true"></div>
+    <div class="phone-side-button phone-side-volume-up" aria-hidden="true"></div>
+    <div class="phone-side-button phone-side-volume-down" aria-hidden="true"></div>
+
     <div class="phone-notch" aria-hidden="true"></div>
     <div class="phone-statusbar" aria-hidden="true">
       <span>9:41</span>
-      <svg viewBox="0 0 24 24" width="18" height="12">
-        <rect x="1" y="2" width="18" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.4" />
-        <rect x="20" y="5.5" width="1.6" height="3" fill="currentColor" />
-        <rect x="2.5" y="3.5" width="13" height="7" fill="currentColor" />
-      </svg>
+      <span class="phone-statusbar-icons">
+        <svg viewBox="0 0 24 24" width="15" height="11">
+          <path d="M2 9 Q12 0 22 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+          <circle cx="12" cy="9.5" r="1.3" fill="currentColor" />
+        </svg>
+        <svg viewBox="0 0 24 24" width="20" height="11">
+          <rect x="1" y="1.5" width="18" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="1.3" />
+          <rect x="20" y="4" width="1.6" height="3" fill="currentColor" />
+          <rect x="2.3" y="2.8" width="13" height="5.4" fill="currentColor" />
+        </svg>
+      </span>
     </div>
 
-    <div class="phone-screen">
+    <div class="phone-screen" role="group" aria-label="Simulated Lumen app">
       <header class="phone-app-header">
         <svg class="phone-mark" viewBox="0 0 48 48" aria-hidden="true">
           <path d="M 33.2 10.9 A 16 16 0 1 1 14.8 10.9" />
@@ -104,27 +114,90 @@ const ICONS: Record<string, string> = {
           )}
 
           {mod.id === 'famiglia' && (
-            <p class="phone-module-note">
-              This module is implemented in <a href={mod.repoUrl}>lumen-plugins</a>, but has no
-              in-browser demo: its features (caregiver pairing, shared calendar, daily status)
-              only make sense between two paired devices, which a single browser tab cannot
-              simulate.
-            </p>
+            <Fragment>
+              <div class="phone-tool">
+                <p class="phone-tool-label">Caregiver pairing code</p>
+                <button class="phone-tool-run" type="button" id="pairing-run">Generate pairing code</button>
+                <p class="phone-tool-output" id="pairing-output" aria-live="polite"></p>
+              </div>
+              <div class="phone-tool">
+                <p class="phone-tool-label">Today's status</p>
+                <div class="phone-tool-row">
+                  <button class="phone-tool-run" type="button" id="status-ok-run">All ok</button>
+                  <button class="phone-tool-run secondary" type="button" id="status-attention-run">Needs attention</button>
+                </div>
+                <p class="phone-tool-output" id="status-output" aria-live="polite">No status set for today yet</p>
+              </div>
+            </Fragment>
           )}
 
-          {mod.repoUrl && !['vedere', 'sentire', 'protezione', 'famiglia'].includes(mod.id) && (
-            <p class="phone-module-note">
-              This module is implemented in <a href={mod.repoUrl}>lumen-plugins</a>, but has no
-              in-browser demo yet.
-            </p>
+          {mod.id === 'parlare' && (
+            <div class="phone-tool">
+              <p class="phone-tool-label">Phrase board</p>
+              <div class="phone-chip-row" id="phrase-chips" aria-label="Quick phrases"></div>
+              <p class="phone-tool-note">Tapping a phrase records its use; the board ranks phrases by how recently and often they were used.</p>
+              <p class="phone-tool-output" id="phrase-output" aria-live="polite">No phrase used yet.</p>
+            </div>
           )}
 
-          {!mod.repoUrl && (
-            <p class="phone-module-note">
-              Not built yet. This module is on the public roadmap and will appear here as a
-              package in <a href="https://github.com/lumen-assistive/lumen-plugins">lumen-plugins</a> once
-              its development phase starts.
-            </p>
+          {mod.id === 'leggere' && (
+            <Fragment>
+              <div class="phone-tool">
+                <p class="phone-tool-label">Syllable splitter</p>
+                <textarea id="syllable-input" rows="1">patria</textarea>
+                <button class="phone-tool-run" type="button" id="syllable-run">Split into syllables</button>
+                <p class="phone-tool-output" id="syllable-output" aria-live="polite"></p>
+              </div>
+              <div class="phone-tool">
+                <p class="phone-tool-label">Flashcard review</p>
+                <p class="phone-flashcard">What is the capital of Italy?</p>
+                <p class="phone-tool-note">Rate how well you recalled it; the schedule below follows the SM-2 algorithm.</p>
+                <div class="phone-chip-row" id="flashcard-buttons" aria-label="Recall quality, 0 to 5"></div>
+                <p class="phone-tool-output" id="flashcard-output" aria-live="polite">Not reviewed yet.</p>
+              </div>
+            </Fragment>
+          )}
+
+          {mod.id === 'ricordare' && (
+            <Fragment>
+              <div class="phone-tool">
+                <p class="phone-tool-label">Add a person</p>
+                <input id="person-name" type="text" placeholder="Name" value="Maria" />
+                <input id="person-relationship" type="text" placeholder="Relationship" value="daughter" />
+                <label class="phone-checkbox-row">
+                  <input id="person-consent" type="checkbox" />
+                  Consent to future on-device recognition
+                </label>
+                <button class="phone-tool-run" type="button" id="person-run">Add person</button>
+                <p class="phone-tool-output" id="person-output" aria-live="polite">No one added yet.</p>
+              </div>
+              <div class="phone-tool">
+                <p class="phone-tool-label">Add a reminder</p>
+                <input id="reminder-title" type="text" placeholder="Reminder" value="Take medicine" />
+                <div class="phone-tool-row">
+                  <input id="reminder-minutes" type="number" min="0" value="0" aria-label="Minutes from now" />
+                  <select id="reminder-recurrence" aria-label="Recurrence">
+                    <option value="none">One time</option>
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                  </select>
+                </div>
+                <button class="phone-tool-run" type="button" id="reminder-run">Add reminder</button>
+                <p class="phone-tool-output" id="reminder-output" aria-live="polite">No reminders due.</p>
+              </div>
+            </Fragment>
+          )}
+
+          {mod.id === 'muoversi' && (
+            <div class="phone-tool">
+              <p class="phone-tool-label">Gait stability monitor</p>
+              <p class="phone-tool-note">Simulates a window of accelerometer samples, since there is no live sensor in a browser.</p>
+              <div class="phone-tool-row">
+                <button class="phone-tool-run" type="button" id="gait-steady-run">Simulate steady walk</button>
+                <button class="phone-tool-run secondary" type="button" id="gait-unsteady-run">Simulate unsteady walk</button>
+              </div>
+              <p class="phone-tool-output" id="gait-output" aria-live="polite"></p>
+            </div>
           )}
         </div>
       ))}

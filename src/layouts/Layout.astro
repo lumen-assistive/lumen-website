@@ -527,7 +527,37 @@ const nav = [
     background: var(--ink);
     border-radius: 2.5rem;
     padding: 0.65rem;
-    box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.25);
+    box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  }
+
+  .phone-side-button {
+    position: absolute;
+    background: var(--ink);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+
+  .phone-side-power {
+    right: -0.15rem;
+    top: 7.5rem;
+    width: 0.15rem;
+    height: 3.5rem;
+    border-radius: 0 0.15rem 0.15rem 0;
+  }
+
+  .phone-side-volume-up {
+    left: -0.15rem;
+    top: 6rem;
+    width: 0.15rem;
+    height: 2.25rem;
+    border-radius: 0.15rem 0 0 0.15rem;
+  }
+
+  .phone-side-volume-down {
+    left: -0.15rem;
+    top: 9rem;
+    width: 0.15rem;
+    height: 2.25rem;
+    border-radius: 0.15rem 0 0 0.15rem;
   }
 
   .phone-notch {
@@ -550,6 +580,12 @@ const nav = [
     color: var(--paper);
     font-size: 0.8rem;
     font-weight: 700;
+  }
+
+  .phone-statusbar-icons {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   .phone-screen {
@@ -588,6 +624,27 @@ const nav = [
     padding: 1rem 1.25rem 1.5rem;
   }
 
+  .phone-view:not([hidden]) {
+    animation: phone-view-in 260ms ease;
+  }
+
+  @keyframes phone-view-in {
+    from {
+      opacity: 0;
+      transform: translateX(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .phone-view:not([hidden]) {
+      animation: none;
+    }
+  }
+
   .phone-view-title {
     font-weight: 700;
     color: var(--muted);
@@ -620,6 +677,10 @@ const nav = [
   .phone-row:hover,
   .phone-row:focus-visible {
     background: var(--paper-dim);
+  }
+
+  .phone-row:active {
+    transform: scale(0.99);
   }
 
   .phone-row-icon {
@@ -716,7 +777,9 @@ const nav = [
   }
 
   .phone-tool textarea,
-  .phone-tool input[type='number'] {
+  .phone-tool input[type='number'],
+  .phone-tool input[type='text'],
+  .phone-tool select {
     font: inherit;
     font-size: 0.9rem;
     color: var(--ink);
@@ -726,12 +789,12 @@ const nav = [
     padding: 0.5rem 0.6rem;
     width: 100%;
     box-sizing: border-box;
+    margin-bottom: 0.6rem;
   }
 
   .phone-tool textarea {
     min-height: 3.5rem;
     resize: vertical;
-    margin-bottom: 0.6rem;
   }
 
   .phone-tool-row {
@@ -740,9 +803,78 @@ const nav = [
     margin-bottom: 0.6rem;
   }
 
+  .phone-tool-row > * {
+    margin-bottom: 0 !important;
+  }
+
+  .phone-checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin: 0 0 0.75rem;
+  }
+
+  .phone-checkbox-row input {
+    width: 1.1rem;
+    height: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .phone-tool-note {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin: 0 0 0.6rem;
+  }
+
+  .phone-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .phone-chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 0.4rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--paper);
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .phone-chip:hover,
+  .phone-chip:focus-visible {
+    border-color: var(--lumen);
+    color: var(--lumen);
+  }
+
+  .phone-chip:active {
+    transform: scale(0.96);
+  }
+
+  .phone-flashcard {
+    padding: 1rem;
+    margin: 0 0 0.5rem;
+    border-radius: 0.5rem;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    font-weight: 700;
+    font-size: 1.05rem;
+    text-align: center;
+  }
+
   .phone-tool-run {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     min-height: 40px;
     padding: 0.5rem 1rem;
     border-radius: 0.4rem;
@@ -753,11 +885,29 @@ const nav = [
     font-weight: 700;
     font-size: 0.85rem;
     cursor: pointer;
+    flex: 1;
   }
 
   .phone-tool-run:hover,
   .phone-tool-run:focus-visible {
     background: var(--ink);
+  }
+
+  .phone-tool-run:active {
+    transform: scale(0.97);
+  }
+
+  .phone-tool-run.secondary {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--ink);
+  }
+
+  .phone-tool-run.secondary:hover,
+  .phone-tool-run.secondary:focus-visible {
+    border-color: var(--lumen);
+    color: var(--lumen);
+    background: none;
   }
 
   .phone-tool-output {
@@ -768,6 +918,11 @@ const nav = [
     font-size: 0.9rem;
     min-height: 1.3rem;
     white-space: pre-wrap;
+  }
+
+  .phone-tool-output.loading {
+    color: var(--muted);
+    font-style: italic;
   }
 
   .phone-color-swatch {

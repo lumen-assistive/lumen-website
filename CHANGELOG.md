@@ -6,6 +6,26 @@ and this project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-10-25
+
+### Changed
+
+- The demo's phone mockup is now fully interactive on all eight modules, not three: Famiglia
+  (pairing code generator, daily status), Parlare (tap real phrases, see usage-ranked
+  suggestions update), Leggere e Studiare (syllable splitter, a real SM-2 flashcard review loop),
+  Ricordare (add a consent-gated person, add and check reminders) and Muoversi (a gait stability
+  monitor fed two preset accelerometer walks) all now run their real, compiled `lumen-plugins`
+  logic, the same as Vedere, Sentire and Protezione already did. No module shows an empty "no
+  demo" note anymore.
+- `tools/web-demo` now depends on all eight plugin packages, pinned to `lumen-plugins`' `v0.2.0`
+  tag. Every new function was verified against the real behavior of its package (matched against
+  known test fixtures, run through the compiled bundle in Node with the browser globals it needs
+  shimmed in) before being wired into the page.
+- The phone mockup itself looks and feels more like a real device: side volume and power buttons,
+  a softened inner highlight and shadow, a smooth slide-in transition when opening or closing a
+  module (skipped under reduced-motion preferences), and a small deliberate delay before showing a
+  result so interactions read as the app having done the work rather than an instant text swap.
+
 ## [0.5.1] - 2026-10-25
 
 ### Fixed

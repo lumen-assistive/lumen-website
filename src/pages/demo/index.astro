@@ -31,9 +31,8 @@ import PhoneDemo from '../../components/PhoneDemo.astro';
     <h2>How this demo is built</h2>
     <p>
       A small build tool, <a href="https://github.com/lumen-assistive/lumen-website/tree/main/tools/web-demo">tools/web-demo</a>,
-      imports the real <code>ExpiryDateParser</code> and <code>ColorNamer</code> from Vedere,
-      <code>ScamFilter</code> from Protezione, and <code>Summarizer</code> from Sentire, pinned to
-      the same <code>lumen-plugins</code> tag every other consumer uses, and compiles them with
+      imports the real business logic of all eight modules, pinned to the same
+      <code>lumen-plugins</code> tag every other consumer uses, and compiles it with
       <code>dart compile js</code> into the script loaded on this page. The module list and
       descriptions above are fetched directly from each package's <code>pubspec.yaml</code> at
       build time, the same data the <a href="/modules/">Modules</a> page uses.
@@ -65,6 +64,18 @@ import PhoneDemo from '../../components/PhoneDemo.astro';
       });
     }
 
+    // A short, deliberate delay before showing a result: real enough to read
+    // as the app actually having done the work, short enough to never feel
+    // slow. The computation itself is already done by the time this fires.
+    const withDelay = (outputEl, render) => {
+      outputEl.classList.add('loading');
+      outputEl.textContent = 'Working...';
+      setTimeout(() => {
+        outputEl.classList.remove('loading');
+        render();
+      }, 180);
+    };
+
     const run = (buttonId, handler) => {
       const button = document.getElementById(buttonId);
       if (button) button.addEventListener('click', handler);
@@ -72,31 +83,138 @@ import PhoneDemo from '../../components/PhoneDemo.astro';
 
     run('expiry-run', () => {
       const text = document.getElementById('expiry-input').value;
-      document.getElementById('expiry-output').textContent = lumenParseExpiry(text);
+      const output = document.getElementById('expiry-output');
+      withDelay(output, () => { output.textContent = lumenParseExpiry(text); });
     });
 
     run('color-run', () => {
       const r = Number(document.getElementById('color-r').value);
       const g = Number(document.getElementById('color-g').value);
       const b = Number(document.getElementById('color-b').value);
-      const name = lumenNameColor(r, g, b);
       const output = document.getElementById('color-output');
-      output.innerHTML = '';
-      const swatch = document.createElement('span');
-      swatch.className = 'phone-color-swatch';
-      swatch.style.background = `rgb(${r}, ${g}, ${b})`;
-      output.appendChild(swatch);
-      output.appendChild(document.createTextNode(`Nearest match: ${name}`));
+      withDelay(output, () => {
+        const name = lumenNameColor(r, g, b);
+        output.innerHTML = '';
+        const swatch = document.createElement('span');
+        swatch.className = 'phone-color-swatch';
+        swatch.style.background = `rgb(${r}, ${g}, ${b})`;
+        output.appendChild(swatch);
+        output.appendChild(document.createTextNode(`Nearest match: ${name}`));
+      });
     });
 
     run('scam-run', () => {
       const text = document.getElementById('scam-input').value;
-      document.getElementById('scam-output').textContent = lumenAssessMessage(text);
+      const output = document.getElementById('scam-output');
+      withDelay(output, () => { output.textContent = lumenAssessMessage(text); });
     });
 
     run('summary-run', () => {
       const text = document.getElementById('summary-input').value;
-      document.getElementById('summary-output').textContent = lumenSummarize(text);
+      const output = document.getElementById('summary-output');
+      withDelay(output, () => { output.textContent = lumenSummarize(text); });
+    });
+
+    run('pairing-run', () => {
+      const output = document.getElementById('pairing-output');
+      withDelay(output, () => { output.textContent = lumenGeneratePairingCode(); });
+    });
+
+    run('status-ok-run', () => {
+      const output = document.getElementById('status-output');
+      withDelay(output, () => { output.textContent = lumenSetDailyStatus('ok'); });
+    });
+
+    run('status-attention-run', () => {
+      const output = document.getElementById('status-output');
+      withDelay(output, () => { output.textContent = lumenSetDailyStatus('needsAttention'); });
+    });
+
+    const phraseChips = document.getElementById('phrase-chips');
+    const phraseOutput = document.getElementById('phrase-output');
+    if (phraseChips && typeof lumenPhraseBoardJson === 'function') {
+      const phrases = JSON.parse(lumenPhraseBoardJson());
+      phrases.forEach((phrase) => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'phone-chip';
+        chip.textContent = phrase.textEn;
+        chip.addEventListener('click', () => {
+          lumenRecordPhraseUse(phrase.id);
+          withDelay(phraseOutput, () => {
+            const top = JSON.parse(lumenTopPhraseSuggestionsJson(3));
+            phraseOutput.textContent = `Top suggestions now: ${top.join(', ')}`;
+          });
+        });
+        phraseChips.appendChild(chip);
+      });
+    }
+
+    run('syllable-run', () => {
+      const word = document.getElementById('syllable-input').value;
+      const output = document.getElementById('syllable-output');
+      withDelay(output, () => { output.textContent = lumenSplitSyllables(word); });
+    });
+
+    const flashcardButtons = document.getElementById('flashcard-buttons');
+    const flashcardOutput = document.getElementById('flashcard-output');
+    let flashcardState = { repetitionCount: 0, intervalDays: 1, easinessFactor: 2.5 };
+    if (flashcardButtons) {
+      for (let quality = 0; quality <= 5; quality++) {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'phone-chip';
+        chip.textContent = String(quality);
+        chip.addEventListener('click', () => {
+          withDelay(flashcardOutput, () => {
+            const outcome = JSON.parse(
+              lumenReviewFlashcard(
+                quality,
+                flashcardState.repetitionCount,
+                flashcardState.intervalDays,
+                flashcardState.easinessFactor,
+              ),
+            );
+            flashcardState = outcome;
+            flashcardOutput.textContent =
+              `Next review in ${outcome.intervalDays} day(s), easiness ${outcome.easinessFactor}, ` +
+              `${outcome.repetitionCount} successful review(s) in a row.`;
+          });
+        });
+        flashcardButtons.appendChild(chip);
+      }
+    }
+
+    run('person-run', () => {
+      const name = document.getElementById('person-name').value;
+      const relationship = document.getElementById('person-relationship').value;
+      const consent = document.getElementById('person-consent').checked;
+      const output = document.getElementById('person-output');
+      withDelay(output, () => { output.textContent = lumenAddPerson(name, relationship, consent); });
+    });
+
+    run('reminder-run', () => {
+      const title = document.getElementById('reminder-title').value;
+      const minutes = Number(document.getElementById('reminder-minutes').value);
+      const recurrence = document.getElementById('reminder-recurrence').value;
+      const output = document.getElementById('reminder-output');
+      withDelay(output, () => {
+        lumenAddReminder(title, minutes, recurrence);
+        const due = JSON.parse(lumenDueRemindersJson());
+        output.textContent = due.length
+          ? `Due now: ${due.join(', ')}`
+          : 'Added. Not due yet: try 0 minutes to see it appear here.';
+      });
+    });
+
+    run('gait-steady-run', () => {
+      const output = document.getElementById('gait-output');
+      withDelay(output, () => { output.textContent = lumenAnalyzeGait('steady'); });
+    });
+
+    run('gait-unsteady-run', () => {
+      const output = document.getElementById('gait-output');
+      withDelay(output, () => { output.textContent = lumenAnalyzeGait('unsteady'); });
     });
   });
 </script>
