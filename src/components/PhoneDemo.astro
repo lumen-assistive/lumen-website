@@ -112,6 +112,13 @@ const ICONS: Record<string, string> = {
             </p>
           )}
 
+          {mod.repoUrl && !['vedere', 'sentire', 'protezione', 'famiglia'].includes(mod.id) && (
+            <p class="phone-module-note">
+              This module is implemented in <a href={mod.repoUrl}>lumen-plugins</a>, but has no
+              in-browser demo yet.
+            </p>
+          )}
+
           {!mod.repoUrl && (
             <p class="phone-module-note">
               Not built yet. This module is on the public roadmap and will appear here as a

@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-10-25
+
+### Fixed
+
+- `lumen-plugins` shipped its four remaining roadmap packages (Parlare, Leggere e Studiare,
+  Ricordare, Muoversi); `src/lib/modules.ts` listed them as planned, which understated real
+  progress. All eight modules now show as available on the Modules page and in the demo's phone
+  mockup. The four without a browser-compilable demo (Famiglia and the four new ones) say plainly
+  that they have no in-browser demo yet instead of showing an empty screen.
+
 ## [0.5.0] - 2026-10-25
 
 ### Changed

@@ -11,8 +11,17 @@ export interface ModuleEntry {
   repoUrl: string | null;
 }
 
-const SHIPPED_PACKAGE_IDS = ['vedere', 'sentire', 'protezione', 'famiglia'];
-const ROADMAP_ONLY_IDS = ['parlare', 'leggere', 'ricordare', 'muoversi'];
+const SHIPPED_PACKAGE_IDS = [
+  'vedere',
+  'sentire',
+  'protezione',
+  'famiglia',
+  'parlare',
+  'leggere',
+  'ricordare',
+  'muoversi',
+];
+const ROADMAP_ONLY_IDS: string[] = [];
 
 const NAMES: Record<string, { it: string; en: string }> = {
   vedere: { it: 'Vedere', en: 'See' },
