@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-25
+
+### Changed
+
+- The site is English only now. The Italian pages that used to live at the site root (`/`,
+  `/moduli/`, `/privacy/`, `/sdk/`, `/download/`) were replaced by their English equivalents, and
+  the separate `/en/*` tree was removed since it is no longer needed.
+- `Layout.astro` no longer carries a `lang` prop, a language toggle, or bilingual copy; it renders
+  a single English navigation and footer.
+- Added static redirects (`/moduli/`, `/en/`, `/en/modules/`, `/en/privacy/`, `/en/sdk/`,
+  `/en/download/`) to their new English paths so no existing link breaks.
+
 ## [0.2.0] - 2026-10-24
 
 ### Added

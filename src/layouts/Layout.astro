@@ -5,34 +5,22 @@ import '@fontsource/atkinson-hyperlegible/700.css';
 interface Props {
   title: string;
   description: string;
-  lang: 'it' | 'en';
-  altHref: string;
 }
 
-const { title, description, lang, altHref } = Astro.props;
+const { title, description } = Astro.props;
 
-const nav =
-  lang === 'it'
-    ? [
-        { href: '/', label: 'Home' },
-        { href: '/moduli/', label: 'Moduli' },
-        { href: '/privacy/', label: 'Privacy' },
-        { href: '/sdk/', label: 'SDK' },
-        { href: '/download/', label: 'Download' },
-        { href: '/docs/', label: 'Docs' },
-      ]
-    : [
-        { href: '/en/', label: 'Home' },
-        { href: '/en/modules/', label: 'Modules' },
-        { href: '/en/privacy/', label: 'Privacy' },
-        { href: '/en/sdk/', label: 'SDK' },
-        { href: '/en/download/', label: 'Download' },
-        { href: '/docs/', label: 'Docs' },
-      ];
+const nav = [
+  { href: '/', label: 'Home' },
+  { href: '/modules/', label: 'Modules' },
+  { href: '/privacy/', label: 'Privacy' },
+  { href: '/sdk/', label: 'SDK' },
+  { href: '/download/', label: 'Download' },
+  { href: '/docs/', label: 'Docs' },
+];
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -42,23 +30,20 @@ const nav =
     <title>{title} - Lumen</title>
   </head>
   <body>
-    <a class="skip-link" href="#main">{lang === 'it' ? 'Vai al contenuto' : 'Skip to content'}</a>
+    <a class="skip-link" href="#main">Skip to content</a>
     <header>
       <div class="bar">
-        <a class="brand" href={lang === 'it' ? '/' : '/en/'}>
+        <a class="brand" href="/">
           <svg class="mark" viewBox="0 0 48 48" aria-hidden="true">
             <path d="M 33.2 10.9 A 16 16 0 1 1 14.8 10.9" />
           </svg>
           Lumen
         </a>
-        <nav aria-label={lang === 'it' ? 'Navigazione principale' : 'Main navigation'}>
+        <nav aria-label="Main navigation">
           {nav.map((item) => (
             <a href={item.href}>{item.label}</a>
           ))}
         </nav>
-        <a class="lang-toggle" href={altHref} hreflang={lang === 'it' ? 'en' : 'it'}>
-          {lang === 'it' ? 'English' : 'Italiano'}
-        </a>
       </div>
     </header>
     <main id="main">
@@ -66,11 +51,7 @@ const nav =
     </main>
     <footer>
       <div class="footer-inner">
-        <p>
-          {lang === 'it'
-            ? 'Progetto open source per il GF Marilli Prize di HackersGen.'
-            : 'An open source project for the GF Marilli Prize by HackersGen.'}
-        </p>
+        <p>An open source project for the GF Marilli Prize by HackersGen.</p>
         <p><a href="https://github.com/lumen-assistive">github.com/lumen-assistive</a></p>
       </div>
     </footer>
@@ -177,8 +158,7 @@ const nav =
     margin-left: auto;
   }
 
-  nav a,
-  .lang-toggle {
+  nav a {
     color: var(--muted);
     text-decoration: none;
     padding: 0.5rem 0.1rem;
@@ -191,18 +171,6 @@ const nav =
   nav a:hover,
   nav a:focus-visible {
     color: var(--ink);
-  }
-
-  .lang-toggle {
-    border: 1px solid var(--border);
-    border-radius: 0.3rem;
-    padding: 0.4rem 0.85rem;
-    color: var(--ink);
-  }
-
-  .lang-toggle:hover,
-  .lang-toggle:focus-visible {
-    border-color: var(--lumen);
   }
 
   a {

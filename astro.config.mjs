@@ -4,6 +4,14 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
+  redirects: {
+    '/moduli/': '/modules/',
+    '/en/': '/',
+    '/en/modules/': '/modules/',
+    '/en/privacy/': '/privacy/',
+    '/en/sdk/': '/sdk/',
+    '/en/download/': '/download/',
+  },
   integrations: [
     starlight({
       title: 'Lumen docs',

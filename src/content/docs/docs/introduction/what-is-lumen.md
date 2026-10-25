@@ -24,7 +24,7 @@ independent plugins:
 | Famiglia e caregiver | Famiglia | Family and caregivers: remote configuration, consented alerts |
 
 See [Project status](/docs/introduction/status/) for which modules have real code today, and
-[Modules](/moduli/) on the main site for the same information in plain language.
+[Modules](/modules/) on the main site for the same information in plain language.
 
 ## Onboarding adapts the interface, not just the features
 

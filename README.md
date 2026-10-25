@@ -39,13 +39,15 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
 
 ## Structure
 
-- `src/pages/`: Italian pages (default locale) at the site root.
-- `src/pages/en/`: English translations under `/en/`.
+- `src/pages/`: the marketing pages (home, modules, privacy, SDK, download), English only.
 - `src/components/ModulesList.astro`: fetches each module's real description from
-  `lumen-plugins` at build time; shared by the Italian and English modules pages.
+  `lumen-plugins` at build time.
 - `src/content/docs/docs/`: the `/docs` documentation wiki, built with Starlight.
-- `src/layouts/Layout.astro`: shared page shell, navigation, and language toggle for the
-  marketing pages.
+- `src/layouts/Layout.astro`: shared page shell and navigation for the marketing pages.
+
+The site used to ship an Italian default locale under `/` with English translations under `/en/`.
+It is English only now; the old `/en/*` paths and the Italian-only `/moduli/` path redirect to
+their English equivalents (configured in `astro.config.mjs`) so no existing link breaks.
 
 ## License
 
