@@ -1,0 +1,64 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const SCREENSHOTS = [
+  { id: 'home', name: 'Home', source: 'lib/src/home/home_screen.dart' },
+  { id: 'vedere', name: 'Vedere (See)', source: 'lib/src/modules/vedere_screen.dart' },
+  { id: 'sentire', name: 'Sentire (Hear)', source: 'lib/src/modules/sentire_screen.dart' },
+  { id: 'protezione', name: 'Protezione (Safety)', source: 'lib/src/modules/protezione_screen.dart' },
+  { id: 'famiglia', name: 'Family and caregivers', source: 'lib/src/modules/famiglia_screen.dart' },
+  { id: 'parlare', name: 'Parlare (Speak)', source: 'lib/src/modules/parlare_screen.dart' },
+  { id: 'leggere', name: 'Leggere e Studiare (Read and Study)', source: 'lib/src/modules/leggere_screen.dart' },
+  { id: 'ricordare', name: 'Ricordare (Remember)', source: 'lib/src/modules/ricordare_screen.dart' },
+  { id: 'muoversi', name: 'Muoversi (Move)', source: 'lib/src/modules/muoversi_screen.dart' },
+];
+---
+
+<Layout
+  title="Screenshots"
+  description="Real screenshots of the Lumen app's own widget tree, rendered from the actual implemented code."
+>
+  <div class="hero">
+    <h1>Screenshots</h1>
+    <p class="lead">
+      Real screenshots of <a href="https://github.com/lumen-assistive/lumen-app">lumen-app</a>'s
+      own widget tree, not mockups or concept art: the same code that ships in the app, rendered
+      once and saved as an image.
+    </p>
+  </div>
+
+  <section>
+    <div class="notice">
+      Each module screen is shown with its real tools already run once, using the sample input
+      built into that screen, not live camera or microphone output, since those bridges do not
+      exist yet (see <a href="/docs/introduction/status/">project status</a>). The home screen
+      shows all eight modules enabled at once so every one appears in a single image.
+    </div>
+  </section>
+
+  <section class="wide">
+    <div class="screenshot-grid">
+      {SCREENSHOTS.map((shot) => (
+        <figure class="screenshot-card">
+          <img src={`/screenshots/${shot.id}.png`} alt={`${shot.name} screen`} loading="lazy" />
+          <figcaption>
+            <span class="screenshot-name">{shot.name}</span>
+            <a href={`https://github.com/lumen-assistive/lumen-app/blob/main/${shot.source}`}>
+              View source
+            </a>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </section>
+
+  <section class="wide">
+    <h2>How these are captured</h2>
+    <p>
+      A widget test, <a href="https://github.com/lumen-assistive/lumen-app/blob/main/test/screenshots/capture_screenshots_test.dart">test/screenshots/capture_screenshots_test.dart</a>,
+      builds each real screen, runs its tools, and saves the rendered result as a PNG. Flutter's
+      test harness renders with a fallback test font by default, so the test loads the app's real
+      fonts first; otherwise text would show as blank boxes rather than words.
+    </p>
+  </section>
+</Layout>

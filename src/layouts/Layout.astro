@@ -13,6 +13,7 @@ const nav = [
   { href: '/', label: 'Home' },
   { href: '/modules/', label: 'Modules' },
   { href: '/demo/', label: 'Demo' },
+  { href: '/screenshots/', label: 'Screenshots' },
   { href: '/privacy/', label: 'Privacy' },
   { href: '/sdk/', label: 'SDK' },
   { href: '/download/', label: 'Download' },
@@ -68,6 +69,7 @@ const nav = [
             <a href="/">Home</a>
             <a href="/modules/">Modules</a>
             <a href="/demo/">Demo</a>
+            <a href="/screenshots/">Screenshots</a>
             <a href="/download/">Download</a>
           </nav>
 
@@ -942,5 +944,40 @@ const nav = [
     background: var(--paper);
     opacity: 0.6;
     margin: 0.5rem auto 0.1rem;
+  }
+
+  .screenshot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 1.5rem;
+  }
+
+  .screenshot-card {
+    margin: 0;
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    background: var(--paper-dim);
+  }
+
+  .screenshot-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: 0.3rem;
+  }
+
+  .screenshot-card figcaption {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 0.6rem;
+    font-size: 0.9rem;
+  }
+
+  .screenshot-name {
+    font-weight: 700;
   }
 </style>

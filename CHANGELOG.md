@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-10-25
+
+### Added
+
+- A `/screenshots/` page showing nine real screenshots of `lumen-app`'s own widget tree (the
+  home screen with all eight modules enabled, and each module's real screen with its tools
+  already run once), rendered from the app's own test suite rather than hand-drawn or
+  AI-generated images. Linked from the homepage, the main navigation, and the footer.
+
 ## [0.6.0] - 2026-10-25
 
 ### Changed
