@@ -6,6 +6,22 @@ and this project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-25
+
+### Added
+
+- An interactive `/demo/` page that runs real business logic from `lumen-plugins`, compiled from
+  Dart to JavaScript with `dart compile js`, directly in the browser: Vedere's expiry date parser
+  and color namer, Protezione's scam message filter, and Sentire's transcript summarizer. The
+  compiled bundle is produced by the new `tools/web-demo` build tool and verified against the
+  real test suites in `lumen-plugins` before being committed.
+- A link to the demo from the homepage and the main navigation.
+
+### Fixed
+
+- `CONTRIBUTING.md` still described the pre-English-only page structure and the deleted
+  `src/data/modules.ts` file; corrected to match the current structure.
+
 ## [0.3.0] - 2026-10-25
 
 ### Changed

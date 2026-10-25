@@ -4,9 +4,10 @@
 
 # lumen-website
 
-The project website for [Lumen](https://github.com/lumen-assistive): pitch, module status,
-privacy summary, SDK pointer, download status, and the full `/docs` documentation wiki. Built with
-[Astro](https://astro.build) and [Starlight](https://starlight.astro.build), deployed to Vercel.
+The project website for [Lumen](https://github.com/lumen-assistive): pitch, module status, an
+interactive demo, privacy summary, SDK pointer, download status, and the full `/docs`
+documentation wiki. Built with [Astro](https://astro.build) and
+[Starlight](https://starlight.astro.build), deployed to Vercel.
 
 This repository holds the website's code. The marketing pages (home, modules, privacy, SDK,
 download) are intentionally short and link out to the source repositories for anything technical.
@@ -39,9 +40,11 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
 
 ## Structure
 
-- `src/pages/`: the marketing pages (home, modules, privacy, SDK, download), English only.
+- `src/pages/`: the marketing pages (home, modules, demo, privacy, SDK, download), English only.
 - `src/components/ModulesList.astro`: fetches each module's real description from
   `lumen-plugins` at build time.
+- `src/pages/demo/index.astro`: runs real `lumen-plugins` business logic in the browser,
+  compiled to JavaScript by `tools/web-demo` (see that directory's README).
 - `src/content/docs/docs/`: the `/docs` documentation wiki, built with Starlight.
 - `src/layouts/Layout.astro`: shared page shell and navigation for the marketing pages.
 

@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# web-demo Dart build tool
+tools/web-demo/.dart_tool/

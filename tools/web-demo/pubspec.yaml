@@ -1,0 +1,30 @@
+name: lumen_website_demo
+description: >-
+  Compiles real business logic from lumen-plugins to JavaScript for the
+  interactive demo on the lumen-website site. Not published, not part
+  of the app: a build tool for the website only.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.5.0
+
+dependencies:
+  lumen_plugin_vedere:
+    git:
+      url: https://github.com/lumen-assistive/lumen-plugins.git
+      ref: v0.1.0
+      path: packages/vedere
+  lumen_plugin_protezione:
+    git:
+      url: https://github.com/lumen-assistive/lumen-plugins.git
+      ref: v0.1.0
+      path: packages/protezione
+  lumen_plugin_sentire:
+    git:
+      url: https://github.com/lumen-assistive/lumen-plugins.git
+      ref: v0.1.0
+      path: packages/sentire
+
+dev_dependencies:
+  lints: ^4.0.0

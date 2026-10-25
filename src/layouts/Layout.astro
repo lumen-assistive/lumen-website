@@ -12,6 +12,7 @@ const { title, description } = Astro.props;
 const nav = [
   { href: '/', label: 'Home' },
   { href: '/modules/', label: 'Modules' },
+  { href: '/demo/', label: 'Demo' },
   { href: '/privacy/', label: 'Privacy' },
   { href: '/sdk/', label: 'SDK' },
   { href: '/download/', label: 'Download' },
@@ -324,6 +325,72 @@ const nav = [
 
   .status.planned {
     color: var(--muted);
+  }
+
+  .demo-block {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 0.3rem;
+    background: var(--paper-dim);
+  }
+
+  .demo-block label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+
+  .demo-block textarea,
+  .demo-block input[type='number'] {
+    font: inherit;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 0.3rem;
+    padding: 0.6rem 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .demo-block textarea {
+    min-height: 5rem;
+    resize: vertical;
+    margin-bottom: 0.75rem;
+  }
+
+  .demo-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
+  }
+
+  .demo-row label {
+    margin-bottom: 0.2rem;
+  }
+
+  .demo-row input[type='number'] {
+    width: 6rem;
+  }
+
+  .demo-output {
+    margin-top: 1rem;
+    padding: 1rem 1.25rem;
+    border-left: 3px solid var(--lumen);
+    background: var(--paper);
+    min-height: 1.5rem;
+    white-space: pre-wrap;
+  }
+
+  .color-swatch {
+    display: inline-block;
+    width: 1.2em;
+    height: 1.2em;
+    border: 1px solid var(--border);
+    border-radius: 0.2em;
+    vertical-align: middle;
+    margin-right: 0.5em;
   }
 
   footer {
