@@ -6,6 +6,22 @@ and this project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-10-25
+
+### Changed
+
+- The `/demo/` page is now a phone mockup of Lumen's module host, listing all eight modules in a
+  simulated home screen with an honest status badge each (four available, four planned). Tapping
+  an available module opens its screen inside the phone frame; Vedere, Sentire and Protezione run
+  the same real, compiled plugin logic as before, now presented inside the simulated app rather
+  than as flat page sections. Famiglia explains why it has no in-browser demo (its features need
+  two paired devices); planned modules explain that they are not built yet.
+- Extracted module data fetching into `src/lib/modules.ts`, shared by the Modules page and the new
+  phone mockup, instead of duplicating the same `pubspec.yaml` fetch logic in two places.
+- The site footer is now a full four-column footer (brand and tagline, Product, Developers,
+  Project) linking to every real page and repository document (SDK, Docs, Plugins, Privacy,
+  Contributing, Code of conduct, Security), instead of a single tagline and one link.
+
 ## [0.4.0] - 2026-10-25
 
 ### Added

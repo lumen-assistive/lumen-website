@@ -41,12 +41,16 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
 ## Structure
 
 - `src/pages/`: the marketing pages (home, modules, demo, privacy, SDK, download), English only.
-- `src/components/ModulesList.astro`: fetches each module's real description from
-  `lumen-plugins` at build time.
-- `src/pages/demo/index.astro`: runs real `lumen-plugins` business logic in the browser,
+- `src/lib/modules.ts`: fetches every module's real data from `lumen-plugins` at build time,
+  shared by the modules page and the demo's phone mockup.
+- `src/components/ModulesList.astro`: the plain module list rendered on the Modules page.
+- `src/components/PhoneDemo.astro`: a phone mockup of Lumen's module host, rendered on the Demo
+  page, listing all eight modules and running the real, compiled plugin logic for the ones that
+  have a browser demo.
+- `src/pages/demo/index.astro`: wires the phone mockup to the real `lumen-plugins` business logic,
   compiled to JavaScript by `tools/web-demo` (see that directory's README).
 - `src/content/docs/docs/`: the `/docs` documentation wiki, built with Starlight.
-- `src/layouts/Layout.astro`: shared page shell and navigation for the marketing pages.
+- `src/layouts/Layout.astro`: shared page shell, navigation, and footer for the marketing pages.
 
 The site used to ship an Italian default locale under `/` with English translations under `/en/`.
 It is English only now; the old `/en/*` paths and the Italian-only `/moduli/` path redirect to

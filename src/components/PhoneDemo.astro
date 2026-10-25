@@ -1,0 +1,128 @@
+---
+// A simulated Lumen home screen inside a phone frame. The module list and
+// descriptions are the same real data as the Modules page (see
+// src/lib/modules.ts); the three tools wired up on Vedere, Sentire and
+// Protezione call the real compiled plugin logic from /demo/lumen-demo.js,
+// loaded and wired up by the parent page. Nothing here is a reimplementation.
+import { getModules } from '../lib/modules';
+
+const modules = await getModules();
+
+// One small original line icon per module, 24x24, matching the stroke
+// style of the site's logo mark rather than a borrowed icon pack.
+const ICONS: Record<string, string> = {
+  vedere: '<ellipse cx="12" cy="12" rx="9" ry="5.5"/><circle cx="12" cy="12" r="2.1" fill="currentColor" stroke="none"/>',
+  sentire: '<line x1="7" y1="15" x2="7" y2="9"/><line x1="12" y1="17" x2="12" y2="6"/><line x1="17" y1="15" x2="17" y2="10"/>',
+  parlare: '<rect x="3.5" y="5.5" width="17" height="11" rx="4"/><path d="M8 16.5l-2 3.5v-3.8"/><circle cx="9" cy="11" r="0.9" fill="currentColor" stroke="none"/><circle cx="12" cy="11" r="0.9" fill="currentColor" stroke="none"/><circle cx="15" cy="11" r="0.9" fill="currentColor" stroke="none"/>',
+  leggere: '<path d="M12 6.8c-2.3-1.6-4.9-2-8.3-1.3v12.3c3.4-0.7 6 -0.3 8.3 1.3 2.3-1.6 4.9-2 8.3-1.3V5.5c-3.4-0.7-6-0.3-8.3 1.3z"/><line x1="12" y1="6.8" x2="12" y2="19.1"/>',
+  ricordare: '<circle cx="12" cy="12" r="8.3"/><line x1="12" y1="12" x2="12" y2="7.4"/><line x1="12" y1="12" x2="15.1" y2="13.9"/>',
+  muoversi: '<ellipse cx="8.4" cy="9" rx="2.2" ry="3.1" transform="rotate(-18 8.4 9)"/><ellipse cx="15.7" cy="15.3" rx="2.2" ry="3.1" transform="rotate(14 15.7 15.3)"/>',
+  protezione: '<path d="M12 3.4l6.4 2.3v5.2c0 4.5-2.7 7.6-6.4 8.9-3.7-1.3-6.4-4.4-6.4-8.9V5.7z"/>',
+  famiglia: '<circle cx="8.6" cy="8.5" r="2.8"/><path d="M3.9 19.3c0-3.2 2.1-5.5 4.7-5.5s4.7 2.3 4.7 5.5"/><circle cx="16.2" cy="9.4" r="2.2"/><path d="M13.7 19.3c0.2-2.5 1.7-4.5 3.8-4.5"/>',
+};
+---
+
+<div class="phone-demo">
+  <div class="phone" role="group" aria-label="Simulated Lumen app">
+    <div class="phone-notch" aria-hidden="true"></div>
+    <div class="phone-statusbar" aria-hidden="true">
+      <span>9:41</span>
+      <svg viewBox="0 0 24 24" width="18" height="12">
+        <rect x="1" y="2" width="18" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.4" />
+        <rect x="20" y="5.5" width="1.6" height="3" fill="currentColor" />
+        <rect x="2.5" y="3.5" width="13" height="7" fill="currentColor" />
+      </svg>
+    </div>
+
+    <div class="phone-screen">
+      <header class="phone-app-header">
+        <svg class="phone-mark" viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M 33.2 10.9 A 16 16 0 1 1 14.8 10.9" />
+        </svg>
+        <span>Lumen</span>
+      </header>
+
+      <div class="phone-view" data-view="home">
+        <p class="phone-view-title" tabindex="-1">Your modules</p>
+        {modules.map((mod) => (
+          <button class="phone-row" type="button" data-open={mod.id} aria-label={`Open ${mod.nameEn}`}>
+            <span class="phone-row-icon" set:html={`<svg viewBox="0 0 24 24">${ICONS[mod.id]}</svg>`} />
+            <span class="phone-row-name">{mod.nameEn}</span>
+            <span class={`phone-row-status ${mod.repoUrl ? 'available' : 'planned'}`}>
+              {mod.repoUrl ? 'Available' : 'Planned'}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      {modules.map((mod) => (
+        <div class="phone-view" data-view={mod.id} hidden>
+          <button class="phone-back" type="button" data-back>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+            Modules
+          </button>
+          <h3 class="phone-module-title">{mod.nameEn}</h3>
+          {mod.description && <p class="phone-module-desc">{mod.description}</p>}
+
+          {mod.id === 'vedere' && (
+            <Fragment>
+              <div class="phone-tool">
+                <p class="phone-tool-label">Expiry date reader</p>
+                <textarea id="expiry-input" rows="2">Da consumarsi preferibilmente entro il 25/12/2026</textarea>
+                <button class="phone-tool-run" type="button" id="expiry-run">Find date</button>
+                <p class="phone-tool-output" id="expiry-output" aria-live="polite"></p>
+              </div>
+              <div class="phone-tool">
+                <p class="phone-tool-label">Color namer</p>
+                <div class="phone-tool-row">
+                  <input id="color-r" type="number" min="0" max="255" value="225" aria-label="Red, 0 to 255" />
+                  <input id="color-g" type="number" min="0" max="255" value="25" aria-label="Green, 0 to 255" />
+                  <input id="color-b" type="number" min="0" max="255" value="15" aria-label="Blue, 0 to 255" />
+                </div>
+                <button class="phone-tool-run" type="button" id="color-run">Name color</button>
+                <p class="phone-tool-output" id="color-output" aria-live="polite"></p>
+              </div>
+            </Fragment>
+          )}
+
+          {mod.id === 'sentire' && (
+            <div class="phone-tool">
+              <p class="phone-tool-label">Transcript summarizer</p>
+              <textarea id="summary-input" rows="3">Il gatto dorme sul divano. Il cane corre in giardino con il gatto. Oggi piove molto a Milano. Il gatto e il cane giocano insieme in giardino.</textarea>
+              <button class="phone-tool-run" type="button" id="summary-run">Summarize</button>
+              <p class="phone-tool-output" id="summary-output" aria-live="polite"></p>
+            </div>
+          )}
+
+          {mod.id === 'protezione' && (
+            <div class="phone-tool">
+              <p class="phone-tool-label">Scam message checker</p>
+              <textarea id="scam-input" rows="2">Il tuo conto e bloccato. Invia subito il codice OTP per sbloccarlo.</textarea>
+              <button class="phone-tool-run" type="button" id="scam-run">Check message</button>
+              <p class="phone-tool-output" id="scam-output" aria-live="polite"></p>
+            </div>
+          )}
+
+          {mod.id === 'famiglia' && (
+            <p class="phone-module-note">
+              This module is implemented in <a href={mod.repoUrl}>lumen-plugins</a>, but has no
+              in-browser demo: its features (caregiver pairing, shared calendar, daily status)
+              only make sense between two paired devices, which a single browser tab cannot
+              simulate.
+            </p>
+          )}
+
+          {!mod.repoUrl && (
+            <p class="phone-module-note">
+              Not built yet. This module is on the public roadmap and will appear here as a
+              package in <a href="https://github.com/lumen-assistive/lumen-plugins">lumen-plugins</a> once
+              its development phase starts.
+            </p>
+          )}
+        </div>
+      ))}
+    </div>
+
+    <div class="phone-home-indicator" aria-hidden="true"></div>
+  </div>
+</div>

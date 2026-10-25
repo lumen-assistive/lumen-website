@@ -52,8 +52,46 @@ const nav = [
     </main>
     <footer>
       <div class="footer-inner">
-        <p>An open source project for the GF Marilli Prize by HackersGen.</p>
-        <p><a href="https://github.com/lumen-assistive">github.com/lumen-assistive</a></p>
+        <div class="footer-top">
+          <div class="footer-brand">
+            <a class="brand" href="/">
+              <svg class="mark" viewBox="0 0 48 48" aria-hidden="true">
+                <path d="M 33.2 10.9 A 16 16 0 1 1 14.8 10.9" />
+              </svg>
+              Lumen
+            </a>
+            <p>An open source, offline-first, privacy-by-design assistant for people with a limitation. Built for the GF Marilli Prize by HackersGen.</p>
+          </div>
+
+          <nav class="footer-col" aria-label="Product">
+            <h2>Product</h2>
+            <a href="/">Home</a>
+            <a href="/modules/">Modules</a>
+            <a href="/demo/">Demo</a>
+            <a href="/download/">Download</a>
+          </nav>
+
+          <nav class="footer-col" aria-label="Developers">
+            <h2>Developers</h2>
+            <a href="/sdk/">SDK</a>
+            <a href="/docs/">Docs</a>
+            <a href="https://github.com/lumen-assistive/lumen-plugins">Plugins</a>
+            <a href="https://github.com/lumen-assistive">GitHub</a>
+          </nav>
+
+          <nav class="footer-col" aria-label="Project">
+            <h2>Project</h2>
+            <a href="/privacy/">Privacy</a>
+            <a href="https://github.com/lumen-assistive/lumen-website/blob/main/CONTRIBUTING.md">Contributing</a>
+            <a href="https://github.com/lumen-assistive/lumen-website/blob/main/CODE_OF_CONDUCT.md">Code of conduct</a>
+            <a href="https://github.com/lumen-assistive/lumen-website/blob/main/SECURITY.md">Security</a>
+          </nav>
+        </div>
+
+        <div class="footer-bottom">
+          <p>Licensed under the Apache License 2.0.</p>
+          <p><a href="https://github.com/lumen-assistive">github.com/lumen-assistive</a></p>
+        </div>
       </div>
     </footer>
   </body>
@@ -396,17 +434,358 @@ const nav = [
   footer {
     border-top: 1px solid var(--border);
     margin-top: 2rem;
+    background: var(--paper-dim);
   }
 
   .footer-inner {
     max-width: var(--max-wide);
     margin: 0 auto;
-    padding: 2rem 1.5rem;
+    padding: 3rem 1.5rem 2rem;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .footer-brand p {
     color: var(--muted);
+    font-size: 0.95rem;
+    margin: 0.85rem 0 0;
+    max-width: 30ch;
+  }
+
+  .footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .footer-col h2 {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin: 0 0 0.2rem;
+  }
+
+  .footer-col a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 700;
     font-size: 0.95rem;
   }
 
-  .footer-inner p {
-    margin: 0 0 0.3rem;
+  .footer-col a:hover,
+  .footer-col a:focus-visible {
+    color: var(--lumen);
+  }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-top: 1.5rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .footer-bottom p {
+    margin: 0;
+  }
+
+  .footer-bottom a {
+    color: var(--muted);
+    text-decoration-color: var(--lumen);
+  }
+
+  .footer-bottom a:hover,
+  .footer-bottom a:focus-visible {
+    color: var(--lumen);
+  }
+
+  @media (max-width: 640px) {
+    .footer-top {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .phone-demo {
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0 3rem;
+  }
+
+  .phone {
+    position: relative;
+    width: min(360px, 100%);
+    background: var(--ink);
+    border-radius: 2.5rem;
+    padding: 0.65rem;
+    box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.25);
+  }
+
+  .phone-notch {
+    position: absolute;
+    top: 0.65rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6.5rem;
+    height: 1.4rem;
+    background: var(--ink);
+    border-radius: 0 0 1rem 1rem;
+    z-index: 2;
+  }
+
+  .phone-statusbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 1.5rem 0.2rem;
+    color: var(--paper);
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .phone-screen {
+    position: relative;
+    background: var(--paper);
+    border-radius: 1.85rem;
+    overflow: hidden;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .phone-app-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.25rem 0.9rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .phone-app-header .phone-mark {
+    width: 1.1rem;
+    height: 1.1rem;
+    fill: none;
+    stroke: var(--lumen);
+    stroke-width: 6;
+    stroke-linecap: round;
+  }
+
+  .phone-view {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem 1.25rem 1.5rem;
+  }
+
+  .phone-view-title {
+    font-weight: 700;
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 0 0 0.5rem;
+  }
+
+  .phone-row {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    width: 100%;
+    padding: 0.65rem 0.4rem;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    background: none;
+    text-align: left;
+    font: inherit;
+    color: var(--ink);
+    cursor: pointer;
+    min-height: 48px;
+  }
+
+  .phone-row:first-of-type {
+    border-top: 1px solid var(--border);
+  }
+
+  .phone-row:hover,
+  .phone-row:focus-visible {
+    background: var(--paper-dim);
+  }
+
+  .phone-row-icon {
+    flex-shrink: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.65rem;
+    background: var(--paper-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--lumen);
+  }
+
+  .phone-row-icon svg {
+    width: 1.3rem;
+    height: 1.3rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .phone-row-name {
+    flex: 1;
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  .phone-row-status {
+    font-size: 0.78rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .phone-row-status.available {
+    color: var(--lumen);
+  }
+
+  .phone-row-status.planned {
+    color: var(--muted);
+  }
+
+  .phone-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    border: none;
+    background: none;
+    font: inherit;
+    font-weight: 700;
+    color: var(--lumen);
+    padding: 0.4rem 0;
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+    min-height: 44px;
+  }
+
+  .phone-back svg {
+    width: 1rem;
+    height: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .phone-module-title {
+    margin: 0 0 0.4rem;
+    font-size: 1.3rem;
+  }
+
+  .phone-module-desc,
+  .phone-module-note {
+    font-size: 0.92rem;
+    color: var(--muted);
+    margin: 0 0 1rem;
+  }
+
+  .phone-tool {
+    margin: 0 0 1.25rem;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 0.6rem;
+    background: var(--paper-dim);
+  }
+
+  .phone-tool-label {
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin: 0 0 0.5rem;
+  }
+
+  .phone-tool textarea,
+  .phone-tool input[type='number'] {
+    font: inherit;
+    font-size: 0.9rem;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 0.4rem;
+    padding: 0.5rem 0.6rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .phone-tool textarea {
+    min-height: 3.5rem;
+    resize: vertical;
+    margin-bottom: 0.6rem;
+  }
+
+  .phone-tool-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .phone-tool-run {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0.5rem 1rem;
+    border-radius: 0.4rem;
+    border: none;
+    background: var(--lumen);
+    color: var(--paper);
+    font: inherit;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+
+  .phone-tool-run:hover,
+  .phone-tool-run:focus-visible {
+    background: var(--ink);
+  }
+
+  .phone-tool-output {
+    margin: 0.75rem 0 0;
+    padding: 0.6rem 0.75rem;
+    border-left: 3px solid var(--lumen);
+    background: var(--paper);
+    font-size: 0.9rem;
+    min-height: 1.3rem;
+    white-space: pre-wrap;
+  }
+
+  .phone-color-swatch {
+    display: inline-block;
+    width: 1.1em;
+    height: 1.1em;
+    border: 1px solid var(--border);
+    border-radius: 0.25em;
+    vertical-align: middle;
+    margin-right: 0.4em;
+  }
+
+  .phone-home-indicator {
+    width: 5rem;
+    height: 0.3rem;
+    border-radius: 0.2rem;
+    background: var(--paper);
+    opacity: 0.6;
+    margin: 0.5rem auto 0.1rem;
   }
 </style>

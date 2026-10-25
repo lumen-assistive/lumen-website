@@ -1,109 +1,70 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import PhoneDemo from '../../components/PhoneDemo.astro';
 ---
 
 <Layout
   title="Demo"
-  description="Try the real business logic from Lumen's modules, compiled to JavaScript and running in your browser."
+  description="A simulated Lumen home screen, running the real plugin logic compiled to JavaScript in your browser."
 >
   <div class="hero">
     <h1>Demo</h1>
     <p class="lead">
-      This page runs the actual code shipped in <a href="https://github.com/lumen-assistive/lumen-plugins">lumen-plugins</a>, compiled
-      from Dart to JavaScript, directly in your browser. Nothing here is a mockup or a
-      reimplementation: it is the same logic covered by that repository's test suite.
+      A simulation of Lumen's module host, listing all eight modules exactly as they stand today.
+      Tap an available one to run the real logic from <a href="https://github.com/lumen-assistive/lumen-plugins">lumen-plugins</a>,
+      compiled to JavaScript: nothing below is a mockup screenshot or a reimplementation.
     </p>
   </div>
 
   <section>
     <div class="notice">
-      This demonstrates only the parts of each module that do not depend on a camera or
-      microphone, since those native bridges do not exist yet (see <a href="/docs/introduction/status/">project status</a>).
-      Nothing you type here leaves your device: every result below is computed locally in your
-      browser, with no network request.
+      This only demonstrates the parts of each module that do not depend on a camera or
+      microphone, since those native bridges do not exist yet (see
+      <a href="/docs/introduction/status/">project status</a>). Nothing you type here leaves
+      your device: every result is computed locally in your browser, with no network request.
     </div>
   </section>
 
-  <section class="wide">
-    <h2>Expiry date reader</h2>
-    <p>
-      From <a href="https://github.com/lumen-assistive/lumen-plugins/tree/main/packages/vedere">Vedere</a>'s
-      <code>ExpiryDateParser</code>: finds an expiry date in OCR-style text read off Italian product
-      packaging.
-    </p>
-    <div class="demo-block">
-      <label for="expiry-input">Paste text as if read from a label</label>
-      <textarea id="expiry-input">Da consumarsi preferibilmente entro il 25/12/2026</textarea>
-      <button class="button primary" id="expiry-run" type="button">Find the expiry date</button>
-      <div class="demo-output" id="expiry-output" aria-live="polite"></div>
-    </div>
-  </section>
+  <PhoneDemo />
 
   <section class="wide">
-    <h2>Color namer</h2>
+    <h2>How this demo is built</h2>
     <p>
-      From <a href="https://github.com/lumen-assistive/lumen-plugins/tree/main/packages/vedere">Vedere</a>'s
-      <code>ColorNamer</code>: matches an RGB value to the nearest of eleven common color names.
+      A small build tool, <a href="https://github.com/lumen-assistive/lumen-website/tree/main/tools/web-demo">tools/web-demo</a>,
+      imports the real <code>ExpiryDateParser</code> and <code>ColorNamer</code> from Vedere,
+      <code>ScamFilter</code> from Protezione, and <code>Summarizer</code> from Sentire, pinned to
+      the same <code>lumen-plugins</code> tag every other consumer uses, and compiles them with
+      <code>dart compile js</code> into the script loaded on this page. The module list and
+      descriptions above are fetched directly from each package's <code>pubspec.yaml</code> at
+      build time, the same data the <a href="/modules/">Modules</a> page uses.
     </p>
-    <div class="demo-block">
-      <div class="demo-row">
-        <div>
-          <label for="color-r">Red (0 to 255)</label>
-          <input id="color-r" type="number" min="0" max="255" value="225" />
-        </div>
-        <div>
-          <label for="color-g">Green (0 to 255)</label>
-          <input id="color-g" type="number" min="0" max="255" value="25" />
-        </div>
-        <div>
-          <label for="color-b">Blue (0 to 255)</label>
-          <input id="color-b" type="number" min="0" max="255" value="15" />
-        </div>
-      </div>
-      <button class="button primary" id="color-run" type="button">Name this color</button>
-      <div class="demo-output" id="color-output" aria-live="polite"></div>
-    </div>
-  </section>
-
-  <section class="wide">
-    <h2>Scam message checker</h2>
-    <p>
-      From <a href="https://github.com/lumen-assistive/lumen-plugins/tree/main/packages/protezione">Protezione</a>'s
-      <code>ScamFilter</code>: a rule-based, explainable first pass at flagging likely scam
-      messages. It is not a trained classifier, and every verdict comes with a reason.
-    </p>
-    <div class="demo-block">
-      <label for="scam-input">Paste a message</label>
-      <textarea
-        id="scam-input"
-      >Il tuo conto bloccato. Invia subito il codice OTP per sbloccarlo.</textarea>
-      <button class="button primary" id="scam-run" type="button">Check this message</button>
-      <div class="demo-output" id="scam-output" aria-live="polite"></div>
-    </div>
-  </section>
-
-  <section class="wide">
-    <h2>Transcript summarizer</h2>
-    <p>
-      From <a href="https://github.com/lumen-assistive/lumen-plugins/tree/main/packages/sentire">Sentire</a>'s
-      <code>Summarizer</code>: a word-frequency heuristic that picks the most representative
-      sentences from a transcript. It is not a machine-learned summarizer and makes no claim to
-      understand the text.
-    </p>
-    <div class="demo-block">
-      <label for="summary-input">Paste a few sentences</label>
-      <textarea
-        id="summary-input"
-      >Il gatto dorme sul divano. Il cane corre in giardino con il gatto. Oggi piove molto a Milano. Il gatto e il cane giocano insieme in giardino.</textarea>
-      <button class="button primary" id="summary-run" type="button">Summarize</button>
-      <div class="demo-output" id="summary-output" aria-live="polite"></div>
-    </div>
   </section>
 </Layout>
 
 <script is:inline src="/demo/lumen-demo.js"></script>
 <script is:inline>
   document.addEventListener('DOMContentLoaded', () => {
+    const phone = document.querySelector('.phone-demo');
+    if (phone) {
+      const views = phone.querySelectorAll('.phone-view');
+      const showView = (id) => {
+        views.forEach((view) => {
+          view.hidden = view.dataset.view !== id;
+        });
+        const active = phone.querySelector(`.phone-view[data-view="${id}"]`);
+        const focusTarget = active && (active.querySelector('.phone-back') || active.querySelector('.phone-view-title'));
+        if (focusTarget) focusTarget.focus();
+      };
+
+      phone.querySelectorAll('[data-open]').forEach((row) => {
+        row.addEventListener('click', () => showView(row.dataset.open));
+      });
+
+      phone.querySelectorAll('[data-back]').forEach((button) => {
+        button.addEventListener('click', () => showView('home'));
+      });
+    }
+
     const run = (buttonId, handler) => {
       const button = document.getElementById(buttonId);
       if (button) button.addEventListener('click', handler);
@@ -122,7 +83,7 @@ import Layout from '../../layouts/Layout.astro';
       const output = document.getElementById('color-output');
       output.innerHTML = '';
       const swatch = document.createElement('span');
-      swatch.className = 'color-swatch';
+      swatch.className = 'phone-color-swatch';
       swatch.style.background = `rgb(${r}, ${g}, ${b})`;
       output.appendChild(swatch);
       output.appendChild(document.createTextNode(`Nearest match: ${name}`));
