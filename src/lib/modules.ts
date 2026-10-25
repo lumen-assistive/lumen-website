@@ -12,26 +12,26 @@ export interface ModuleEntry {
 }
 
 const SHIPPED_PACKAGE_IDS = [
-  'vedere',
-  'sentire',
-  'protezione',
-  'famiglia',
-  'parlare',
-  'leggere',
-  'ricordare',
-  'muoversi',
+  'vision',
+  'hearing',
+  'safety',
+  'family',
+  'speech',
+  'reading',
+  'memory',
+  'mobility',
 ];
 const ROADMAP_ONLY_IDS: string[] = [];
 
 const NAMES: Record<string, { it: string; en: string }> = {
-  vedere: { it: 'Vedere', en: 'See' },
-  sentire: { it: 'Sentire', en: 'Hear' },
-  protezione: { it: 'Protezione', en: 'Safety' },
-  famiglia: { it: 'Famiglia e caregiver', en: 'Family and caregivers' },
-  parlare: { it: 'Parlare', en: 'Speak' },
-  leggere: { it: 'Leggere e Studiare', en: 'Read and Study' },
-  ricordare: { it: 'Ricordare', en: 'Remember' },
-  muoversi: { it: 'Muoversi', en: 'Move' },
+  vision: { it: 'Vedere', en: 'Vision' },
+  hearing: { it: 'Sentire', en: 'Hearing' },
+  safety: { it: 'Protezione', en: 'Safety' },
+  family: { it: 'Famiglia e caregiver', en: 'Family and caregivers' },
+  speech: { it: 'Parlare', en: 'Speech' },
+  reading: { it: 'Leggere e Studiare', en: 'Reading' },
+  memory: { it: 'Ricordare', en: 'Memory' },
+  mobility: { it: 'Muoversi', en: 'Mobility' },
 };
 
 async function fetchPackageInfo(id: string): Promise<ModuleEntry> {

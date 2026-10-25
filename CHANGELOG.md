@@ -6,6 +6,33 @@ and this project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-10-25
+
+### Changed
+
+- Renamed every module's internal identifiers from Italian to English across
+  the site, matching the rename every plugin package in `lumen-plugins` went
+  through: `vedere`/`vision`, `sentire`/`hearing`, `protezione`/`safety`,
+  `famiglia`/`family`, `parlare`/`speech`, `leggere`/`reading`,
+  `ricordare`/`memory`, `muoversi`/`mobility`. `src/lib/modules.ts`, the
+  phone mockup, the demo page, `tools/web-demo`, and the screenshots page's
+  source links all use the new ids and file paths; the Italian display
+  names shown on the Modules page are unchanged, and the `vision`/`hearing`/
+  `safety` English labels now read "Vision"/"Hearing"/"Safety" instead of
+  their Italian names.
+- `tools/web-demo` now depends on all eight plugin packages under their new
+  names, pinned to `lumen-plugins`' `v0.3.0` tag.
+
+### Added
+
+- Two new interactive controls in the phone mockup, both wired to new real
+  `lumen-plugins` functions: a WCAG contrast checker on the Vision module
+  (checks the entered color against a white and a black background) and a
+  sentence builder on the Speech module (composes the phrases tapped above
+  into one sentence). Every new and existing exported function was
+  reverified in Node against the real compiled bundle before being wired
+  in.
+
 ## [0.7.0] - 2026-10-25
 
 ### Added

@@ -11,14 +11,14 @@ const modules = await getModules();
 // One small original line icon per module, 24x24, matching the stroke
 // style of the site's logo mark rather than a borrowed icon pack.
 const ICONS: Record<string, string> = {
-  vedere: '<ellipse cx="12" cy="12" rx="9" ry="5.5"/><circle cx="12" cy="12" r="2.1" fill="currentColor" stroke="none"/>',
-  sentire: '<line x1="7" y1="15" x2="7" y2="9"/><line x1="12" y1="17" x2="12" y2="6"/><line x1="17" y1="15" x2="17" y2="10"/>',
-  parlare: '<rect x="3.5" y="5.5" width="17" height="11" rx="4"/><path d="M8 16.5l-2 3.5v-3.8"/><circle cx="9" cy="11" r="0.9" fill="currentColor" stroke="none"/><circle cx="12" cy="11" r="0.9" fill="currentColor" stroke="none"/><circle cx="15" cy="11" r="0.9" fill="currentColor" stroke="none"/>',
-  leggere: '<path d="M12 6.8c-2.3-1.6-4.9-2-8.3-1.3v12.3c3.4-0.7 6 -0.3 8.3 1.3 2.3-1.6 4.9-2 8.3-1.3V5.5c-3.4-0.7-6-0.3-8.3 1.3z"/><line x1="12" y1="6.8" x2="12" y2="19.1"/>',
-  ricordare: '<circle cx="12" cy="12" r="8.3"/><line x1="12" y1="12" x2="12" y2="7.4"/><line x1="12" y1="12" x2="15.1" y2="13.9"/>',
-  muoversi: '<ellipse cx="8.4" cy="9" rx="2.2" ry="3.1" transform="rotate(-18 8.4 9)"/><ellipse cx="15.7" cy="15.3" rx="2.2" ry="3.1" transform="rotate(14 15.7 15.3)"/>',
-  protezione: '<path d="M12 3.4l6.4 2.3v5.2c0 4.5-2.7 7.6-6.4 8.9-3.7-1.3-6.4-4.4-6.4-8.9V5.7z"/>',
-  famiglia: '<circle cx="8.6" cy="8.5" r="2.8"/><path d="M3.9 19.3c0-3.2 2.1-5.5 4.7-5.5s4.7 2.3 4.7 5.5"/><circle cx="16.2" cy="9.4" r="2.2"/><path d="M13.7 19.3c0.2-2.5 1.7-4.5 3.8-4.5"/>',
+  vision: '<ellipse cx="12" cy="12" rx="9" ry="5.5"/><circle cx="12" cy="12" r="2.1" fill="currentColor" stroke="none"/>',
+  hearing: '<line x1="7" y1="15" x2="7" y2="9"/><line x1="12" y1="17" x2="12" y2="6"/><line x1="17" y1="15" x2="17" y2="10"/>',
+  speech: '<rect x="3.5" y="5.5" width="17" height="11" rx="4"/><path d="M8 16.5l-2 3.5v-3.8"/><circle cx="9" cy="11" r="0.9" fill="currentColor" stroke="none"/><circle cx="12" cy="11" r="0.9" fill="currentColor" stroke="none"/><circle cx="15" cy="11" r="0.9" fill="currentColor" stroke="none"/>',
+  reading: '<path d="M12 6.8c-2.3-1.6-4.9-2-8.3-1.3v12.3c3.4-0.7 6 -0.3 8.3 1.3 2.3-1.6 4.9-2 8.3-1.3V5.5c-3.4-0.7-6-0.3-8.3 1.3z"/><line x1="12" y1="6.8" x2="12" y2="19.1"/>',
+  memory: '<circle cx="12" cy="12" r="8.3"/><line x1="12" y1="12" x2="12" y2="7.4"/><line x1="12" y1="12" x2="15.1" y2="13.9"/>',
+  mobility: '<ellipse cx="8.4" cy="9" rx="2.2" ry="3.1" transform="rotate(-18 8.4 9)"/><ellipse cx="15.7" cy="15.3" rx="2.2" ry="3.1" transform="rotate(14 15.7 15.3)"/>',
+  safety: '<path d="M12 3.4l6.4 2.3v5.2c0 4.5-2.7 7.6-6.4 8.9-3.7-1.3-6.4-4.4-6.4-8.9V5.7z"/>',
+  family: '<circle cx="8.6" cy="8.5" r="2.8"/><path d="M3.9 19.3c0-3.2 2.1-5.5 4.7-5.5s4.7 2.3 4.7 5.5"/><circle cx="16.2" cy="9.4" r="2.2"/><path d="M13.7 19.3c0.2-2.5 1.7-4.5 3.8-4.5"/>',
 };
 ---
 
@@ -74,7 +74,7 @@ const ICONS: Record<string, string> = {
           <h3 class="phone-module-title">{mod.nameEn}</h3>
           {mod.description && <p class="phone-module-desc">{mod.description}</p>}
 
-          {mod.id === 'vedere' && (
+          {mod.id === 'vision' && (
             <Fragment>
               <div class="phone-tool">
                 <p class="phone-tool-label">Expiry date reader</p>
@@ -92,10 +92,16 @@ const ICONS: Record<string, string> = {
                 <button class="phone-tool-run" type="button" id="color-run">Name color</button>
                 <p class="phone-tool-output" id="color-output" aria-live="polite"></p>
               </div>
+              <div class="phone-tool">
+                <p class="phone-tool-label">Contrast checker</p>
+                <p class="phone-tool-note">Checks the color above against a white and a black background.</p>
+                <button class="phone-tool-run" type="button" id="contrast-run">Check contrast</button>
+                <p class="phone-tool-output" id="contrast-output" aria-live="polite"></p>
+              </div>
             </Fragment>
           )}
 
-          {mod.id === 'sentire' && (
+          {mod.id === 'hearing' && (
             <div class="phone-tool">
               <p class="phone-tool-label">Transcript summarizer</p>
               <textarea id="summary-input" rows="3">Il gatto dorme sul divano. Il cane corre in giardino con il gatto. Oggi piove molto a Milano. Il gatto e il cane giocano insieme in giardino.</textarea>
@@ -104,7 +110,7 @@ const ICONS: Record<string, string> = {
             </div>
           )}
 
-          {mod.id === 'protezione' && (
+          {mod.id === 'safety' && (
             <div class="phone-tool">
               <p class="phone-tool-label">Scam message checker</p>
               <textarea id="scam-input" rows="2">Il tuo conto e bloccato. Invia subito il codice OTP per sbloccarlo.</textarea>
@@ -113,7 +119,7 @@ const ICONS: Record<string, string> = {
             </div>
           )}
 
-          {mod.id === 'famiglia' && (
+          {mod.id === 'family' && (
             <Fragment>
               <div class="phone-tool">
                 <p class="phone-tool-label">Caregiver pairing code</p>
@@ -131,16 +137,21 @@ const ICONS: Record<string, string> = {
             </Fragment>
           )}
 
-          {mod.id === 'parlare' && (
+          {mod.id === 'speech' && (
             <div class="phone-tool">
               <p class="phone-tool-label">Phrase board</p>
               <div class="phone-chip-row" id="phrase-chips" aria-label="Quick phrases"></div>
-              <p class="phone-tool-note">Tapping a phrase records its use; the board ranks phrases by how recently and often they were used.</p>
+              <p class="phone-tool-note">Tapping a phrase records its use and adds it to the sentence below; the top suggestions rank phrases by how recently and often they were used.</p>
               <p class="phone-tool-output" id="phrase-output" aria-live="polite">No phrase used yet.</p>
+              <div class="phone-tool-row">
+                <button class="phone-tool-run" type="button" id="sentence-build-run">Build sentence</button>
+                <button class="phone-tool-run secondary" type="button" id="sentence-clear-run">Clear</button>
+              </div>
+              <p class="phone-tool-output" id="sentence-output" aria-live="polite">No phrase selected yet.</p>
             </div>
           )}
 
-          {mod.id === 'leggere' && (
+          {mod.id === 'reading' && (
             <Fragment>
               <div class="phone-tool">
                 <p class="phone-tool-label">Syllable splitter</p>
@@ -158,7 +169,7 @@ const ICONS: Record<string, string> = {
             </Fragment>
           )}
 
-          {mod.id === 'ricordare' && (
+          {mod.id === 'memory' && (
             <Fragment>
               <div class="phone-tool">
                 <p class="phone-tool-label">Add a person</p>
@@ -188,7 +199,7 @@ const ICONS: Record<string, string> = {
             </Fragment>
           )}
 
-          {mod.id === 'muoversi' && (
+          {mod.id === 'mobility' && (
             <div class="phone-tool">
               <p class="phone-tool-label">Gait stability monitor</p>
               <p class="phone-tool-note">Simulates a window of accelerometer samples, since there is no live sensor in a browser.</p>

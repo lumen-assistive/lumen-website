@@ -103,6 +103,14 @@ import PhoneDemo from '../../components/PhoneDemo.astro';
       });
     });
 
+    run('contrast-run', () => {
+      const r = Number(document.getElementById('color-r').value);
+      const g = Number(document.getElementById('color-g').value);
+      const b = Number(document.getElementById('color-b').value);
+      const output = document.getElementById('contrast-output');
+      withDelay(output, () => { output.textContent = lumenCheckContrast(r, g, b); });
+    });
+
     run('scam-run', () => {
       const text = document.getElementById('scam-input').value;
       const output = document.getElementById('scam-output');
@@ -132,6 +140,8 @@ import PhoneDemo from '../../components/PhoneDemo.astro';
 
     const phraseChips = document.getElementById('phrase-chips');
     const phraseOutput = document.getElementById('phrase-output');
+    const sentenceOutput = document.getElementById('sentence-output');
+    const sentencePhraseIds = [];
     if (phraseChips && typeof lumenPhraseBoardJson === 'function') {
       const phrases = JSON.parse(lumenPhraseBoardJson());
       phrases.forEach((phrase) => {
@@ -141,6 +151,7 @@ import PhoneDemo from '../../components/PhoneDemo.astro';
         chip.textContent = phrase.textEn;
         chip.addEventListener('click', () => {
           lumenRecordPhraseUse(phrase.id);
+          sentencePhraseIds.push(phrase.id);
           withDelay(phraseOutput, () => {
             const top = JSON.parse(lumenTopPhraseSuggestionsJson(3));
             phraseOutput.textContent = `Top suggestions now: ${top.join(', ')}`;
@@ -149,6 +160,22 @@ import PhoneDemo from '../../components/PhoneDemo.astro';
         phraseChips.appendChild(chip);
       });
     }
+
+    run('sentence-build-run', () => {
+      if (sentenceOutput) withDelay(sentenceOutput, () => {
+        if (sentencePhraseIds.length === 0) {
+          sentenceOutput.textContent = 'Tap a phrase above first.';
+          return;
+        }
+        const result = JSON.parse(lumenBuildSentenceJson(sentencePhraseIds.join(',')));
+        sentenceOutput.textContent = result.sentence;
+      });
+    });
+
+    run('sentence-clear-run', () => {
+      sentencePhraseIds.length = 0;
+      if (sentenceOutput) sentenceOutput.textContent = 'No phrase selected yet.';
+    });
 
     run('syllable-run', () => {
       const word = document.getElementById('syllable-input').value;

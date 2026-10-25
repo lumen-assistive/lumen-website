@@ -14,20 +14,23 @@ library;
 import 'dart:convert';
 import 'dart:js_interop';
 
-import 'package:lumen_plugin_famiglia/lumen_plugin_famiglia.dart';
-import 'package:lumen_plugin_leggere/lumen_plugin_leggere.dart';
-import 'package:lumen_plugin_parlare/lumen_plugin_parlare.dart';
-import 'package:lumen_plugin_protezione/lumen_plugin_protezione.dart' hide AccelerometerSample;
-import 'package:lumen_plugin_ricordare/lumen_plugin_ricordare.dart';
-import 'package:lumen_plugin_sentire/lumen_plugin_sentire.dart';
-import 'package:lumen_plugin_vedere/lumen_plugin_vedere.dart';
-import 'package:lumen_plugin_muoversi/lumen_plugin_muoversi.dart';
+import 'package:lumen_plugin_family/lumen_plugin_family.dart';
+import 'package:lumen_plugin_reading/lumen_plugin_reading.dart';
+import 'package:lumen_plugin_speech/lumen_plugin_speech.dart';
+import 'package:lumen_plugin_safety/lumen_plugin_safety.dart' hide AccelerometerSample;
+import 'package:lumen_plugin_memory/lumen_plugin_memory.dart';
+import 'package:lumen_plugin_hearing/lumen_plugin_hearing.dart';
+import 'package:lumen_plugin_vision/lumen_plugin_vision.dart';
+import 'package:lumen_plugin_mobility/lumen_plugin_mobility.dart';
 
 @JS()
 external set lumenParseExpiry(JSFunction f);
 
 @JS()
 external set lumenNameColor(JSFunction f);
+
+@JS()
+external set lumenCheckContrast(JSFunction f);
 
 @JS()
 external set lumenAssessMessage(JSFunction f);
@@ -54,6 +57,9 @@ external set lumenRecordPhraseUse(JSFunction f);
 external set lumenTopPhraseSuggestionsJson(JSFunction f);
 
 @JS()
+external set lumenBuildSentenceJson(JSFunction f);
+
+@JS()
 external set lumenSplitSyllables(JSFunction f);
 
 @JS()
@@ -76,12 +82,14 @@ external set lumenAnalyzeGait(JSFunction f);
 
 final _expiryDateParser = ExpiryDateParser();
 final _colorNamer = ColorNamer();
+const _contrastChecker = ContrastChecker();
 const _scamFilter = ScamFilter();
 final _summarizer = Summarizer();
 final _pairingCodeGenerator = PairingCodeGenerator();
 final _dailyStatusTracker = DailyStatusTracker();
 final _phraseBoard = PhraseBoard();
 final _phraseUsageTracker = PhraseUsageTracker();
+const _sentenceBuilder = SentenceBuilder();
 const _syllableSplitter = ItalianSyllableSplitter();
 const _spacedRepetitionScheduler = SpacedRepetitionScheduler();
 final _personDirectory = PersonDirectory();
@@ -102,6 +110,16 @@ String _parseExpiry(String text) {
 
 String _nameColor(int red, int green, int blue) {
   return _colorNamer.nameOf(RgbColor(red, green, blue));
+}
+
+String _checkContrast(int red, int green, int blue) {
+  final color = RgbColor(red, green, blue);
+  final onWhite = _contrastChecker.check(color, const RgbColor(255, 255, 255));
+  final onBlack = _contrastChecker.check(color, const RgbColor(0, 0, 0));
+  final whitePass = onWhite.passes(WcagLevel.aa) ? 'passes' : 'fails';
+  final blackPass = onBlack.passes(WcagLevel.aa) ? 'passes' : 'fails';
+  return 'On white: ${onWhite.ratio.toStringAsFixed(2)}:1 ($whitePass AA). '
+      'On black: ${onBlack.ratio.toStringAsFixed(2)}:1 ($blackPass AA).';
 }
 
 String _assessMessage(String text) {
@@ -164,6 +182,15 @@ String _topPhraseSuggestionsJson(int limit) {
   return jsonEncode([
     for (final id in ids) _phraseBoard.byId(id)?.textEn ?? id,
   ]);
+}
+
+String _buildSentenceJson(String commaSeparatedPhraseIds) {
+  final ids = commaSeparatedPhraseIds.split(',').where((id) => id.isNotEmpty);
+  final phrases = [
+    for (final id in ids) _phraseBoard.byId(id),
+  ].whereType<Phrase>().toList();
+  final sentence = _sentenceBuilder.compose(phrases);
+  return jsonEncode({'sentence': sentence});
 }
 
 String _splitSyllables(String word) {
@@ -275,6 +302,9 @@ void main() {
   lumenNameColor = ((JSNumber r, JSNumber g, JSNumber b) =>
           _nameColor(r.toDartInt, g.toDartInt, b.toDartInt).toJS)
       .toJS;
+  lumenCheckContrast = ((JSNumber r, JSNumber g, JSNumber b) =>
+          _checkContrast(r.toDartInt, g.toDartInt, b.toDartInt).toJS)
+      .toJS;
   lumenAssessMessage = ((JSString text) => _assessMessage(text.toDart).toJS).toJS;
   lumenSummarize = ((JSString text) => _summarize(text.toDart).toJS).toJS;
 
@@ -285,6 +315,7 @@ void main() {
   lumenPhraseBoardJson = (() => _phraseBoardJson().toJS).toJS;
   lumenRecordPhraseUse = ((JSString id) => _recordPhraseUse(id.toDart)).toJS;
   lumenTopPhraseSuggestionsJson = ((JSNumber limit) => _topPhraseSuggestionsJson(limit.toDartInt).toJS).toJS;
+  lumenBuildSentenceJson = ((JSString ids) => _buildSentenceJson(ids.toDart).toJS).toJS;
 
   lumenSplitSyllables = ((JSString word) => _splitSyllables(word.toDart).toJS).toJS;
   lumenReviewFlashcard = ((JSNumber quality, JSNumber prevRepetitionCount, JSNumber prevIntervalDays,
