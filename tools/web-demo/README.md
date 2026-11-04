@@ -5,20 +5,51 @@ business logic from [lumen-plugins](https://github.com/lumen-assistive/lumen-plu
 JavaScript so the `/demo/` page can run it directly in the browser, instead of reimplementing
 that logic in JavaScript.
 
-`lib/demo.dart` imports the real classes behind every one of Lumen's eight modules (for example
-`ExpiryDateParser`, `ColorNamer` and `ContrastChecker` from Vision, `ScamFilter` from Safety,
-`PhraseBoard` and `SentenceBuilder` from Speech, `ItalianSyllableSplitter` and
-`SpacedRepetitionScheduler` from Reading, `PersonDirectory` and `ReminderScheduler` from Memory,
-`GaitStabilityMonitor` from Mobility, `PairingCodeGenerator` and `DailyStatusTracker` from Family),
-pinned to the `v0.3.0` tag of `lumen-plugins` (the same tag every other consumer of those packages
-uses). It exposes a small number of plain functions to the browser's global scope through
-`dart:js_interop`. Stateful tools (phrase usage, people, reminders, daily status) keep one instance
-alive for the page's lifetime, so using them feels like a real app session rather than resetting on
-every call.
+## What it exposes
+
+`lib/demo.dart` imports the real classes behind every one of Lumen's eight modules and exposes a
+single function to the browser's global scope through `dart:js_interop`:
+
+```js
+const result = JSON.parse(await window.lumenCall('vision.expiry', JSON.stringify({ text: '...' })));
+```
+
+`lumenCall(tool, argsJson)` returns a promise of a JSON string. The tools mirror, one for one, what
+the real Flutter app's module screens call (see `lumen-app/lib/src/modules/`):
+
+| Module | Tools | Real classes |
+|---|---|---|
+| Vision | `vision.expiry`, `vision.color`, `vision.contrast` | `ExpiryDateParser`, `ColorNamer`, `ContrastChecker` |
+| Hearing | `hearing.summarize`, `hearing.captions`, `hearing.alert` | `Summarizer`, `CaptionFormatter`, `AlertPresentationMapper` |
+| Safety | `safety.scam`, `safety.fall`, `safety.checkIn`, `safety.checkInStatus`, `safety.sosStart`, `safety.sosCancel`, `safety.sosState` | `ScamFilter`, `FallDetector`, `CheckInScheduler`, `SosController` with `FakeSmsSender` |
+| Family | `family.pairing`, `family.addEvent`, `family.status`, `family.notification` | `PairingCodeGenerator`, `InMemoryCalendarStore`, `DailyStatusTracker`, `CaregiverNotificationComposer` |
+| Speech | `speech.board`, `speech.use`, `speech.sentence` | `PhraseBoard`, `PhraseUsageTracker`, `SentenceBuilder` |
+| Reading | `reading.split`, `reading.review`, `reading.time` | `ItalianSyllableSplitter`, `SpacedRepetitionScheduler`, `ReadingTimeEstimator` |
+| Memory | `memory.addPerson`, `memory.addReminder`, `memory.dueReminders`, `memory.routine` | `PersonDirectory`, `ReminderScheduler`, `RoutineChecklistTracker` |
+| Mobility | `mobility.gait`, `mobility.profile`, `mobility.breaks` | `GaitStabilityMonitor`, `MobilityProfile`, `RestBreakPlanner` |
+
+The packages are pinned to the `v0.3.0` tag of `lumen-plugins` (the same tag `lumen-app` uses).
+Stateful tools (calendar, daily status, phrase usage, people, reminders, the routine checklist, the
+check-in clock and the SOS countdown) keep one instance alive for the page's lifetime, so using them
+feels like a real app session rather than resetting on every call. Fall and gait tools run on the
+same simulated accelerometer windows the app uses, and SOS is wired to the package's `FakeSmsSender`,
+so it can never send a real message.
 
 `lumen_plugin_mobility` and `lumen_plugin_safety` each define their own `AccelerometerSample`
 class (neither depends on the other, and `lumen_sdk` has no shared accelerometer event type yet;
-see both packages' READMEs), so the Safety import hides that name to avoid an ambiguity error.
+see both packages' READMEs), so `demo.dart` imports the Safety one under a prefix.
+
+## The screens
+
+The phone on the page is plain HTML, CSS and JavaScript in `src/components/PhoneDemo.astro` and
+`public/demo/phone.js`. It mirrors the app's widgets and never computes a result itself. The app's
+wording comes from `src/lib/appStrings.json`, extracted from
+`lumen-app/lib/src/l10n/app_strings.dart`. Regenerate it whenever the app's strings change, from the
+repository root:
+
+```
+python3 tools/web-demo/extract_strings.py ../lumen-app/lib/src/l10n/app_strings.dart
+```
 
 ## Regenerating the compiled bundle
 

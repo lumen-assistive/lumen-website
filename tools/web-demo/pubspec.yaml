@@ -3,7 +3,7 @@ description: >-
   Compiles real business logic from lumen-plugins to JavaScript for the
   interactive demo on the lumen-website site. Not published, not part
   of the app: a build tool for the website only.
-version: 0.3.0
+version: 0.4.0
 publish_to: none
 
 environment:
