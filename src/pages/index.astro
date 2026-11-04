@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { MODULE_COLOR_LIST } from '../lib/moduleVisuals';
 ---
 
 <Layout
@@ -7,13 +8,18 @@ import Layout from '../layouts/Layout.astro';
   description="Lumen is an open source, offline-first, privacy-by-design assistant for people with a limitation."
 >
   <div class="hero">
-    <h1>A little light, when it's needed.</h1>
-    <p class="lead">
+    <div class="module-strip" aria-hidden="true">
+      {MODULE_COLOR_LIST.map((color, index) => (
+        <span style={`--dot-color: ${color}; animation-delay: ${index * 60}ms`} />
+      ))}
+    </div>
+    <h1 class="hero-enter" style="animation-delay: 60ms">A little light, when it's needed.</h1>
+    <p class="lead hero-enter" style="animation-delay: 220ms">
       Lumen turns a smartphone into help for people with a limitation in seeing, hearing, speaking,
       reading, remembering, moving, or staying safe. Everything runs on the phone, no internet
       required.
     </p>
-    <div class="cta-row">
+    <div class="cta-row hero-enter" style="animation-delay: 380ms">
       <a class="button primary" href="/modules/">Discover the modules</a>
       <a class="button secondary" href="/demo/">Try the demo</a>
       <a class="button secondary" href="/screenshots/">See screenshots</a>

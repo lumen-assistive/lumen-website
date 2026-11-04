@@ -1,5 +1,6 @@
 ---
 import { getModules } from '../lib/modules';
+import { MODULE_ICONS, MODULE_COLORS } from '../lib/moduleVisuals';
 
 const modules = await getModules();
 ---
@@ -8,7 +9,14 @@ const modules = await getModules();
   {modules.map((mod) => (
     <li>
       <div class="module-head">
-        <h3>{mod.nameIt} ({mod.nameEn})</h3>
+        <h3>
+          <span
+            class="module-icon"
+            style={`--module-color: ${MODULE_COLORS[mod.id] ?? 'var(--lumen)'}`}
+            set:html={`<svg viewBox="0 0 24 24" aria-hidden="true">${MODULE_ICONS[mod.id] ?? ''}</svg>`}
+          />
+          {mod.nameEn}
+        </h3>
         {mod.repoUrl ? (
           <span class="status available">Repository available</span>
         ) : (

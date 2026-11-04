@@ -6,6 +6,25 @@ and this project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-10-25
+
+### Changed
+
+- Removed the Italian module name shown alongside the English one on the Modules page; every module
+  name on the site is English only now, matching the rest of the site's English-only content.
+- Added a signature accent color per module (shared with `lumen-app`'s own redesign, so the two
+  read as one product), used on each module's icon on the Modules page and in the phone mockup, and
+  as a small color bar beside the module name when its phone mockup screen is open.
+- Added real motion across the site, all respecting `prefers-reduced-motion`: a staggered entrance
+  animation for the homepage headline and lead paragraph, a self-drawing animation on the logo mark
+  in the header, a small animated strip of the eight module colors near the homepage hero, a
+  scroll-triggered reveal for every page section as it enters the viewport, and real hover/focus
+  transitions on buttons, phone mockup rows, and chips that previously changed instantly.
+
+### Fixed
+
+- `src/lib/modules.ts` no longer fetches or exposes an unused Italian display name field.
+
 ## [0.8.0] - 2026-10-25
 
 ### Changed

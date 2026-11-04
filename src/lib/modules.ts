@@ -5,7 +5,6 @@ import { parse } from 'yaml';
 
 export interface ModuleEntry {
   id: string;
-  nameIt: string;
   nameEn: string;
   description: string;
   repoUrl: string | null;
@@ -23,15 +22,15 @@ const SHIPPED_PACKAGE_IDS = [
 ];
 const ROADMAP_ONLY_IDS: string[] = [];
 
-const NAMES: Record<string, { it: string; en: string }> = {
-  vision: { it: 'Vedere', en: 'Vision' },
-  hearing: { it: 'Sentire', en: 'Hearing' },
-  safety: { it: 'Protezione', en: 'Safety' },
-  family: { it: 'Famiglia e caregiver', en: 'Family and caregivers' },
-  speech: { it: 'Parlare', en: 'Speech' },
-  reading: { it: 'Leggere e Studiare', en: 'Reading' },
-  memory: { it: 'Ricordare', en: 'Memory' },
-  mobility: { it: 'Muoversi', en: 'Mobility' },
+const NAMES: Record<string, string> = {
+  vision: 'Vision',
+  hearing: 'Hearing',
+  safety: 'Safety',
+  family: 'Family and caregivers',
+  speech: 'Speech',
+  reading: 'Reading',
+  memory: 'Memory',
+  mobility: 'Mobility',
 };
 
 async function fetchPackageInfo(id: string): Promise<ModuleEntry> {
@@ -44,8 +43,7 @@ async function fetchPackageInfo(id: string): Promise<ModuleEntry> {
   const parsed = parse(yamlText) as { description?: string };
   return {
     id,
-    nameIt: NAMES[id].it,
-    nameEn: NAMES[id].en,
+    nameEn: NAMES[id],
     description: (parsed.description ?? '').trim(),
     repoUrl: `https://github.com/lumen-assistive/lumen-plugins/tree/main/packages/${id}`,
   };
@@ -56,8 +54,7 @@ export async function getModules(): Promise<ModuleEntry[]> {
   const shipped = await Promise.all(SHIPPED_PACKAGE_IDS.map(fetchPackageInfo));
   const roadmap: ModuleEntry[] = ROADMAP_ONLY_IDS.map((id) => ({
     id,
-    nameIt: NAMES[id].it,
-    nameEn: NAMES[id].en,
+    nameEn: NAMES[id],
     description: '',
     repoUrl: null,
   }));

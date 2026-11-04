@@ -36,7 +36,7 @@ const nav = [
     <header>
       <div class="bar">
         <a class="brand" href="/">
-          <svg class="mark" viewBox="0 0 48 48" aria-hidden="true">
+          <svg class="mark draw-in" viewBox="0 0 48 48" aria-hidden="true">
             <path d="M 33.2 10.9 A 16 16 0 1 1 14.8 10.9" />
           </svg>
           Lumen
@@ -98,6 +98,41 @@ const nav = [
     </footer>
   </body>
 </html>
+
+<script is:inline>
+  (function () {
+    var sections = document.querySelectorAll('main section');
+    if (!sections.length) return;
+
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    sections.forEach(function (section) {
+      section.classList.add('reveal');
+    });
+
+    if (reduceMotion || typeof IntersectionObserver === 'undefined') {
+      sections.forEach(function (section) {
+        section.classList.add('revealed');
+      });
+      return;
+    }
+
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' },
+    );
+
+    sections.forEach(function (section) {
+      observer.observe(section);
+    });
+  })();
+</script>
 
 <style is:global>
   :root {
@@ -192,6 +227,25 @@ const nav = [
     stroke-linecap: round;
   }
 
+  .mark.draw-in path {
+    stroke-dasharray: 80;
+    stroke-dashoffset: 80;
+    animation: mark-draw 900ms ease-out 150ms forwards;
+  }
+
+  @keyframes mark-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mark.draw-in path {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+  }
+
   nav {
     display: flex;
     gap: 1.5rem;
@@ -207,6 +261,7 @@ const nav = [
     display: inline-flex;
     align-items: center;
     font-weight: 700;
+    transition: color 150ms ease;
   }
 
   nav a:hover,
@@ -219,6 +274,7 @@ const nav = [
     text-decoration-color: var(--lumen);
     text-decoration-thickness: 0.12em;
     text-underline-offset: 0.18em;
+    transition: color 150ms ease;
   }
 
   a:hover,
@@ -257,10 +313,78 @@ const nav = [
     margin: 0 0 2rem;
   }
 
+  .hero-enter {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: hero-enter 650ms ease-out forwards;
+  }
+
+  @keyframes hero-enter {
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .module-strip {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0 0 1.75rem;
+  }
+
+  .module-strip span {
+    display: block;
+    width: 1.5rem;
+    height: 0.4rem;
+    border-radius: 999px;
+    background: var(--dot-color);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: module-strip-grow 420ms ease-out forwards;
+  }
+
+  @keyframes module-strip-grow {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-enter {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+
+    .module-strip span {
+      transform: scaleX(1);
+      animation: none;
+    }
+  }
+
   .cta-row {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 550ms ease, transform 550ms ease;
+  }
+
+  .reveal.revealed {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
   }
 
   .button {
@@ -271,6 +395,16 @@ const nav = [
     border-radius: 0.3rem;
     font-weight: 700;
     text-decoration: none;
+    transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease, transform 180ms ease;
+  }
+
+  .button:hover,
+  .button:focus-visible {
+    transform: translateY(-2px);
+  }
+
+  .button:active {
+    transform: translateY(0);
   }
 
   .button.primary {
@@ -293,6 +427,14 @@ const nav = [
   .button.secondary:focus-visible {
     border-color: var(--lumen);
     color: var(--lumen);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .button:hover,
+    .button:focus-visible,
+    .button:active {
+      transform: none;
+    }
   }
 
   section {
@@ -351,6 +493,31 @@ const nav = [
 
   .module-head h3 {
     margin: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .module-icon {
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.55rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: color-mix(in srgb, var(--module-color, var(--lumen)) 16%, var(--paper-dim));
+    color: var(--module-color, var(--lumen));
+  }
+
+  .module-icon svg {
+    width: 1.2rem;
+    height: 1.2rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
 
   .status {
@@ -670,6 +837,7 @@ const nav = [
     color: var(--ink);
     cursor: pointer;
     min-height: 48px;
+    transition: background-color 150ms ease;
   }
 
   .phone-row:first-of-type {
@@ -681,6 +849,17 @@ const nav = [
     background: var(--paper-dim);
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .phone-row-icon,
+    .phone-row {
+      transition: none;
+    }
+
+    .phone-row:hover .phone-row-icon {
+      transform: none;
+    }
+  }
+
   .phone-row:active {
     transform: scale(0.99);
   }
@@ -690,11 +869,32 @@ const nav = [
     width: 2.25rem;
     height: 2.25rem;
     border-radius: 0.65rem;
-    background: var(--paper-dim);
+    background: color-mix(in srgb, var(--module-color, var(--lumen)) 16%, var(--paper-dim));
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--lumen);
+    color: var(--module-color, var(--lumen));
+    transition: transform 180ms ease;
+  }
+
+  .phone-row:hover .phone-row-icon {
+    transform: scale(1.08);
+  }
+
+  .phone-module-title {
+    position: relative;
+    padding-left: 0.9rem;
+  }
+
+  .phone-module-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.15em;
+    bottom: 0.15em;
+    width: 0.3rem;
+    border-radius: 0.2rem;
+    background: var(--module-color, var(--lumen));
   }
 
   .phone-row-icon svg {
@@ -850,6 +1050,7 @@ const nav = [
     font-size: 0.82rem;
     font-weight: 700;
     cursor: pointer;
+    transition: border-color 150ms ease, color 150ms ease, transform 150ms ease;
   }
 
   .phone-chip:hover,
@@ -888,11 +1089,19 @@ const nav = [
     font-size: 0.85rem;
     cursor: pointer;
     flex: 1;
+    transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, transform 150ms ease;
   }
 
   .phone-tool-run:hover,
   .phone-tool-run:focus-visible {
     background: var(--ink);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .phone-tool-run,
+    .phone-chip {
+      transition: none;
+    }
   }
 
   .phone-tool-run:active {
