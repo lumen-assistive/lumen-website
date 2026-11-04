@@ -1,44 +1,101 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+
+const contracts = [
+  {
+    name: 'LumenPlugin',
+    text: 'The plugin contract: lifecycle (initialize, start, stop, dispose), declared capabilities, and a manifest describing the module.',
+    href: '/docs/sdk/plugin-lifecycle/',
+    icon: '<rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 12h6M12 9v6"/>',
+  },
+  {
+    name: 'LumenEventBus',
+    text: 'A typed, topic-based publish and subscribe bus. Plugins never touch sensors directly; they listen for events.',
+    href: '/docs/sdk/event-bus/',
+    icon: '<circle cx="6" cy="12" r="2.2"/><circle cx="18" cy="6" r="2.2"/><circle cx="18" cy="18" r="2.2"/><path d="M8 11l8-4M8 13l8 4"/>',
+  },
+  {
+    name: 'ModelRegistry',
+    text: 'On-demand model packs with license ids and verification state. Plugins ask the engine for a handle instead of loading models themselves.',
+    href: '/docs/sdk/model-registry/',
+    icon: '<ellipse cx="12" cy="7" rx="7" ry="3"/><path d="M5 7v10c0 1.7 3.1 3 7 3s7-1.3 7-3V7"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/>',
+  },
+];
 ---
 
 <Layout
   title="SDK"
   description="The Lumen plugin SDK: interfaces, event bus, and model registry."
 >
-  <div class="hero">
-    <h1>SDK</h1>
-    <p class="lead">
-      Lumen is built around a public plugin SDK: anyone can write a new module following the same
-      interfaces the official modules use.
+  <div class="hero page-hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <p class="eyebrow">For developers</p>
+    <h1 class="hero-enter">Write a module like the official ones</h1>
+    <p class="lead hero-enter" style="animation-delay: 160ms">
+      Lumen is built around a public plugin SDK. Anyone can write a new module against the same
+      interfaces the eight official modules use.
     </p>
+    <div class="cta-row hero-enter" style="animation-delay: 300ms">
+      <a class="button primary" href="/docs/sdk/writing-a-plugin/">Write a plugin</a>
+      <a class="button secondary" href="https://github.com/lumen-assistive/lumen-sdk">lumen-sdk on GitHub</a>
+    </div>
   </div>
 
-  <section>
-    <h2>Where the contracts live</h2>
-    <p>
-      The plugin contract (<code>LumenPlugin</code>), the event bus (<code>LumenEventBus</code>),
-      and the model registry (<code>ModelRegistry</code>) are defined in <a href="https://github.com/lumen-assistive/lumen-sdk">lumen-sdk</a> and
-      implemented in <a href="https://github.com/lumen-assistive/lumen-core">lumen-core</a>. Full documentation for both lives directly in their own
-      repositories, not duplicated here.
-    </p>
+  <section class="band">
+    <div class="section-head">
+      <p class="eyebrow">Three contracts</p>
+      <h2>What the SDK defines</h2>
+      <p>
+        Owned and versioned in <a href="https://github.com/lumen-assistive/lumen-sdk">lumen-sdk</a>,
+        implemented in <a href="https://github.com/lumen-assistive/lumen-core">lumen-core</a>, and
+        pinned by tag everywhere else.
+      </p>
+    </div>
+    <div class="card-grid">
+      {contracts.map((item) => (
+        <div class="info-card">
+          <span class="card-icon" aria-hidden="true" set:html={`<svg viewBox="0 0 24 24">${item.icon}</svg>`} />
+          <h3><code>{item.name}</code></h3>
+          <p>{item.text}</p>
+          <p style="margin-top: 0.9rem"><a href={item.href}>Read the reference</a></p>
+        </div>
+      ))}
+    </div>
   </section>
 
-  <section>
-    <h2>Building a plugin</h2>
-    <p>
-      Every Lumen module lives in a single repository, <a href="https://github.com/lumen-assistive/lumen-plugins">lumen-plugins</a>, and a new module
-      is proposed as a pull request. The full, step-by-step guide is in the documentation section:
-    </p>
-    <p>
-      <a class="button primary" href="/docs/contributing/plugins/">Guide to building a plugin</a>
-    </p>
+  <section class="band">
+    <div class="section-head">
+      <p class="eyebrow">Contributing a module</p>
+      <h2>From idea to pull request</h2>
+      <p>
+        Every module lives in one repository, <a href="https://github.com/lumen-assistive/lumen-plugins">lumen-plugins</a>,
+        and a new one is proposed as a pull request.
+      </p>
+    </div>
+    <ol class="steps">
+      <li>
+        <h3>Read the guide</h3>
+        <p>The <a href="/docs/contributing/plugins/">plugin guide</a> covers the package layout and conventions.</p>
+      </li>
+      <li>
+        <h3>Implement the contract</h3>
+        <p>Follow <a href="/docs/sdk/writing-a-plugin/">writing a plugin</a> and the <a href="/docs/sdk/example-plugin/">example plugin</a>.</p>
+      </li>
+      <li>
+        <h3>Test it</h3>
+        <p>Use the in-memory fakes described in <a href="/docs/sdk/testing/">SDK testing</a>, then open your pull request.</p>
+      </li>
+    </ol>
   </section>
 
-  <section>
-    <h2>Full documentation</h2>
-    <p>
-      Architecture, API reference, and contributor guides are all in the <a href="/docs/">documentation</a> section.
-    </p>
+  <section class="band">
+    <div class="section-head">
+      <h2>Keep going</h2>
+    </div>
+    <ul class="link-list">
+      <li><a href="/docs/">Full documentation</a></li>
+      <li><a href="/docs/sdk/versioning/">Versioning policy</a></li>
+      <li><a href="/docs/plugins/overview/">Reference for every official plugin package</a></li>
+    </ul>
   </section>
 </Layout>

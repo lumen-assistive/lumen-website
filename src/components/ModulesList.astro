@@ -5,28 +5,28 @@ import { MODULE_ICONS, MODULE_COLORS } from '../lib/moduleVisuals';
 const modules = await getModules();
 ---
 
-<ul class="module-list">
+<div class="module-detail-grid">
   {modules.map((mod) => (
-    <li>
+    <article class="module-card module-detail" style={`--module-color: ${MODULE_COLORS[mod.id] ?? 'var(--lumen)'}`}>
       <div class="module-head">
-        <h3>
-          <span
-            class="module-icon"
-            style={`--module-color: ${MODULE_COLORS[mod.id] ?? 'var(--lumen)'}`}
-            set:html={`<svg viewBox="0 0 24 24" aria-hidden="true">${MODULE_ICONS[mod.id] ?? ''}</svg>`}
-          />
-          {mod.nameEn}
-        </h3>
+        <span
+          class="module-icon"
+          aria-hidden="true"
+          set:html={`<svg viewBox="0 0 24 24">${MODULE_ICONS[mod.id] ?? ''}</svg>`}
+        />
         {mod.repoUrl ? (
-          <span class="status available">Repository available</span>
+          <span class="status available">Package available</span>
         ) : (
           <span class="status planned">Planned</span>
         )}
       </div>
+      <h3>{mod.nameEn}</h3>
       {mod.description && <p>{mod.description}</p>}
-      {mod.repoUrl && (
-        <p><a href={mod.repoUrl}>lumen-plugins/packages/{mod.id}</a></p>
-      )}
-    </li>
+      <p class="module-links">
+        <a href={`/docs/app/modules/${mod.id}/`}>App screen</a>
+        <a href={`/docs/plugins/${mod.id}/`}>Package reference</a>
+        {mod.repoUrl && <a href={mod.repoUrl}>Source</a>}
+      </p>
+    </article>
   ))}
-</ul>
+</div>

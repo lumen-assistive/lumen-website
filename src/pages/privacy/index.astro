@@ -1,61 +1,69 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+
+const points = [
+  {
+    title: 'On-device processing',
+    text: "Lumen's essential features run entirely on the phone, with no network connection. No audio or image captured by the camera or microphone ever leaves the device unless you explicitly choose to share it.",
+    link: { href: '/docs/privacy/what-leaves-the-device/', label: 'What leaves the device' },
+    icon: '<rect x="7" y="3" width="10" height="18" rx="2.5"/><line x1="11" y1="18" x2="13" y2="18"/>',
+  },
+  {
+    title: 'Explicit consent',
+    text: 'Any feature that shares data, for example with a family member or caregiver through the Family module, requires explicit consent that can be revoked at any time. Face recognition in the Memory module, once available, will only work with the consent of the people recognized, and only on-device.',
+    link: { href: '/docs/privacy/consent/', label: 'The consent model' },
+    icon: '<path d="M12 3.4l6.4 2.3v5.2c0 4.5-2.7 7.6-6.4 8.9-3.7-1.3-6.4-4.4-6.4-8.9V5.7z"/><path d="M9 12l2.2 2.2L15.2 10"/>',
+  },
+  {
+    title: 'Optional server',
+    text: 'An optional server lets caregivers sync, only if turned on voluntarily. Data sent to it is encrypted before it leaves the device: the server cannot read its contents.',
+    link: { href: '/docs/server/overview/', label: 'How the server works' },
+    icon: '<rect x="5" y="10.5" width="14" height="9.5" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/>',
+  },
+  {
+    title: 'Medical and emergency data',
+    text: "Lumen's medical and emergency features are a support, not a replacement for a doctor or the 112 emergency number, and Lumen is not a certified medical device.",
+    link: { href: '/docs/accessibility/overview/', label: 'Accessibility and safety notes' },
+    icon: '<path d="M12 5v14M5 12h14"/>',
+  },
+];
 ---
 
 <Layout
   title="Privacy"
   description="How Lumen handles data: on-device processing, explicit consent, no sharing without permission."
 >
-  <div class="hero">
-    <h1>Privacy</h1>
-    <p class="lead">
-      This page explains in plain language how Lumen handles your data. It does not replace a
-      complete legal notice.
+  <div class="hero page-hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <p class="eyebrow">Privacy</p>
+    <h1 class="hero-enter">Your data stays yours</h1>
+    <p class="lead hero-enter" style="animation-delay: 160ms">
+      A plain-language account of how Lumen handles data. It does not replace a complete legal
+      notice.
     </p>
   </div>
 
-  <section>
+  <section class="band">
+    <div class="card-grid cols-2">
+      {points.map((item) => (
+        <div class="info-card">
+          <span class="card-icon" aria-hidden="true" set:html={`<svg viewBox="0 0 24 24">${item.icon}</svg>`} />
+          <h3>{item.title}</h3>
+          <p>{item.text}</p>
+          <p style="margin-top: 0.9rem"><a href={item.link.href}>{item.link.label}</a></p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="band">
     <div class="notice">
       This is a plain-language summary, not a legal document. A complete, GDPR-compliant privacy
       notice is under legal review and will be published separately before any public release of
       the app.
     </div>
-  </section>
-
-  <section>
-    <h2>On-device processing</h2>
     <p>
-      Lumen's essential features run entirely on the phone, with no network connection. No audio or
-      image captured by the camera or microphone ever leaves the device unless you explicitly choose
-      to share it.
-    </p>
-  </section>
-
-  <section>
-    <h2>Explicit consent</h2>
-    <p>
-      Any feature that shares data, for example with a family member or caregiver through the
-      Famiglia module, requires explicit consent that can be revoked at any time. Face recognition
-      in the Ricordare module, once available, will only work with the explicit consent of the
-      people recognized, and only on-device.
-    </p>
-  </section>
-
-  <section>
-    <h2>Optional server</h2>
-    <p>
-      An optional server (<a href="https://github.com/lumen-assistive/lumen-server"
-        >lumen-server</a
-      >) lets caregivers sync, only if turned on voluntarily. Data sent to the server is encrypted
-      before it leaves the device: the server cannot read its contents.
-    </p>
-  </section>
-
-  <section>
-    <h2>Medical and emergency data</h2>
-    <p>
-      Lumen's medical and emergency features are a support, not a replacement for a doctor or the
-      112 emergency number, and Lumen is not a certified medical device.
+      For the technical detail, see <a href="/docs/privacy/data-handling/">data handling</a>, <a href="/docs/privacy/encryption-at-rest/">encryption at rest</a>, and <a href="/docs/privacy/licensing/">model and dataset licensing</a> in the documentation.
     </p>
   </section>
 </Layout>

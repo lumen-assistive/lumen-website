@@ -7,9 +7,11 @@ import PhoneDemo from '../../components/PhoneDemo.astro';
   title="Demo"
   description="A simulated Lumen home screen, running the real plugin logic compiled to JavaScript in your browser."
 >
-  <div class="hero">
-    <h1>Demo</h1>
-    <p class="lead">
+  <div class="hero page-hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <p class="eyebrow">Demo</p>
+    <h1 class="hero-enter">Try the real logic in your browser</h1>
+    <p class="lead hero-enter" style="animation-delay: 160ms">
       A simulation of Lumen's module host, listing all eight modules exactly as they stand today.
       Tap an available one to run the real logic from <a href="https://github.com/lumen-assistive/lumen-plugins">lumen-plugins</a>,
       compiled to JavaScript: nothing below is a mockup screenshot or a reimplementation.
@@ -19,21 +21,18 @@ import PhoneDemo from '../../components/PhoneDemo.astro';
   <section>
     <div class="notice">
       This only demonstrates the parts of each module that do not depend on a camera or
-      microphone, since those native bridges do not exist yet (see
-      <a href="/docs/introduction/status/">project status</a>). Nothing you type here leaves
+      microphone, since those native bridges do not exist yet (see <a href="/docs/introduction/status/">project status</a>). Nothing you type here leaves
       your device: every result is computed locally in your browser, with no network request.
     </div>
   </section>
 
   <PhoneDemo />
 
-  <section class="wide">
+  <section class="band">
     <h2>How this demo is built</h2>
     <p>
       A small build tool, <a href="https://github.com/lumen-assistive/lumen-website/tree/main/tools/web-demo">tools/web-demo</a>,
-      imports the real business logic of all eight modules, pinned to the same
-      <code>lumen-plugins</code> tag every other consumer uses, and compiles it with
-      <code>dart compile js</code> into the script loaded on this page. The module list and
+      imports the real business logic of all eight modules, pinned to the same <code>lumen-plugins</code> tag every other consumer uses, and compiles it with <code>dart compile js</code> into the script loaded on this page. The module list and
       descriptions above are fetched directly from each package's <code>pubspec.yaml</code> at
       build time, the same data the <a href="/modules/">Modules</a> page uses.
     </p>

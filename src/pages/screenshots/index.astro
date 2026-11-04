@@ -24,16 +24,18 @@ const SCREENSHOTS = [
   title="Screenshots"
   description="Real screenshots of the Lumen app's own widget tree, rendered from the actual implemented code."
 >
-  <div class="hero">
-    <h1>Screenshots</h1>
-    <p class="lead">
+  <div class="hero page-hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <p class="eyebrow">Screenshots</p>
+    <h1 class="hero-enter">The real app, screen by screen</h1>
+    <p class="lead hero-enter" style="animation-delay: 160ms">
       Real screenshots of <a href="https://github.com/lumen-assistive/lumen-app">lumen-app</a>'s
       own widget tree, not mockups or concept art: the same code that ships in the app, rendered
       once and saved as an image.
     </p>
   </div>
 
-  <section>
+  <section class="band">
     <div class="notice">
       Each module screen is shown with its real tools already run once, using the sample input
       built into that screen, not live camera or microphone output, since those bridges do not
@@ -42,7 +44,7 @@ const SCREENSHOTS = [
     </div>
   </section>
 
-  <section class="wide">
+  <section class="band">
     <div class="screenshot-grid">
       {SCREENSHOTS.map((shot) => (
         <figure class="screenshot-card" style={`--shot-color: ${shot.color}`}>
@@ -61,7 +63,7 @@ const SCREENSHOTS = [
     </div>
   </section>
 
-  <section class="wide">
+  <section class="band">
     <h2>How these are captured</h2>
     <p>
       A widget test, <a href="https://github.com/lumen-assistive/lumen-app/blob/main/test/screenshots/capture_screenshots_test.dart">test/screenshots/capture_screenshots_test.dart</a>,
