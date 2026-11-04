@@ -35,9 +35,9 @@ description: "Project specific terms used throughout this documentation."
 : The typed publish and subscribe channel plugins use instead of reading sensors. See
   [Event bus](/docs/sdk/event-bus/).
 
-**Glow**
-: The soft radial gradient used behind badges and headers, part of the design language. See
-  [Layout, shape and motion](/docs/design/layout-and-motion/).
+**Ink**
+: The warm near-black used for text, icons and every outline in the app, on warm off-white paper. See
+  [Colors](/docs/design/colors/).
 
 **LumenPlugin**
 : The lifecycle contract every module implements: `initialize`, `start`, `stop`, `dispose`.

@@ -79,11 +79,13 @@ feeds it events.
 
 **Cost.** Several `start` and `stop` methods are empty today. The docs say so wherever it applies.
 
-## Dark only
+## One flat light theme
 
-**Decision.** The app has a single dark theme.
+**Decision.** The app has a single light theme in paper and ink, with solid colors, ink outlines and no
+gradients, glows or shadows. It replaced an earlier dark, glowing look.
 
-**Reason.** "Lumen" means light: the product is a warm glow against near-black, and a single theme
-means every color pair is verified once.
+**Reason.** Flat blocks of one color with ink text are crisp for people with low vision, the contrast
+of every pairing is verified once at AAA, and the result is recognizable rather than generic.
 
-**Cost.** There is no light theme. The high contrast tier uses a brighter accent instead.
+**Cost.** There is no dark theme. The high contrast tiers enlarge text and use one column instead of
+changing colors.

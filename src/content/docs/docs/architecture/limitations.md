@@ -21,7 +21,7 @@ module at a time.
 - Plugins are not registered with a live `PluginManager`; screens call package classes directly.
 - `AppCapabilityGate` does not call real platform permission APIs.
 - The UI is English only. A few outputs from plugin code remain Italian (see below).
-- There is only a dark theme.
+- There is only a light theme (paper and ink).
 - No manual screen reader testing has been performed.
 
 ## Modules

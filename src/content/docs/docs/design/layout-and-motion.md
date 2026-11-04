@@ -1,53 +1,53 @@
 ---
 title: "Layout, shape and motion"
-description: "Spacing, corner radii, borders, elevation and the small amount of motion the app uses."
+description: "Spacing, corner radii, outlines and the small amount of motion the app uses."
 ---
 
 ## Spacing
 
-Screens use a 16 pixel side gutter on module screens and 20 on the home screen, with 12 to 16 pixel
-gaps between cards and 14 to 20 pixels of padding inside them. Content is a single scrolling column.
+Module screens use a 16 pixel side gutter, the home screen 20 and onboarding 24. Gaps between cards and
+tiles are 12 to 16 pixels, and cards have 20 pixels of padding inside. Content is a single scrolling
+column, except the home screen's module grid.
+
+## Home grid
+
+The home screen shows the enabled modules as solid tiles, two per row with a 12 pixel gap. In the
+`simple` and `voiceFirstHighContrast` UI modes it shows one wide tile per row, since their larger text
+needs the room. Rows are built from `IntrinsicHeight` rows so tiles in a row share a height.
 
 ## Corner radii
 
 | Element | Radius |
 |---|---|
-| Buttons and chips | Fully round (stadium) |
-| Module header panel | 32 |
-| Tool card | 28 |
-| Home module card, settings cards | 24 |
-| Module note, result box | 20 and 18 |
-| Text fields | 18 |
+| Module header block, speech banner | 28 |
+| Home tile | 24 |
+| Tool card, settings groups, warning block | 20 |
+| Buttons, text fields, dropdowns, result block, note box, settings button | 14 |
+| Chips | 12 |
+| Onboarding badge | 28 |
+| `ModuleBadge` | 30 percent of its size |
 
-Large radii give the app its calm, round character and match the website.
+## Outlines and elevation
 
-## Borders and elevation
-
-Cards have no elevation or shadow. Definition comes from a one pixel border in `AppColors.border`
-(or a tinted module color border) or from a deliberate glow. Gradients are used sparingly as soft tints
-from a module color to the surface.
-
-## Glows
-
-A glow is a radial gradient (or a large box shadow behind a circle) of a module color or the brand
-`glow` color. Gradients fade to fully transparent inside their bounds so there is no visible hard edge.
-Glows appear behind the home header, behind a module screen's top, behind onboarding badges and around
-module badges.
+Nothing has elevation or a shadow. Every card, tile, button and badge is defined by an ink outline,
+2 pixels wide (`AppTheme.outlineWidth`); text fields and dropdowns use 1.5 pixels, and a focused text
+field 3. Quiet secondary elements use the `hairline` color instead. There are no gradients, glows or
+translucent fills.
 
 ## Motion
 
 Motion is minimal and short:
 
-- The onboarding progress segments animate their color over 250 ms.
-- Standard Material transitions between routes and ripple feedback on tappable cards.
+- `FadeSlideIn` fades cards in while sliding them up 18 pixels (about 420 ms). Home tiles use a slightly
+  longer duration per row, so they cascade.
+- Standard Material transitions between routes and ripple feedback on tappable tiles.
 
-There is no decorative looping animation. Respect the user's platform setting for reduced motion if
-you add any.
+There is no looping animation. `FadeSlideIn` is skipped when the platform asks to reduce motion.
 
 ## Touch targets
 
-Controls are at least 48 logical pixels. Buttons are 54 pixels tall in the theme, onboarding answers 64,
-and the home cards at least 88. See [Accessibility targets](/docs/design/accessibility-targets/).
+Controls are at least 48 logical pixels. Buttons are 56 pixels tall in the theme, onboarding answers 68,
+and home tiles are much larger. See [Accessibility targets](/docs/design/accessibility-targets/).
 
 ## Safe areas
 

@@ -9,14 +9,14 @@ The settings screen (`/settings`) lets a person change how the app looks and whi
 
 | Control | What it does |
 |---|---|
-| Interface mode | A dropdown of the four [UI modes](/docs/app/ui-modes/). Saving updates the whole app immediately. |
+| Interface mode | A dropdown of the four [UI modes](/docs/app/ui-modes/), shown under its title. Saving updates the whole app immediately. |
 | Text size | A slider from `1.0` to `2.0` in steps of `0.25` (four divisions), shown as a label. Applied as a text scaler at the app root. |
 
 Both are saved into the `UserProfile` through `UserProfileRepository.save`.
 
 ## Modules
 
-Every one of the eight modules has a card with a glowing badge and two switches:
+Every one of the eight modules has an ink outlined card with its badge (a rounded square in the module color) and two switches:
 
 | Switch | Effect |
 |---|---|
@@ -25,7 +25,7 @@ Every one of the eight modules has a card with a glowing badge and two switches:
 
 ## Important notice
 
-A warm warning panel states that Lumen helps but does not replace a doctor or the 112 emergency
+A block in the brand yellow states that Lumen helps but does not replace a doctor or the 112 emergency
 number, and is not a certified medical device.
 
 ## Developer

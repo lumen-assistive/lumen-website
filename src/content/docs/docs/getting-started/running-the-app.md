@@ -22,11 +22,11 @@ flutter run
 
 ## What you will see
 
-1. **A short loading moment** with a glowing brand mark while the saved profile loads.
+1. **A short loading moment** with the brand mark in ink while the saved profile loads.
 2. **Onboarding**: five questions with a progress bar. The first four are yes or no, the last
    chooses between a simple and a complete interface. See [Onboarding](/docs/app/onboarding/).
-3. **The home screen**: a headline, then one colored card per enabled module.
-4. **A module screen**: tap a card to open that module's tools. Each runs the package's real code on
+3. **The home screen**: a headline, then one solid colored tile per enabled module, two per row.
+4. **A module screen**: tap a tile to open that module's tools. Each runs the package's real code on
    sample input. See the [module screens](/docs/app/overview/).
 5. **Settings**: interface mode, text size, per-module enable and consent switches, an important
    notice, and a developer mode switch.

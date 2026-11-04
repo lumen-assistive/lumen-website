@@ -21,8 +21,9 @@ on the app's own colors, so the design system is verified by the same code users
 
 ## What the palette meets
 
-- The brand accent, the high contrast accent and body text meet AAA (7:1).
-- Each module color meets 3:1 against both surfaces, as required for non-text graphics.
+- Ink meets AAA (7:1) on the paper and on the card surface, and on every module fill and the brand
+  yellow, where text and icons sit directly on the color.
+- Muted text and the critical color meet AA (4.5:1) on the paper.
 
 ## Using it in your own work
 

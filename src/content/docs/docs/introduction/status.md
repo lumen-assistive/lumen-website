@@ -49,7 +49,7 @@ listed in each package's own `README.md` and on each module page of this wiki.
 - Each plugin package, `lumen-sdk`, `lumen-core`, `lumen-app`, `lumen-server` and `lumen-models`
   have test suites that run in CI, along with format, analyze or lint, and type checks.
 - A content guard job rejects forbidden references and emoji in tracked files on every push.
-- Every module's accent color is checked against WCAG non-text contrast by a test in `lumen-app`.
+- Ink on every module fill, and the text colors on the paper and cards, are checked against WCAG contrast by a test in `lumen-app`.
 
 ## Roadmap
 

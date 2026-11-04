@@ -6,11 +6,11 @@ description: "The concrete accessibility numbers the design system commits to an
 | Target | Value | How it is enforced |
 |---|---|---|
 | Minimum touch target | 48 logical pixels (`AppTheme.minTouchTarget`) | Buttons, icon buttons and list rows are built at or above it |
-| Button height | 54 pixels in the theme | `minimumSize` of elevated and outlined buttons |
-| Brand accent on background | WCAG AAA 7:1 | `app_colors_test.dart` |
-| High contrast accent | WCAG AAA 7:1 | `app_colors_test.dart` |
-| Text on background and surfaces | WCAG AAA 7:1 | `app_colors_test.dart` |
-| Module colors on background and surface | At least 3:1 non-text | `app_colors_test.dart` |
+| Button height | 56 pixels in the theme (`AppTheme.buttonHeight`) | `minimumSize` of elevated and outlined buttons |
+| Ink on paper and on cards | WCAG AAA 7:1 | `app_colors_test.dart` |
+| Muted text on paper and on cards | WCAG AA 4.5:1 | `app_colors_test.dart` |
+| Critical color as text on paper | WCAG AA 4.5:1 | `app_colors_test.dart` |
+| Ink on every module fill and on the brand yellow | WCAG AAA 7:1 | `app_colors_test.dart` |
 | Text scale | Up to 2.0 times, plus a mode factor up to 1.3 | Settings slider and mode |
 | Typeface | Atkinson Hyperlegible | Bundled fonts |
 | Semantics | Labels on buttons and results | `Semantics` widgets, `ToolOutput` labels |

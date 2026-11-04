@@ -37,12 +37,11 @@ its own.
 | `memory` | `MemoryScreen` |
 | `mobility` | `MobilityScreen` |
 
-An unknown id throws an `ArgumentError`. The wrapper sets the module color theme and background
-glow, see [Design system components](/docs/design/components/).
+An unknown id throws an `ArgumentError`. The wrapper gives the screen the module's color (the scheme's `secondary`), see [Design system components](/docs/design/components/).
 
 ## The root widget
 
-`LumenApp` wraps the router in a `MaterialApp.router` configured with the app theme (forced dark),
+`LumenApp` wraps the router in a `MaterialApp.router` configured with the app theme (forced light),
 the app strings delegate and the Material localization delegates, and a builder that applies the
 user's text scale.
 

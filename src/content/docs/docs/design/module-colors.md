@@ -1,47 +1,49 @@
 ---
 title: "Module colors"
-description: "The signature color of each module, where it appears and how it is verified."
+description: "The solid fill of each module, where it appears and how it is verified."
 ---
 
-Each module has a signature color, defined in `AppColors.moduleColors` and looked up with
+Each module has one flat color, defined in `AppColors.moduleColors` and looked up with
 `AppColors.moduleColorOf(moduleId)`.
 
 | Module | Hex | Hue |
 |---|---|---|
-| Vision | `#22B8D4` | Cyan |
-| Hearing | `#9D7CF5` | Violet |
-| Safety | `#F2637B` | Rose |
-| Family | `#F070AC` | Pink |
-| Speech | `#F3914F` | Orange |
-| Reading | `#4FCB7C` | Green |
-| Memory | `#8B93F7` | Indigo |
-| Mobility | `#D9A93B` | Gold |
+| Vision | `#5CC8E0` | Cyan |
+| Hearing | `#B9A2FF` | Violet |
+| Safety | `#FF8FA3` | Rose |
+| Family | `#FF9FCB` | Pink |
+| Speech | `#FFA860` | Orange |
+| Reading | `#7ADB98` | Green |
+| Memory | `#9FA9FF` | Indigo |
+| Mobility | `#F2C94E` | Gold |
 
-An unknown module id falls back to the brand amber.
+An unknown module id falls back to the brand yellow (`#F2B138`).
 
 ## Where a module color appears
 
+Always as a solid fill, never as a tint, gradient or glow, and always with ink on top:
+
 | Place | Use |
 |---|---|
-| Home card | A gradient tint, a border at 28 percent opacity, the arrow, and the badge glow |
-| `ModuleGlowBadge` | The icon stroke, a border at 45 percent opacity and a soft glow |
-| Module screen background | A large radial glow at the top at 28 percent opacity |
-| `ModuleHeader` | A gradient panel and border |
-| Buttons, inputs, switches, sliders, chips | Through `ModuleScope`, which sets the theme's primary color |
-| Tool card | A thin accent bar beside the title and a faint top tint |
-| Result box | A tinted fill and an accent edge |
-| Settings | Each module's card and switches |
+| Home tile | The whole tile is the module fill, outlined in ink |
+| `ModuleHeader` | The whole header block |
+| `ModuleBadge` | The rounded square behind the icon, in settings and onboarding |
+| Tool card | The 16 pixel square before the card title |
+| `ToolOutput` | The result block |
+| Speech phrase banner | The selected phrase block |
+| Switches | The track of a switched-on switch inside the module screen and in settings |
 | Onboarding | The badge for the question about that module |
 
 ## Verification
 
-Every module color clears WCAG 3:1 non-text contrast against both the background and the surface. This
-is asserted in `test/theme/app_colors_test.dart`. Colors are also chosen to stay visually distinct from
-the `critical` color, so no module identity is mistaken for a live emergency.
+Ink on every module fill clears WCAG AAA (7:1). This is asserted in `test/theme/app_colors_test.dart`.
+The fills are light and saturated on purpose, so that ink text stays at the highest contrast level on
+all eight. Colors also stay visually distinct from `critical`, so no module identity is mistaken for a
+live emergency.
 
 ## Adding a module color
 
 1. Pick a hue not already in use and distinct from `critical`.
 2. Add it to `moduleColors`.
-3. Run the contrast test. It fails if the color is below 3:1 on either surface.
-4. Check it next to the neighboring module colors on the home screen.
+3. Run the contrast test. It fails if ink on the new fill is below 7:1.
+4. Check it next to the neighboring tiles on the home screen.

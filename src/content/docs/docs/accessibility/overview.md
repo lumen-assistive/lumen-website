@@ -20,8 +20,8 @@ task.
 
 | Area | Implemented |
 |---|---|
-| Contrast | The palette is verified against WCAG AAA for text and accent and against 3:1 for module colors, by tests |
-| Touch targets | Theme minimum sizes of 48 and buttons of 54 pixels |
+| Contrast | Ink is verified against WCAG AAA on the paper, the card surface, every module fill and the brand yellow; muted text and the critical color against AA, by tests |
+| Touch targets | Theme minimum sizes of 48 and buttons of 56 pixels |
 | Text | Atkinson Hyperlegible, a mode factor and a user slider up to 2.0 |
 | Adaptive modes | Four interface modes, including a high contrast, larger text mode |
 | Semantics | `Semantics` labels on icon buttons and answer buttons; results carry semantic labels |
@@ -34,7 +34,7 @@ task.
 | Manual TalkBack and VoiceOver testing | Not performed. Required before release |
 | Voice input and voice output | Not implemented; they need speech models and native bridges |
 | Haptic and flash alerts | The mapping exists (Hearing), the output does not |
-| A light theme | Not provided; the high contrast tier is dark |
+| A dark theme | Not provided; the app is one light theme and the high contrast tiers enlarge text |
 
 ## For contributors
 

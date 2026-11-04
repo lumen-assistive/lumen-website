@@ -15,8 +15,8 @@ Regular for body and Bold for emphasis.
 
 ## The text theme
 
-`AppTheme` builds the text theme from the Material 2021 white typography with the app font applied,
-body and display colors set to the warm off-white, and a size factor from the UI mode:
+`AppTheme` builds the text theme from the Material 2021 black typography with the app font applied,
+body and display colors set to ink, and a size factor from the UI mode:
 
 | UI mode | Size factor |
 |---|---|
@@ -36,14 +36,16 @@ multi-line labels. A button such as "Simulate steady readings" wraps rather than
 
 | Role | Style |
 |---|---|
-| Screen title in the app bar | 26 px, bold, tight letter spacing (`-0.4`) |
-| Home headline | `displaySmall`, bold, line height `1.05`, letter spacing `-1` |
-| Module name in a header | `headlineMedium`, bold |
+| Screen title in the app bar | 24 px, bold |
+| Home headline | `displayMedium`, bold, line height `1.0`, letter spacing `-1.5` |
+| Module name in a header | `displaySmall`, bold, line height `1`, letter spacing `-1` |
+| Onboarding question | `headlineMedium`, bold, line height `1.1`, letter spacing `-0.8` |
+| Home tile name | `titleLarge`, bold, line height `1.1` |
 | Card title | `titleMedium`, bold |
 | Body | `bodyLarge` or `bodyMedium` |
 | Notes and captions | `bodySmall` in the muted color |
 | Section labels | `labelLarge`, uppercase, letter spacing `1.4`, muted |
-| Buttons | 16 px bold in module screens, 19 px bold in onboarding |
+| Buttons | 16 px bold in the theme, 19 px bold for onboarding answers |
 
 ## Rules
 

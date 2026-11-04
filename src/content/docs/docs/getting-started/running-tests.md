@@ -53,7 +53,7 @@ npm run build
 | `lumen-sdk` | Contract behavior, fakes, the runnable example plugin |
 | `lumen-core` | `InMemoryEventBus`, `LocalModelRegistry` (download, reference counting, failure cleanup), `PluginManager` (registration, compatibility, capability gating, lifecycle) |
 | each plugin package | Pure logic: parsers, schedulers, state machines, validators, consent gating |
-| `lumen-app` | One widget test per module screen, onboarding, home navigation, settings, storage repositories, consent store and capability gate, and WCAG contrast checks of the accent, text and module colors |
+| `lumen-app` | One widget test per module screen, onboarding, home navigation, settings, storage repositories, consent store and capability gate, and WCAG contrast checks of ink, muted text and the critical color on the paper and cards, and of ink on every module fill |
 | `lumen-server` | Health, pairing, blobs (including auth and base64 validation), model catalog |
 | `lumen-models` | Catalog, license gate, conversion pipeline, benchmark runner, CLI |
 

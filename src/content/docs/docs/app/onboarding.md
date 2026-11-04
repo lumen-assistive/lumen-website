@@ -44,9 +44,11 @@ mode.
 ## What the screen looks like
 
 A progress bar of five segments fills as you advance, with a counter ("1 / 5") beside the title.
-Each of the first four questions shows a large glowing badge with the icon and color of the module
-it is about (eye, sound bars, shield, family). The last question shows the brand mark. The "Yes"
-button is the filled primary action and "No" is a quieter outlined button.
+The progress bar is five flat segments, ink for the steps reached. Each of the first four questions
+starts with a large rounded square in the color of the module it is about, with its ink icon (eye, sound
+bars, shield, family). The last question shows the brand mark on the brand yellow. The question is
+left aligned in large bold type, and the answers sit at the bottom: "Yes" is the ink filled primary
+button and "No" an outlined one.
 
 ## What happens at the end
 

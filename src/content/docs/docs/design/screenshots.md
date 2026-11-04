@@ -13,8 +13,9 @@ renderings of the app's own widget tree, not mockups.
 "Name color"), and saves the rendered frame as a PNG. Module screens are wrapped in their `ModuleScope`,
 scrolled back to the top and captured at 1170 by 2532 pixels at a device pixel ratio of 3.
 
-Captured screens: onboarding, home (with all eight modules enabled) and the eight module screens. The
-files are written to `docs/screenshots/` using their original file names.
+Captured screens: onboarding, home (with all eight modules enabled), settings and the eight module
+screens, 11 images in all. The files are written to `docs/screenshots/` using their original file names.
+The test uses `AppTheme.resolve` unchanged, so the images show the real button shapes and weights.
 
 ## Why special handling is needed
 

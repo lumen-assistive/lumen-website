@@ -9,9 +9,9 @@ description: "A tour of lumen-app: its screens, its structure, and how a module 
 
 | Screen | Route | Purpose |
 |---|---|---|
-| Loading | n/a | A glowing brand mark while the saved profile loads |
+| Loading | n/a | The brand mark in ink on paper while the saved profile loads |
 | [Onboarding](/docs/app/onboarding/) | `/onboarding` | Five questions that choose modules and an interface mode |
-| Home | `/home` | A branded header and one colored card per enabled module |
+| Home | `/home` | The wordmark, a headline and one solid colored tile per enabled module, two per row |
 | Module screen | `/home/:moduleId` | The tools of one module; see below |
 | [Settings](/docs/app/settings/) | `/settings` | Interface mode, text size, per-module switches, notice, developer mode |
 | [Diagnostics](/docs/app/diagnostics/) | pushed from settings | Developer only: plugin states, battery and latency placeholders |
@@ -31,8 +31,8 @@ description: "A tour of lumen-app: its screens, its structure, and how a module 
 
 Every module screen has the same anatomy:
 
-1. A **module header**: the module's glowing badge, name and one line description on a panel tinted
-   with the module color.
+1. A **module header**: one solid block in the module's color with a large ink icon, the module name
+   and a one line description.
 2. A **module note**: a quiet, honest disclosure of what the screen demonstrates and what is not
    implemented yet.
 3. One or more **tool cards**: a titled card with controls and a result box. Each tool runs a real
@@ -53,10 +53,10 @@ lib/main.dart                       runApp(LumenApp(database: InMemoryAppDatabas
 lib/src/app.dart                    LumenApp: loads the profile, builds the router and theme
 lib/src/routing/app_router.dart     routes and buildModuleScreen
 lib/src/onboarding/                 OnboardingScreen, OnboardingController, ModuleInfo catalog
-lib/src/home/home_screen.dart       HomeScreen and the module cards
+lib/src/home/home_screen.dart       HomeScreen and the module tiles
 lib/src/modules/*_screen.dart       one screen per module
-lib/src/modules/widgets/            ModuleHeader, ModuleNote, ToolCard, ToolOutput, ModuleGlowBadge
-lib/src/theme/                      AppColors, AppTheme, UiMode, ModuleScope, LogoMark, ModuleIcon
+lib/src/modules/widgets/            ModuleHeader, ModuleNote, ToolCard, ToolOutput, ModuleBadge, StyledDropdown
+lib/src/theme/                      AppColors, AppTheme, UiMode, ModuleScope, LogoMark, ModuleIcon, FadeSlideIn
 lib/src/settings/                   SettingsScreen
 lib/src/storage/                    AppDatabase and repositories
 lib/src/consent/                    AppCapabilityGate, AppConsentStore

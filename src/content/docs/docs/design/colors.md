@@ -5,31 +5,27 @@ description: "Every color in AppColors with its hex value, role and contrast gua
 
 All colors are constants in `AppColors` (`lib/src/theme/app_colors.dart`).
 
-## Surfaces and text
+## Paper and ink
 
 | Name | Hex | Role |
 |---|---|---|
-| `background` | `#0D0B08` | The app's one page color: deep warm near-black |
-| `surface` | `#17140F` | A slightly raised surface for cards and result boxes |
-| `surfaceRaised` | `#221E16` | One step above `surface`, for inputs, chips and secondary buttons. A fill only, never text, so it has no contrast requirement |
-| `text` | `#F3EFE2` | Primary text and icons: warm off-white, never pure white |
-| `muted` | `#B7AE99` | Secondary text |
-| `border` | `#3A3424` | Hairline borders |
+| `background` | `#F3EEE3` | The page: warm off-white paper |
+| `surface` | `#FFFCF5` | Cards, inputs, secondary buttons: slightly lighter than the page so they lift off it without a shadow |
+| `ink` | `#1A1815` | Primary text, icons and every structural outline: warm near-black |
+| `muted` | `#5B554A` | Secondary text. Passes WCAG AA (4.5:1) on the page and on `surface` |
+| `hairline` | `#D3CBB8` | Quiet dividers and the note box border, for lines that must not compete with the ink outlines |
 
-## Brand accent
-
-| Name | Hex | Role |
-|---|---|---|
-| `amber` | `#E3A94A` | Buttons, links, small marks |
-| `glow` | `#F5B942` | A brighter, more saturated amber reserved for large soft glows and blurs. At a large size the lower saturation of `amber` reads as muddy, so the two are kept distinct |
-| `amberHighContrast` | `#F2C878` | The accent for the high contrast tiers, brightened to clear WCAG AAA |
-
-## State colors
+## Brand yellow
 
 | Name | Hex | Role |
 |---|---|---|
-| `critical` | `#E5484D` | Urgent states (falls, SOS). Kept distinct from every module color so an urgent state is never mistaken for routine identity |
-| `warning` | `#E8A33D` | Cautionary notices, between informational and critical |
+| `amber` | `#F2B138` | The brand yellow: the track of a switched-on switch outside a module, the last onboarding badge and the warning block. Always a fill with `ink` on top, never used as text |
+
+## State color
+
+| Name | Hex | Role |
+|---|---|---|
+| `critical` | `#C1272D` | Urgent states (falls, SOS). Passes WCAG AA as text on the page. Kept distinct from every module fill |
 
 ## Module colors
 
@@ -37,27 +33,29 @@ See [Module colors](/docs/design/module-colors/).
 
 ## Contrast guarantees
 
-These are asserted in `test/theme/app_colors_test.dart` using the real `ContrastChecker` from
+Asserted in `test/theme/app_colors_test.dart` using the real `ContrastChecker` from
 `lumen_plugin_vision`:
 
 | Pair | Requirement |
 |---|---|
-| `amber` on `background` | WCAG AAA (7:1) |
-| `amberHighContrast` on `background` | WCAG AAA (7:1) |
-| `text` on `background` and on `surface` | WCAG AAA (7:1) |
-| Each module color on `background` and on `surface` | At least 3:1 (WCAG non-text contrast) |
+| `ink` on `background` and on `surface` | WCAG AAA (7:1) |
+| `muted` on `background` and on `surface` | WCAG AA (4.5:1) |
+| `critical` on `background` | WCAG AA (4.5:1) |
+| `ink` on every module fill and on `amber` | WCAG AAA (7:1) |
 
-The test also checks that an unknown module id falls back to the brand accent.
+The test also checks that an unknown module id falls back to the brand yellow.
 
 ## Using colors
 
-- Take the accent from the theme (`colorScheme.primary`), not from a constant, so module screens
-  recolor automatically.
-- Use `muted` for secondary text and never for essential information.
+- Text is `ink`, or `muted` for secondary text, never for essential information.
+- A module's screen takes its color from the theme's `secondary` (set by `ModuleScope`), not from a
+  constant, so shared widgets recolor automatically.
+- Put only `ink` on a module fill.
 - Do not use `critical` for decoration.
-- When adding a color, add a test that checks its contrast against the surfaces it sits on.
+- When adding a color, add a test that checks its contrast against what it sits on.
 
-## Why no light theme
+## Why one light theme
 
-A single dark theme keeps every verified color pair valid in every place the color appears. The
-high contrast tier uses a brighter accent, not a light surface.
+A single theme keeps every verified color pair valid in every place the color appears. The pairs above
+already sit at AAA for text, so the high contrast tiers do not need a different palette; they enlarge
+the text instead (see [UI modes](/docs/app/ui-modes/)).
