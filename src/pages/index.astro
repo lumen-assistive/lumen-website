@@ -1,8 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { MODULE_COLOR_LIST, MODULE_COLORS, MODULE_ICONS } from '../lib/moduleVisuals';
-
-const flankIds = ['vision', 'hearing', 'safety', 'speech'];
 ---
 
 <Layout
@@ -11,24 +8,6 @@ const flankIds = ['vision', 'hearing', 'safety', 'speech'];
 >
   <div class="hero">
     <div class="hero-glow" aria-hidden="true"></div>
-    <div class="hero-badges" aria-hidden="true">
-      {flankIds.slice(0, 2).map((id) => (
-        <span class="hero-badge" style={`--badge-color: ${MODULE_COLORS[id]}`} set:html={`<svg viewBox="0 0 24 24">${MODULE_ICONS[id]}</svg>`} />
-      ))}
-      <span class="hero-badge main">
-        <svg class="mark draw-in" viewBox="0 0 48 48">
-          <path d="M 33.2 10.9 A 16 16 0 1 1 14.8 10.9" />
-        </svg>
-      </span>
-      {flankIds.slice(2).map((id) => (
-        <span class="hero-badge" style={`--badge-color: ${MODULE_COLORS[id]}`} set:html={`<svg viewBox="0 0 24 24">${MODULE_ICONS[id]}</svg>`} />
-      ))}
-    </div>
-    <div class="module-strip" aria-hidden="true">
-      {MODULE_COLOR_LIST.map((color, index) => (
-        <span style={`--dot-color: ${color}; animation-delay: ${index * 60}ms`} />
-      ))}
-    </div>
     <h1 class="hero-enter" style="animation-delay: 60ms">A little light, when it's needed.</h1>
     <p class="lead hero-enter" style="animation-delay: 220ms">
       Lumen turns a smartphone into help for people with a limitation in seeing, hearing, speaking,

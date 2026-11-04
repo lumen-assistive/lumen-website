@@ -309,53 +309,6 @@ const nav = [
     z-index: 0;
   }
 
-  .hero-badges {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1.1rem;
-    margin: 0 0 2.5rem;
-    flex-wrap: wrap;
-  }
-
-  .hero-badge {
-    flex-shrink: 0;
-    width: 3.1rem;
-    height: 3.1rem;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: color-mix(in srgb, var(--badge-color, var(--lumen)) 20%, var(--paper-dim));
-    box-shadow: inset 0 0 0 1px var(--border);
-    color: var(--badge-color, var(--lumen));
-  }
-
-  .hero-badge svg {
-    width: 1.5rem;
-    height: 1.5rem;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.6;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  .hero-badge.main {
-    width: 6.5rem;
-    height: 6.5rem;
-    background: radial-gradient(circle, color-mix(in srgb, var(--glow) 55%, var(--paper-dim)) 0%, var(--paper-dim) 72%);
-    box-shadow: inset 0 0 0 1px var(--border), 0 0 2.5rem color-mix(in srgb, var(--glow) 45%, transparent);
-  }
-
-  .hero-badge.main .mark {
-    width: 2.6rem;
-    height: 2.6rem;
-    stroke: var(--glow);
-  }
-
   .hero h1 {
     position: relative;
     z-index: 1;
@@ -401,32 +354,6 @@ const nav = [
     }
   }
 
-  .module-strip {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    margin: 0 0 1.75rem;
-  }
-
-  .module-strip span {
-    display: block;
-    width: 1.5rem;
-    height: 0.4rem;
-    border-radius: 999px;
-    background: var(--dot-color);
-    transform: scaleX(0);
-    transform-origin: left;
-    animation: module-strip-grow 420ms ease-out forwards;
-  }
-
-  @keyframes module-strip-grow {
-    to {
-      transform: scaleX(1);
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
     .hero-enter {
       opacity: 1;
@@ -434,10 +361,6 @@ const nav = [
       animation: none;
     }
 
-    .module-strip span {
-      transform: scaleX(1);
-      animation: none;
-    }
   }
 
   .cta-row {

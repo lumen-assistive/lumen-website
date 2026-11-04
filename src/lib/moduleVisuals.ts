@@ -27,8 +27,3 @@ export const MODULE_COLORS: Record<string, string> = {
   memory: '#4F46E5',
   mobility: '#CA8A04',
 };
-
-/** Every module's color, in the fixed display order, for decorative use (for example the homepage hero strip). */
-export const MODULE_COLOR_LIST = ['vision', 'hearing', 'safety', 'family', 'speech', 'reading', 'memory', 'mobility'].map(
-  (id) => MODULE_COLORS[id],
-);
