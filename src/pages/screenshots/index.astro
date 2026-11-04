@@ -1,20 +1,22 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { MODULE_COLORS } from '../../lib/moduleVisuals';
 
 // The image filenames (shot.id) match the real files committed in
 // lumen-app's docs/screenshots/, which kept their original names even
 // after the module rename below, to avoid orphaning already-published
 // image files; only the linked source paths needed to follow the rename.
 const SCREENSHOTS = [
-  { id: 'home', name: 'Home', source: 'lib/src/home/home_screen.dart' },
-  { id: 'vedere', name: 'Vision', source: 'lib/src/modules/vision_screen.dart' },
-  { id: 'sentire', name: 'Hearing', source: 'lib/src/modules/hearing_screen.dart' },
-  { id: 'protezione', name: 'Safety', source: 'lib/src/modules/safety_screen.dart' },
-  { id: 'famiglia', name: 'Family and caregivers', source: 'lib/src/modules/family_screen.dart' },
-  { id: 'parlare', name: 'Speech', source: 'lib/src/modules/speech_screen.dart' },
-  { id: 'leggere', name: 'Reading', source: 'lib/src/modules/reading_screen.dart' },
-  { id: 'ricordare', name: 'Memory', source: 'lib/src/modules/memory_screen.dart' },
-  { id: 'muoversi', name: 'Mobility', source: 'lib/src/modules/mobility_screen.dart' },
+  { id: 'onboarding', name: 'Onboarding', tagline: 'Five questions decide what to turn on.', color: '#f5b942', source: 'lib/src/onboarding/onboarding_screen.dart' },
+  { id: 'home', name: 'Home', tagline: 'Every enabled module, one tap away.', color: '#f5b942', source: 'lib/src/home/home_screen.dart' },
+  { id: 'vedere', name: 'Vision', tagline: 'Expiry dates, color naming, contrast.', color: MODULE_COLORS.vision, source: 'lib/src/modules/vision_screen.dart' },
+  { id: 'sentire', name: 'Hearing', tagline: 'Summaries, captions, sound alerts.', color: MODULE_COLORS.hearing, source: 'lib/src/modules/hearing_screen.dart' },
+  { id: 'protezione', name: 'Safety', tagline: 'Scam filter, fall detection, SOS.', color: MODULE_COLORS.safety, source: 'lib/src/modules/safety_screen.dart' },
+  { id: 'famiglia', name: 'Family and caregivers', tagline: 'Pairing, calendar, daily status.', color: MODULE_COLORS.family, source: 'lib/src/modules/family_screen.dart' },
+  { id: 'parlare', name: 'Speech', tagline: 'A phrase board that learns your usage.', color: MODULE_COLORS.speech, source: 'lib/src/modules/speech_screen.dart' },
+  { id: 'leggere', name: 'Reading', tagline: 'Syllables and spaced repetition.', color: MODULE_COLORS.reading, source: 'lib/src/modules/reading_screen.dart' },
+  { id: 'ricordare', name: 'Memory', tagline: 'Consent-gated people and reminders.', color: MODULE_COLORS.memory, source: 'lib/src/modules/memory_screen.dart' },
+  { id: 'muoversi', name: 'Mobility', tagline: 'Gait monitoring and a mobility profile.', color: MODULE_COLORS.mobility, source: 'lib/src/modules/mobility_screen.dart' },
 ];
 ---
 
@@ -43,10 +45,13 @@ const SCREENSHOTS = [
   <section class="wide">
     <div class="screenshot-grid">
       {SCREENSHOTS.map((shot) => (
-        <figure class="screenshot-card">
-          <img src={`/screenshots/${shot.id}.png`} alt={`${shot.name} screen`} loading="lazy" />
+        <figure class="screenshot-card" style={`--shot-color: ${shot.color}`}>
+          <div class="screenshot-phone">
+            <img src={`/screenshots/${shot.id}.png`} alt={`${shot.name} screen`} loading="lazy" />
+          </div>
           <figcaption>
             <span class="screenshot-name">{shot.name}</span>
+            <span class="screenshot-tagline">{shot.tagline}</span>
             <a href={`https://github.com/lumen-assistive/lumen-app/blob/main/${shot.source}`}>
               View source
             </a>
