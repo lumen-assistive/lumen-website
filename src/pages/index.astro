@@ -1,6 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { MODULE_COLOR_LIST } from '../lib/moduleVisuals';
+import { MODULE_COLOR_LIST, MODULE_COLORS, MODULE_ICONS } from '../lib/moduleVisuals';
+
+const flankIds = ['vision', 'hearing', 'safety', 'speech'];
 ---
 
 <Layout
@@ -8,6 +10,20 @@ import { MODULE_COLOR_LIST } from '../lib/moduleVisuals';
   description="Lumen is an open source, offline-first, privacy-by-design assistant for people with a limitation."
 >
   <div class="hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-badges" aria-hidden="true">
+      {flankIds.slice(0, 2).map((id) => (
+        <span class="hero-badge" style={`--badge-color: ${MODULE_COLORS[id]}`} set:html={`<svg viewBox="0 0 24 24">${MODULE_ICONS[id]}</svg>`} />
+      ))}
+      <span class="hero-badge main">
+        <svg class="mark draw-in" viewBox="0 0 48 48">
+          <path d="M 33.2 10.9 A 16 16 0 1 1 14.8 10.9" />
+        </svg>
+      </span>
+      {flankIds.slice(2).map((id) => (
+        <span class="hero-badge" style={`--badge-color: ${MODULE_COLORS[id]}`} set:html={`<svg viewBox="0 0 24 24">${MODULE_ICONS[id]}</svg>`} />
+      ))}
+    </div>
     <div class="module-strip" aria-hidden="true">
       {MODULE_COLOR_LIST.map((color, index) => (
         <span style={`--dot-color: ${color}; animation-delay: ${index * 60}ms`} />
@@ -71,5 +87,46 @@ import { MODULE_COLOR_LIST } from '../lib/moduleVisuals';
       We do not publish user data, metrics, or partnerships until they are real and verifiable.
       Results from real user testing and any collaborations will be published here once available.
     </p>
+  </section>
+
+  <section class="wide">
+    <h2>Frequently asked</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Is there an app I can install?</summary>
+        <p>
+          Not yet. <code>lumen-app</code> exists and runs, but there is no signed Android release. See
+          <a href="/download/">Download</a>.
+        </p>
+      </details>
+      <details class="faq-item">
+        <summary>Does anything I say or that Lumen sees leave my phone?</summary>
+        <p>
+          No, not by default. Every essential feature runs on-device. The only exceptions are
+          features you explicitly turn on and consent to, like sharing status with a caregiver or
+          syncing with the optional server, and in those cases what is sent is end-to-end
+          encrypted. See <a href="/docs/privacy/data-handling/">Data handling in detail</a>.
+        </p>
+      </details>
+      <details class="faq-item">
+        <summary>Why don't the modules use the camera, microphone, or accelerometer yet?</summary>
+        <p>
+          Because <code>lumen-core</code> has no native sensor bridges yet. Every module's real,
+          tested business logic (parsing, detection algorithms, state machines) is implemented and
+          ready; it is simply not connected to live hardware yet. See
+          <a href="/docs/introduction/architecture/">Architecture overview</a>.
+        </p>
+      </details>
+      <details class="faq-item">
+        <summary>What license is the code under?</summary>
+        <p>
+          Apache License 2.0, in every repository. Third-party models and datasets are licensed
+          separately and tracked in
+          <a href="https://github.com/lumen-assistive/lumen-models">lumen-models</a>. See
+          <a href="/docs/privacy/licensing/">Model and dataset licensing</a>.
+        </p>
+      </details>
+    </div>
+    <p><a href="/docs/reference/faq/">See the full FAQ</a></p>
   </section>
 </Layout>

@@ -20,15 +20,9 @@ explicitly turn on and consent to, like sharing status with a caregiver or synci
 optional server, and in those cases what is sent is end-to-end encrypted. See
 [Data handling in detail](/docs/privacy/data-handling/).
 
-### Why do some modules have no code yet?
+### Why don't the modules actually use the camera, microphone, or accelerometer yet?
 
-Parlare, Leggere e Studiare, Ricordare, and Muoversi have no repository or package yet, by design:
-this project does not create empty placeholder repositories. They are built once their development
-phase starts. See [Project status](/docs/introduction/status/).
-
-### Why do Vedere, Sentire, and Protezione not actually use the camera, microphone, or accelerometer yet?
-
-Because `lumen-core` has no native sensor bridges yet. Each module's real, tested business logic
+Because `lumen-core` has no native sensor bridges yet. Every module's real, tested business logic
 (parsing, detection algorithms, state machines) is implemented and ready; it is simply not
 connected to live hardware yet. See [Architecture overview](/docs/introduction/architecture/).
 

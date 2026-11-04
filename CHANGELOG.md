@@ -6,6 +6,39 @@ and this project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+## [0.10.0] - 2026-10-25
+
+### Changed
+
+- The site is dark by default now, not a light theme with a dark variant: a deep warm near-black
+  background, warm off-white text, and the amber brand accent reused as a warm glow rather than a
+  flat highlight. "Lumen" means light, so the glow is gold, deliberately not the cooler blue used
+  by some comparable dark hero designs.
+- The hero now has a large soft radial glow behind a circular badge holding the logo mark, flanked
+  by four smaller circular module badges, a much bigger headline, and centered layout, replacing
+  the previous flat left-aligned hero.
+- Buttons are true pill shapes now, and module icons on the Modules page and the phone mockup are
+  circular badges instead of rounded squares, both to match this round's reference direction.
+- Verified every one of the eight module accent colors against the new dark background using the
+  real WCAG relative luminance formula: all clear the 3:1 non-text contrast minimum against the
+  near-black background and surface (the lowest, Reading's green, is 5.96:1 against the
+  background), so none needed adjusting.
+- `/docs`'s Starlight theme now shares this same dark palette for both its light and dark toggle
+  states, instead of looking like a lighter, different product from the rest of the site.
+
+### Added
+
+- A real FAQ accordion on the homepage, built with plain `<details>`/`<summary>` (works with no
+  JavaScript), styled with a custom plus-to-cross toggle. Content is pulled directly from
+  `src/content/docs/docs/reference/faq.md`, not invented for the homepage.
+
+### Fixed
+
+- The FAQ page itself still asked "why do some modules have no code yet", which stopped being true
+  once `lumen-plugins` shipped all eight packages; replaced with the one real remaining gap
+  (sensor bridges), and fixed two questions that still named modules by their old Italian
+  identifiers.
+
 ## [0.9.0] - 2026-10-25
 
 ### Changed
