@@ -10,19 +10,11 @@
 //  - the palette from lumen-app/lib/src/theme/app_colors.dart;
 //  - the per-module icons, identical to the app's `ModuleIcon` geometry.
 import strings from '../lib/appStrings.json';
-import { MODULE_ICONS } from '../lib/moduleVisuals';
+import { MODULE_COLORS, MODULE_ICONS } from '../lib/moduleVisuals';
 
-// lumen-app/lib/src/theme/app_colors.dart: AppColors.moduleColors, one solid fill per module.
-const colors = {
-  vision: '#5CC8E0',
-  hearing: '#B9A2FF',
-  safety: '#FF8FA3',
-  family: '#FF9FCB',
-  speech: '#FFA860',
-  reading: '#7ADB98',
-  memory: '#9FA9FF',
-  mobility: '#F2C94E',
-};
+// The official module fills, read from the plugin assets (the same values as
+// lumen-app's AppColors.moduleColors).
+const colors = MODULE_COLORS;
 
 // lumen-app/lib/src/onboarding/module_catalog.dart: fixed display order.
 const modules = [
