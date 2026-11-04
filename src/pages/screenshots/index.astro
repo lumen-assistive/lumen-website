@@ -3,12 +3,12 @@ import Layout from '../../layouts/Layout.astro';
 import { MODULE_COLORS } from '../../lib/moduleVisuals';
 
 // The image filenames (shot.id) match the real files committed in
-// lumen-app's docs/screenshots/, which kept their original names even
-// after the module rename below, to avoid orphaning already-published
-// image files; only the linked source paths needed to follow the rename.
+// lumen-app's docs/screenshots/. Colors are the app's solid module fills
+// (the brand yellow for screens that are not about one module).
 const SCREENSHOTS = [
-  { id: 'onboarding', name: 'Onboarding', tagline: 'Five questions decide what to turn on.', color: '#f5b942', source: 'lib/src/onboarding/onboarding_screen.dart' },
-  { id: 'home', name: 'Home', tagline: 'Every enabled module, one tap away.', color: '#f5b942', source: 'lib/src/home/home_screen.dart' },
+  { id: 'onboarding', name: 'Onboarding', tagline: 'Five questions decide what to turn on.', color: '#f2b138', source: 'lib/src/onboarding/onboarding_screen.dart' },
+  { id: 'home', name: 'Home', tagline: 'Every enabled module as a solid tile.', color: '#f2b138', source: 'lib/src/home/home_screen.dart' },
+  { id: 'settings', name: 'Settings', tagline: 'Interface mode, text size, per-module consent.', color: '#f2b138', source: 'lib/src/settings/settings_screen.dart' },
   { id: 'vedere', name: 'Vision', tagline: 'Expiry dates, color naming, contrast.', color: MODULE_COLORS.vision, source: 'lib/src/modules/vision_screen.dart' },
   { id: 'sentire', name: 'Hearing', tagline: 'Summaries, captions, sound alerts.', color: MODULE_COLORS.hearing, source: 'lib/src/modules/hearing_screen.dart' },
   { id: 'protezione', name: 'Safety', tagline: 'Scam filter, fall detection, SOS.', color: MODULE_COLORS.safety, source: 'lib/src/modules/safety_screen.dart' },
@@ -40,7 +40,9 @@ const SCREENSHOTS = [
       Each module screen is shown with its real tools already run once, using the sample input
       built into that screen, not live camera or microphone output, since those bridges do not
       exist yet (see <a href="/docs/introduction/status/">project status</a>). The home screen
-      shows all eight modules enabled at once so every one appears in a single image.
+      shows all eight modules enabled at once so every one appears in a single image. The app is
+      a flat, light design: paper and ink, an ink outline on every card, and one solid color per
+      module.
     </div>
   </section>
 

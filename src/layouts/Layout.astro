@@ -861,8 +861,7 @@ const fullTitle = title === 'Lumen' ? 'Lumen - A little light, when it\'s needed
     background: #0a0907;
     box-shadow:
       inset 0 0 0 1px var(--border),
-      0 0 0 1px color-mix(in srgb, var(--shot-color) 35%, transparent),
-      0 1.5rem 4rem -1rem color-mix(in srgb, var(--shot-color) 55%, transparent);
+      0 1.25rem 2.5rem -1rem rgba(0, 0, 0, 0.7);
     transition: transform 240ms ease, box-shadow 240ms ease;
   }
 
@@ -870,8 +869,7 @@ const fullTitle = title === 'Lumen' ? 'Lumen - A little light, when it\'s needed
     transform: translateY(-6px);
     box-shadow:
       inset 0 0 0 1px var(--border),
-      0 0 0 1px color-mix(in srgb, var(--shot-color) 60%, transparent),
-      0 2rem 5rem -1rem color-mix(in srgb, var(--shot-color) 75%, transparent);
+      0 1.75rem 3rem -1rem rgba(0, 0, 0, 0.8);
   }
 
   .screenshot-phone img {
@@ -895,9 +893,20 @@ const fullTitle = title === 'Lumen' ? 'Lumen - A little light, when it\'s needed
   }
 
   .screenshot-name {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     font-size: 1.15rem;
     font-weight: 700;
     color: var(--ink);
+  }
+
+  .screenshot-name::before {
+    content: '';
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 0.2rem;
+    background: var(--shot-color);
   }
 
   .screenshot-tagline {
