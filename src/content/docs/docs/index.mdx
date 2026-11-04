@@ -1,16 +1,16 @@
 ---
 title: Lumen documentation
-description: Architecture, SDK reference, and contributor guides for Lumen.
+description: Architecture, app guide, plugin and SDK reference, server, design system and contributor guides for Lumen.
 template: splash
 hero:
-  tagline: Architecture, SDK reference, and contributor guides for every Lumen repository.
+  tagline: The complete reference for every Lumen repository, written against the real source.
   actions:
     - text: What is Lumen
       link: /docs/introduction/what-is-lumen/
       icon: right-arrow
       variant: primary
-    - text: Build a plugin
-      link: /docs/contributing/plugins/
+    - text: Write a plugin
+      link: /docs/sdk/writing-a-plugin/
       icon: external
       variant: secondary
 ---
@@ -19,27 +19,47 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
 
 <CardGrid>
 	<Card title="Introduction" icon="open-book">
-		What Lumen is, how the senses engine and plugin architecture fit together, and the current
-		state of every repository. Start [here](/docs/introduction/what-is-lumen/).
+		What Lumen is, who it is for, its principles, architecture, honest status and roadmap. Start
+		[here](/docs/introduction/what-is-lumen/).
 	</Card>
 	<Card title="Getting started" icon="rocket">
-		Clone the workspace, run `lumen-app`, and run the test suite across every repository. Start
-		[here](/docs/getting-started/repository-map/).
+		The repository map, development setup for each toolchain, running the app and the tests, and the
+		shared CI workflows. Start [here](/docs/getting-started/repository-map/).
 	</Card>
-	<Card title="SDK reference" icon="puzzle">
-		The `LumenPlugin` lifecycle, the `LumenEventBus` contract, and the `ModelRegistry` contract
-		every module is built on. Start [here](/docs/sdk/plugin-lifecycle/).
+	<Card title="Architecture" icon="seti:folder">
+		Data flow, the data model, dependency pinning, design decisions and every known limitation.
+		Start [here](/docs/architecture/data-flow/).
 	</Card>
-	<Card title="Contributing" icon="pencil">
-		How this project works day to day, and the full guide to proposing and building a new plugin
-		module. Start [here](/docs/contributing/workflow/).
+	<Card title="App guide" icon="seti:flutter">
+		Onboarding, the four UI modes, settings, storage, and one page for each of the eight module
+		screens. Start [here](/docs/app/overview/).
+	</Card>
+	<Card title="Plugin packages" icon="puzzle">
+		The public API of each of the eight modules with real examples: parsers, detectors, schedulers
+		and state machines. Start [here](/docs/plugins/overview/).
+	</Card>
+	<Card title="SDK and core reference" icon="seti:json">
+		The plugin lifecycle, manifest, capabilities, event catalog, model registry, testing fakes, and the
+		engine that implements them. Start [here](/docs/sdk/plugin-lifecycle/).
+	</Card>
+	<Card title="Server and models" icon="laptop">
+		Every endpoint of the encrypted sync backend, and the license ledger, compliance gate and
+		benchmark harness. Start [here](/docs/server/overview/).
+	</Card>
+	<Card title="Design system" icon="star">
+		Palette, typography, module colors, components, and the accessibility numbers the design commits
+		to. Start [here](/docs/design/overview/).
 	</Card>
 	<Card title="Privacy and safety" icon="shield">
-		The technical detail behind the plain-language [privacy page](/privacy/): consent flows, data
-		model, and the model licensing process. Start [here](/docs/privacy/data-handling/).
+		Consent, encryption at rest, exactly what leaves the device, and licensing. Start
+		[here](/docs/privacy/what-leaves-the-device/).
+	</Card>
+	<Card title="Contributing" icon="pencil">
+		Workflow, code style, commit conventions, pull requests, the documentation guide and releases.
+		Start [here](/docs/contributing/workflow/).
 	</Card>
 	<Card title="Reference" icon="information">
-		Frequently asked questions, the (currently empty, honestly) benchmark table, and a glossary of
-		project-specific terms. Start [here](/docs/reference/faq/).
+		FAQ, troubleshooting, a command cheat sheet, the module matrix, the glossary and benchmarks.
+		Start [here](/docs/reference/faq/).
 	</Card>
 </CardGrid>

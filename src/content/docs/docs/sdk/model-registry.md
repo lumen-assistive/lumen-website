@@ -1,11 +1,12 @@
 ---
-title: Model registry
-description: The ModelRegistry contract for on-demand, licensed model loading.
+title: "Model registry"
+description: "The ModelRegistry, ModelHandle, ModelDescriptor and ModelTask contracts for on-demand model loading."
 ---
 
-A plugin never bundles or loads a model file itself. It asks `lumen-core`'s model registry for a
-handle, by id, and `lumen-core` decides how that model actually gets onto the device and into
-memory.
+Plugins never load a model themselves. They ask the `ModelRegistry` for a handle, so loading,
+on-demand download, quantization selection and memory limits are implemented once.
+
+## `ModelRegistry`
 
 ```dart
 abstract class ModelRegistry {
@@ -16,57 +17,76 @@ abstract class ModelRegistry {
 }
 ```
 
-## Model descriptors
+| Method | Behavior |
+|---|---|
+| `listAvailable()` | Descriptors of every known model pack, downloaded or not |
+| `isDownloaded(id)` | Whether the model's files are present on device and verified |
+| `ensureDownloaded(id)` | Downloads the pack if not already present. Does nothing if the required network consent has not been granted |
+| `acquire(id)` | Loads and returns a handle. Throws a `StateError` if the model has not been downloaded; call `ensureDownloaded` first |
+
+## `ModelHandle`
+
+An opaque, disposable handle to a loaded model instance.
 
 ```dart
-class ModelDescriptor {
-  final String id;
-  final ModelTask task;
-  final String quantization;
-  final int sizeBytes;
-  final String licenseId;
-  final String version;
+abstract class ModelHandle {
+  ModelDescriptor get descriptor;
+  Future<void> dispose();
 }
 ```
 
-`licenseId` is not decorative: it must match an entry in `lumen-models`'s license ledger (see
-[Model and dataset licensing](/docs/privacy/licensing/)), and that ledger's automated compliance
-gate fails CI if a catalog entry references a license that is missing or not cleared for
-Apache-2.0 distribution. A model cannot ship without its license being checked first.
+`dispose` releases the underlying native resources and is safe to call more than once, so that
+`lumen-core` can unload models nobody uses and bound device memory.
 
-## The production implementation
+## `ModelDescriptor`
 
-`lumen-core`'s `LocalModelRegistry` backs this contract with a local directory of downloaded model
-packs:
+Describes a downloadable model pack without loading it.
 
-- A model counts as downloaded once its directory exists on disk.
-- `ensureDownloaded` delegates to an injected `ModelDownloader`; without one configured, it fails
-  clearly rather than silently doing nothing.
-- `acquire` returns a reference-counted `ModelHandle`: two plugins requesting the same model share
-  one underlying load, and the model is only actually released once every holder has disposed its
-  handle.
+| Field | Type | Meaning |
+|---|---|---|
+| `id` | `String` | Stable identifier of the pack |
+| `task` | `ModelTask` | The inference task |
+| `quantization` | `String` | For example `int8`, `fp16`, or `none` |
+| `sizeBytes` | `int` | Size on disk |
+| `licenseId` | `String` | Must match an entry in the license ledger |
+| `version` | `String` | The pack's own version |
 
-`lumen-core` does not bundle a concrete `ModelDownloader`: the actual download source (a
-`lumen-server` endpoint, a CDN, a bundled asset) is an app-level decision, and no model has been
-converted yet (`lumen-models`'s catalog is empty today, see
-[Project status](/docs/introduction/status/)).
+The SDK does not interpret license text. It carries the identifier so the engine and the app can
+show it and refuse to bundle a model whose license has not been cleared. See the
+[license ledger](/docs/models/license-ledger/).
 
-## Model tasks
+## `ModelTask`
+
+| Value | Meaning |
+|---|---|
+| `ocr` | Optical character recognition |
+| `automaticSpeechRecognition` | Speech to text |
+| `soundClassification` | Classification of non-speech sounds |
+| `textToSpeech` | On-device speech synthesis |
+| `objectDetection` | Detection of objects or obstacles in a frame |
+| `smallLanguageModel` | A small on-device language model, for example leaflet question answering |
+
+## Typical use in a plugin
 
 ```dart
-enum ModelTask {
-  ocr,
-  automaticSpeechRecognition,
-  soundClassification,
-  textToSpeech,
-  objectDetection,
-  smallLanguageModel,
+@override
+Future<void> start() async {
+  await _context.modelRegistry.ensureDownloaded('ocr-small');
+  _handle = await _context.modelRegistry.acquire('ocr-small');
+}
+
+@override
+Future<void> stop() async {
+  await _handle?.dispose();
+  _handle = null;
 }
 ```
 
-## Where models actually come from
+Acquire in `start`, dispose in `stop`. No official plugin does this yet, because the catalog is
+empty.
 
-`lumen-models` owns conversion, quantization, and benchmarking. Its `ModelDescriptor` catalog
-schema mirrors this contract's shape exactly, so a cleared entry there can be published, unchanged,
-as part of the manifest `lumen-server`'s `/api/v1/models` endpoint and `lumen-core`'s registry both
-read.
+## Implementations
+
+`LocalModelRegistry` in `lumen-core` is the production implementation, see
+[LocalModelRegistry](/docs/core/model-registry/). `FakeModelRegistry` in `lumen_sdk_testing` is the
+test double, see [Testing fakes](/docs/sdk/testing/).

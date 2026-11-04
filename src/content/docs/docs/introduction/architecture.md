@@ -1,87 +1,86 @@
 ---
-title: Architecture overview
-description: How the senses engine, plugin SDK, app, and plugins fit together.
+title: "Architecture overview"
+description: "How the senses engine, plugin SDK, plugin packages and the app fit together, and why they are separate."
 ---
 
-Lumen separates concerns into four layers, each its own repository, so that a plugin author never
-needs to touch sensor code and the app never needs to know what a specific plugin does internally.
+Lumen separates concerns into layers, each its own repository, so that a plugin author never needs
+to touch sensor code and the app never needs to know what a specific plugin does internally.
 
 ```
-lumen-app            the Flutter application: onboarding, adaptive UI, module host, settings
+lumen-app            the Flutter application: onboarding, adaptive UI, module screens, settings
      |
-     | registers and runs
+     | hosts a screen for each module, built on
      v
-lumen-plugins        one module package per Lumen feature (Vedere, Sentire, Protezione, Famiglia, ...)
-     |
-     | implements LumenPlugin, depends only on contracts from
+lumen-plugins        one package per module: vision, hearing, safety, family,
+     |               speech, reading, memory, mobility
+     | each implements LumenPlugin and depends only on the contracts in
      v
 lumen-sdk            the contracts: LumenPlugin, LumenEventBus, SenseEvent catalog, ModelRegistry
      ^
      | implemented by
      |
 lumen-core           the senses engine: event bus, model registry, plugin manager
+
+lumen-server         optional backend: pairing, encrypted blob sync, model metadata
+lumen-models         license ledger, model catalog, conversion and benchmark tooling
+lumen-website        this site
+.github              organization profile, shared CI workflows, shared commit hook
 ```
 
 ## Why this split exists
 
-A plugin that could reach directly into the camera, the microphone, or a model file would make two
-things impossible to guarantee: that sensor access is always consent-gated, and that a plugin
-cannot be tested without real hardware. Routing everything through `lumen_sdk`'s contracts, and
-only ever implementing those contracts in `lumen-core`, keeps both guarantees mechanical rather
-than a matter of discipline.
+A plugin that could reach directly into the camera, the microphone or a model file would make two
+things impossible to guarantee: that sensor access is always consent-gated, and that a plugin can
+be tested without real hardware. Routing everything through the contracts in `lumen_sdk`, and only
+ever implementing those contracts in `lumen-core`, makes both guarantees mechanical.
 
 ## The senses engine (`lumen-core`)
 
-`lumen-core` implements three things:
+`lumen-core` implements three things from the SDK's contracts:
 
-- **`InMemoryEventBus`**, the production `LumenEventBus`: a typed, topic-based publish/subscribe
-  bus. Plugins subscribe to the `SenseEvent` subtypes they care about and never open a sensor
-  themselves.
-- **`LocalModelRegistry`**, the production `ModelRegistry`: on-demand, reference-counted model
-  loading backed by local storage, with a pluggable `ModelDownloader` so the registry itself does
-  not need to know where model bytes come from.
-- **`PluginManager`**: owns plugin lifecycle (`register`, `enable`, `disable`, `unregister`),
-  checks a plugin's declared `lumen_sdk` version constraint against the running version before
-  registering it, and gates starting a plugin on an injected `CapabilityGate` reporting whether its
-  declared capabilities are currently granted.
+- **`InMemoryEventBus`**, a typed publish and subscribe bus built on broadcast stream controllers
+  keyed by event type.
+- **`LocalModelRegistry`**, on-demand, reference-counted model loading backed by a directory on
+  local storage, with a pluggable `ModelDownloader`.
+- **`PluginManager`**, which owns plugin lifecycle (`register`, `enable`, `disable`, `unregister`),
+  checks a plugin's declared SDK version constraint, and gates starting a plugin on a
+  `CapabilityGate`.
 
-As of the current release, `lumen-core` has no native sensor bridges (camera, microphone,
-accelerometer) or on-device model inference bindings. It ships the platform-independent engine as
-a pure Dart package; native bridges are the next phase, once a full Flutter and Android/Xcode
-toolchain is available to build and verify them properly. See that repository's own README for the
-up-to-date state.
+It also defines two small interfaces the app implements: `CapabilityGate` and `ConsentStore`.
+Details are in the [core reference](/docs/core/overview/).
 
 ## The plugin SDK (`lumen-sdk`)
 
-`lumen-sdk` defines, and only defines, the contracts above, plus in-memory testing fakes
-(`lumen_sdk_testing`) and a runnable example plugin. It has no implementation and no Flutter
-dependency, so it can be depended on by anything, including a future non-Dart tool, without
-pulling in the Flutter SDK. See [SDK reference](/docs/sdk/plugin-lifecycle/) for the contracts
-themselves.
+`lumen-sdk` defines, and only defines, the contracts, plus in-memory testing fakes and a runnable
+example plugin. It has a single dependency (`meta`) and no Flutter dependency, so anything can
+depend on it. See the [SDK reference](/docs/sdk/plugin-lifecycle/).
 
 ## Plugin packages (`lumen-plugins`)
 
-Every module ships as an independent Dart package under `lumen-plugins/packages/`, depending only
-on `lumen_sdk` (pinned to a tagged release) for contracts. A plugin is pure business logic until it
-has a native bridge to attach to; several packages today implement real, tested logic (expiry date
-parsing, fall detection, a pairing code generator, and so on) that is simply not wired to a live
-sensor yet, because the event types or native bridges it needs do not exist yet. Each package's own
-README states plainly what is implemented and what is deferred. See
-[Building a plugin](/docs/contributing/plugins/) to add a new one.
+Each of the eight modules ships as an independent Dart package under `packages/`, depending on
+`lumen_sdk` for contracts. Today every package contains real, tested business logic (parsers,
+state machines, data models, consent gating) that is not yet wired to a live sensor. See the
+[plugin packages reference](/docs/plugins/overview/).
 
 ## The app (`lumen-app`)
 
-`lumen-app` is the Flutter application: the onboarding flow, the four adaptive UI modes, a module
-host that lists whichever modules the user enabled, settings, and local storage (an
-`AppDatabase` interface with an in-memory implementation used throughout tests, and a
-production-ready `sqflite_sqlcipher`-backed implementation not yet wired into the running app). It
-depends on `lumen_sdk` and `lumen_core`, pinned to tagged releases. It does not yet depend on any
-individual plugin package, since plugins ship no Flutter UI of their own yet. The module host is
-intentionally generic today rather than presenting fabricated feature screens.
+The Flutter application: a five-question onboarding flow, four adaptive UI modes, a home screen
+listing enabled modules, one real screen per module that runs the package's actual logic on sample
+input, settings, and a local storage layer. See the [app guide](/docs/app/overview/).
+
+## The optional backend (`lumen-server`)
+
+A FastAPI service for caregiver pairing, end-to-end encrypted blob storage and model metadata. It
+stores ciphertext it cannot decrypt. Nothing in the app depends on it for essential features. See
+the [server reference](/docs/server/overview/).
+
+## Tooling and governance (`lumen-models`)
+
+A license ledger, a model catalog (empty today), an automated compliance gate, a conversion
+pipeline interface and a benchmark harness. See the [models section](/docs/models/overview/).
 
 ## Versioning across repositories
 
-`lumen_sdk` and `lumen_core` use Semantic Versioning. Every consumer (`lumen-app`, every plugin
-package) depends on a specific tagged release via a git dependency, never on `main`, so a breaking
-change to a contract cannot silently break a consumer. See
-[Versioning policy](/docs/sdk/versioning/) for what counts as breaking.
+`lumen_sdk` and `lumen_core` use Semantic Versioning. Every consumer depends on a specific tagged
+release via a git dependency, never on `main`. See
+[Dependency pinning](/docs/architecture/dependency-pinning/).

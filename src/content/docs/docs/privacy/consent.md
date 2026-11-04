@@ -1,10 +1,10 @@
 ---
-title: Consent model
-description: How consent is requested, stored, and enforced in code.
+title: "Consent model"
+description: "How consent is requested, stored and enforced in code, and what is not enforced yet."
 ---
 
-Consent in Lumen is not a checkbox that merely unlocks a settings screen; it is read by the code
-path that would otherwise share something, every time, immediately before sharing it.
+Consent in Lumen is not a checkbox that merely unlocks a settings screen. It is read by the code path
+that would otherwise share something, every time, immediately before sharing it.
 
 ## The mechanism
 
@@ -14,37 +14,60 @@ Every plugin receives a `PluginContext` with:
 bool hasConsent(String consentKey);
 ```
 
-A plugin checks this before publishing anything that could reach outside the device. For example,
-`lumen-plugin-famiglia`'s `FamigliaPlugin` checks `hasConsent(shareStatusWithCaregiverConsentKey)`
-before ever publishing an `AlertEvent` about the user's daily status: if consent was not granted,
-nothing is published, full stop. This is tested directly in that package's test suite, both the
-consent-granted and consent-denied paths.
+A plugin checks this before publishing anything that could reach outside the device. For example
+`FamilyPlugin.notifyCaregiverOfStatus` checks `hasConsent('share-status-with-caregiver')` before
+publishing an `AlertEvent` about the user's daily status. If consent was not granted, nothing is
+published. Both the granted and the denied paths are tested.
 
-`lumen-core` does not decide what counts as consent or how it is persisted: `lumen-app` owns the
-actual consent UI and storage, and provides the `ConsentStore` implementation that backs
-`hasConsent`. `lumen-core`'s `ManagedPluginContext` only scopes lookups to the calling plugin's id,
-so one plugin cannot read another's consent flags.
+## Who owns what
+
+| Layer | Responsibility |
+|---|---|
+| Plugin | Asks `hasConsent` immediately before acting |
+| `ManagedPluginContext` (core) | Scopes the lookup to the calling plugin's id, so one plugin cannot read another's flags |
+| `ConsentStore` (core interface) | Answers `hasConsent(pluginId, key)` |
+| `AppConsentStore` (app) | Implements it over `ModuleConfigRepository` |
+| Settings screen (app) | The switch that grants or revokes consent |
+
+`lumen-core` does not decide what counts as consent or how it is persisted. See
+[ConsentStore](/docs/core/consent-store/).
 
 ## Revocability
 
-Consent is revocable at any time, from the settings screen (`lumen-app`'s `SettingsScreen` includes
-a per-module consent toggle). Revoking it takes effect on the very next `hasConsent` check; there
-is no caching layer that would delay it.
+Consent is revocable at any time from the settings screen. Revocation takes effect on the very next
+`hasConsent` check, because there is no cache between the store and the plugin.
+
+## Granularity today
+
+The MVP stores one consent flag per module (sharing with a paired caregiver), and every consent key of a
+module maps to it. Finer grained consent is a natural extension when a module needs more than one kind.
+
+## Consent for other people
+
+The Memory module keeps a directory of people to remember. Its `PersonProfile` records `consentGiven` and
+a `consentTimestamp` that must agree, and the directory refuses to store a profile that violates it. This
+is the groundwork for a rule the project holds firmly: face recognition, when it exists, must run on
+device only and require the explicit consent of the people recognized, not just the device owner. The
+requirement is recorded now so it is designed in rather than retrofitted.
+
+## Consent versus capabilities
+
+Capabilities (camera, microphone, location, SMS) are about device access, mediated by `CapabilityGate`.
+Consent is about sharing data with other people or services. A plugin needs both where both apply. See
+[Capabilities](/docs/sdk/capabilities/).
 
 ## Specific cases
 
-- **Caregiver sharing** (Famiglia module): gated per the mechanism above.
-- **Face recognition** (Ricordare module, not yet built): will require explicit consent from the
-  people recognized, not just the device owner, and will run on-device only. This requirement is
-  recorded here ahead of that module's implementation so it is designed in from the start, not
-  retrofitted.
-- **Server sync** (`lumen-server`): opt-in; the server is not contacted unless the user turns
-  syncing on.
+| Case | Gate |
+|---|---|
+| Caregiver sharing (Family) | `hasConsent`, as above |
+| Server sync (`lumen-server`) | Opt in; the server is not contacted unless the user turns it on |
+| Model downloads | The SDK contract says a download does nothing without the required network consent |
+| Face recognition (Memory) | Not built; will require consent of the people recognized |
 
-## What is not yet enforced in code
+## What is not enforced yet
 
-Operating system permissions (camera, microphone, location, SMS) are mediated by
-`lumen-core`'s `CapabilityGate` contract, but no concrete implementation exists yet beyond
-`lumen-app`'s in-memory `AppCapabilityGate`, which does not call any real platform permission API
-yet, since no plugin needs a real one yet either. This is listed honestly as a gap, not implied as
-done. See [Project status](/docs/introduction/status/).
+Real operating system permissions are mediated by `CapabilityGate`, but the only implementation is the
+app's in-memory `AppCapabilityGate`, which does not call a platform permission API yet, because no plugin
+is wired to a live manager. This is listed as a gap, not implied as done. See
+[Project status](/docs/introduction/status/).

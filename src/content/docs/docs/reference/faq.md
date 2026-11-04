@@ -1,43 +1,95 @@
 ---
-title: FAQ
-description: Common questions about Lumen.
+title: "FAQ"
+description: "Frequently asked questions about Lumen, answered from the actual state of the project."
 ---
+
+## General
 
 ### Is there an app I can install?
 
-Not yet. `lumen-app` exists and runs, but there is no signed Android release. See
+Not yet. `lumen-app` exists and runs from source, but there is no signed Android release. See
 [Download](/download/).
 
 ### Does Lumen replace a doctor or emergency services?
 
-No. Lumen's medical and safety features assist but do not replace a doctor or the 112 emergency
-number, and Lumen is not a certified medical device.
-
-### Does anything I say or that Lumen sees leave my phone?
-
-No, not by default. Every essential feature runs on-device. The only exceptions are features you
-explicitly turn on and consent to, like sharing status with a caregiver or syncing with the
-optional server, and in those cases what is sent is end-to-end encrypted. See
-[Data handling in detail](/docs/privacy/data-handling/).
-
-### Why don't the modules actually use the camera, microphone, or accelerometer yet?
-
-Because `lumen-core` has no native sensor bridges yet. Every module's real, tested business logic
-(parsing, detection algorithms, state machines) is implemented and ready; it is simply not
-connected to live hardware yet. See [Architecture overview](/docs/introduction/architecture/).
-
-### Can I add a new module?
-
-Yes; see [Building a plugin](/docs/contributing/plugins/).
+No. Lumen's medical and safety features assist but do not replace a doctor or the 112 emergency number,
+and Lumen is not a certified medical device.
 
 ### What license is the code under?
 
-Apache License 2.0, in every repository. Third-party models and datasets are licensed separately
-and tracked in [`lumen-models`](https://github.com/lumen-assistive/lumen-models); see
-[Model and dataset licensing](/docs/privacy/licensing/).
+Apache License 2.0, in every repository. Third party models and datasets are licensed separately and
+tracked in the [license ledger](/docs/models/license-ledger/).
 
 ### Has this been tested with real users or screen readers?
 
-Not yet, and this documentation does not claim otherwise. Manual screen reader testing (TalkBack,
-VoiceOver) is a required step before any release, tracked openly rather than skipped silently. No
-user testing results, metrics, or partnerships are published until they are real.
+Not yet, and this documentation does not claim otherwise. Manual screen reader testing (TalkBack and
+VoiceOver) is a required step before any release, tracked openly. No user testing results, metrics or
+partnerships are published until they are real.
+
+## Privacy
+
+### Does anything I say or that Lumen sees leave my phone?
+
+No, not by default. Every essential feature runs on device. The only exceptions are features you
+explicitly turn on and consent to, such as sharing status with a caregiver or syncing with the optional
+server, and then what is sent is encrypted. See [What leaves the device](/docs/privacy/what-leaves-the-device/).
+
+### Does Lumen collect analytics?
+
+No. There is no analytics, telemetry or crash reporting that leaves the device, in any repository.
+
+### Can the server read my data?
+
+No. It stores ciphertext produced on your device and has no key. See
+[Server security notes](/docs/server/security-notes/).
+
+## What works today
+
+### Why don't the modules use the camera, microphone or accelerometer yet?
+
+Because `lumen-core` has no native sensor bridges yet. Each module's real, tested logic is implemented
+and ready, and the app screens run it on sample input. It is simply not connected to live hardware. See
+[Known limitations](/docs/architecture/limitations/).
+
+### Why does my data disappear when I restart the app?
+
+The running app uses an in-memory database. An encrypted SQLCipher implementation exists but is not
+wired in until a secure per-device passphrase and a documents directory are available. See
+[Storage](/docs/app/storage/).
+
+### Does the SOS button send a real message?
+
+No. It uses a fake sender and says so on screen. The package defines the sender interface but ships no
+real implementation, so it cannot send one by itself.
+
+### Why are some outputs in Italian?
+
+The app interface is English only. A few outputs come from plugin logic that matches Italian input: the
+color names, the scam filter keywords and the Italian syllable splitter. See
+[Text and localization](/docs/app/localization/).
+
+### Is the scam filter an AI model?
+
+No. It is a transparent, rule based check over keyword lists and short link patterns, a placeholder for
+a future trained classifier. See the [Safety package](/docs/plugins/safety/).
+
+## Building on Lumen
+
+### Can I add a new module?
+
+Yes. See [Building a plugin](/docs/contributing/plugins/) and
+[Writing a plugin step by step](/docs/sdk/writing-a-plugin/).
+
+### Why must plugins go through a context?
+
+So consent and sensor access are enforced in one place and plugins can be tested without hardware. See
+[Design decisions](/docs/architecture/design-decisions/).
+
+### Why are dependencies pinned to tags?
+
+So a breaking change cannot silently break a consumer. See
+[Dependency pinning](/docs/architecture/dependency-pinning/).
+
+### Which models does Lumen use?
+
+None yet. The catalog is empty and no model has been benchmarked. See [Models](/docs/models/overview/).
