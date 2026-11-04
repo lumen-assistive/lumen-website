@@ -1,14 +1,14 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 
-const VERSION = '0.5.0';
+const VERSION = '0.6.0';
 const BASE = `https://github.com/lumen-assistive/lumen-app/releases/download/v${VERSION}`;
 
 const BUILDS = [
-  { file: `lumen-${VERSION}-arm64-v8a.apk`, label: 'arm64-v8a', size: '21.5 MB', note: 'Most phones from the last several years. Recommended.' },
-  { file: `lumen-${VERSION}-armeabi-v7a.apk`, label: 'armeabi-v7a', size: '17.6 MB', note: 'Older 32-bit ARM phones.' },
-  { file: `lumen-${VERSION}-x86_64.apk`, label: 'x86_64', size: '23.4 MB', note: 'Emulators and x86 devices.' },
-  { file: `lumen-${VERSION}-universal.apk`, label: 'Universal', size: '61.6 MB', note: 'Any supported device, in a much larger file.' },
+  { file: `lumen-${VERSION}-arm64-v8a.apk`, label: 'arm64-v8a', size: '21.1 MB', note: 'Most phones from the last several years. Recommended.' },
+  { file: `lumen-${VERSION}-armeabi-v7a.apk`, label: 'armeabi-v7a', size: '17.4 MB', note: 'Older 32-bit ARM phones.' },
+  { file: `lumen-${VERSION}-x86_64.apk`, label: 'x86_64', size: '23.0 MB', note: 'Emulators and x86 devices.' },
+  { file: `lumen-${VERSION}-universal.apk`, label: 'Universal', size: '60.3 MB', note: 'Any supported device, in a much larger file.' },
 ];
 ---
 
@@ -79,22 +79,25 @@ const BUILDS = [
         <h3>What this build does</h3>
         <ul>
           <li>Onboarding, adaptive interface, and settings</li>
-          <li>A screen for each of the eight modules, running real logic on sample input</li>
+          <li>A screen for each of the eight modules, running real logic</li>
+          <li>Profile, enabled modules and data kept between launches, in an encrypted on-device database</li>
+          <li>Speaks phrases and flashcards aloud, and vibrates for sound alerts</li>
+          <li>Optional live accelerometer for fall detection and gait monitoring</li>
           <li>Works with no internet connection</li>
         </ul>
       </div>
       <div class="status-card pending">
         <h3>What it does not do yet</h3>
         <ul>
-          <li>Live camera, microphone, and sensor input</li>
+          <li>Camera and microphone input: Vision and Hearing work on typed or sample input</li>
           <li>Real SMS: SOS uses a fake sender and can never send a message</li>
-          <li>Saved data between launches: settings reset when the app restarts</li>
+          <li>Reminder notifications</li>
         </ul>
       </div>
     </div>
     <p style="margin-top: 1.25rem">
-      This build was compiled and its signature checked, but it has not been tried on a physical phone
-      and has had no screen reader testing. Lumen helps but does not replace a doctor or the emergency
+      This build was tested in an Android 15 emulator, not on a physical phone, and has had no screen
+      reader testing. If you installed 0.5.0, uninstall it first: that version crashed on launch. Lumen helps but does not replace a doctor or the emergency
       number, and it is not a certified medical device.
     </p>
   </section>

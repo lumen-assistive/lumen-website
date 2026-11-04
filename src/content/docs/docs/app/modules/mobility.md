@@ -4,8 +4,8 @@ description: "The Mobility module screen: gait stability monitor, mobility profi
 ---
 
 Module id `mobility` (labelled "Move" in the app), plugin package `lumen_plugin_mobility`. The note
-states that gait stability is monitored over simulated data and that there is no live accelerometer
-sensor in the app yet.
+explains that gait stability is monitored over sample walks, or over the live accelerometer when the
+switch is on (Android app v0.6.0 and later). The browser demo has no accelerometer.
 
 ## Tools
 

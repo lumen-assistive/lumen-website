@@ -23,7 +23,7 @@ All packages are released together under one tag (for example `v0.3.0`). Each pa
 
 ## The app (`lumen-app`)
 
-The app is tagged for releases of the codebase (the latest is `v0.5.0`). Signed Android APKs are built
+The app is tagged for releases of the codebase (the latest is `v0.6.0`). Signed Android APKs are built
 by hand and attached to the matching GitHub release together with a `SHA256SUMS.txt` file.
 
 To build one, install the Android SDK and a JDK 17, then run `flutter build apk --release`, optionally

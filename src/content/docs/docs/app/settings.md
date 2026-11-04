@@ -35,8 +35,7 @@ persisted. See [Diagnostics](/docs/app/diagnostics/).
 
 ## Persistence
 
-Settings are written through the repositories to the `AppDatabase`. Because the running app uses the
-in-memory implementation, they do not survive a restart yet. See [Storage](/docs/app/storage/).
+Settings are written through the repositories to the `AppDatabase`. They persist across restarts in the encrypted database since v0.6.0. See [Storage](/docs/app/storage/).
 
 ## Consent semantics
 

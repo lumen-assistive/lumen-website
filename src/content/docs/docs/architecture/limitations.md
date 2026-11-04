@@ -8,8 +8,9 @@ module at a time.
 
 ## Sensing
 
-- No live camera, microphone or accelerometer input. Nothing publishes `VisionFrameEvent`,
-  `AudioChunkEvent`, `TranscriptEvent` or `SoundAlertEvent` from hardware yet.
+- No camera or microphone input. Nothing publishes `VisionFrameEvent`, `AudioChunkEvent`,
+  `TranscriptEvent` or `SoundAlertEvent` from hardware yet. The app does read the accelerometer, but
+  only inside Safety and Mobility, not through the event bus.
 - No on-device model inference. Scene description, banknote and medicine recognition, obstacle
   detection, speech recognition, sound classification, face recognition and text-to-speech all need
   models and bridges that do not exist.
@@ -17,7 +18,7 @@ module at a time.
 
 ## App
 
-- The running app uses in-memory storage, so settings do not survive a restart.
+- Storage is an encrypted SQLCipher database, falling back to memory if the Android keystore fails.
 - Plugins are not registered with a live `PluginManager`; screens call package classes directly.
 - `AppCapabilityGate` does not call real platform permission APIs.
 - The UI is English only. A few outputs from plugin code remain Italian (see below).
@@ -32,13 +33,13 @@ module at a time.
   color namer returns Italian color names from a fixed palette of eleven colors.
 - **Hearing**: the summarizer is a word frequency heuristic with an Italian stop word list, not a
   language model. There is no live captioning.
-- **Family**: no sync with `lumen-server`. The calendar and status are in memory.
-- **Speech**: no text-to-speech output and no pictograms.
-- **Reading**: syllable splitting follows standard Italian rules; there is no text-to-speech and no
+- **Family**: no sync with `lumen-server`.
+- **Speech**: speaks through the device text-to-speech engine; no pictograms.
+- **Reading**: syllable splitting follows standard Italian rules; text is read aloud by the device engine; there is no
   dyslexia-specific text adaptation beyond splitting.
 - **Memory**: no face recognition. The `consentGiven` and `consentTimestamp` invariant exists in
   anticipation of it.
-- **Mobility**: gait analysis runs on sample data only.
+- **Mobility**: gait analysis runs on sample walks or the live accelerometer.
 
 ## Server
 
@@ -58,4 +59,4 @@ module at a time.
 ## Release
 
 - No Google Play listing and no automated release workflow. Signed APKs are built by hand and
-  published on GitHub Releases, and the app has not been tried on a physical phone.
+  published on GitHub Releases, and the app was verified in an emulator only, not on a physical phone.

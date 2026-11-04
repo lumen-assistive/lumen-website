@@ -54,8 +54,7 @@ button and "No" an outlined one.
 
 The router saves a `UserProfile` with the computed mode, the enabled module ids and a text scale
 of `1`. It then records each enabled module as enabled through `ModuleConfigRepository.setEnabled`
-and navigates to `/home`. Because the running app uses in-memory storage today, a restart shows
-onboarding again.
+and navigates to `/home`. Because the profile is persisted since v0.6.0, a restart goes straight to the home screen.
 
 ## Data model involved
 

@@ -8,7 +8,7 @@ description: "Frequently asked questions about Lumen, answered from the actual s
 ### Is there an app I can install?
 
 Yes, on Android. A signed APK is attached to each release of `lumen-app`; see [Download](/download/).
-It runs every module on sample input, with no live camera, microphone or sensor input yet.
+Version 0.6.0 keeps your data between launches, speaks aloud and uses the accelerometer for Safety and Mobility. It has no camera or microphone input yet.
 
 ### Does Lumen replace a doctor or emergency services?
 
@@ -45,16 +45,17 @@ No. It stores ciphertext produced on your device and has no key. See
 
 ## What works today
 
-### Why don't the modules use the camera, microphone or accelerometer yet?
+### Why don't Vision and Hearing use the camera and microphone yet?
 
-Because `lumen-core` has no native sensor bridges yet. Each module's real, tested logic is implemented
-and ready, and the app screens run it on sample input. It is simply not connected to live hardware. See
+Because no vetted on-device models exist yet and `lumen-core` has no camera or microphone bridges. The
+logic is implemented and tested, and those screens run it on typed or sample input. Safety and Mobility
+can use the live accelerometer. See
 [Known limitations](/docs/architecture/limitations/).
 
-### Why does my data disappear when I restart the app?
+### Does my data survive a restart?
 
-The running app uses an in-memory database. An encrypted SQLCipher implementation exists but is not
-wired in until a secure per-device passphrase and a documents directory are available. See
+Yes since v0.6.0. The app uses an encrypted SQLCipher database whose passphrase is kept in the Android
+keystore. If the keystore is unavailable it falls back to memory and data is lost on restart. See
 [Storage](/docs/app/storage/).
 
 ### Does the SOS button send a real message?

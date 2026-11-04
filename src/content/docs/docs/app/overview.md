@@ -49,7 +49,7 @@ read a camera, microphone or accelerometer, and no screen registers its plugin w
 ## Source layout
 
 ```
-lib/main.dart                       runApp(LumenApp(database: InMemoryAppDatabase()))
+lib/main.dart                       runApp(LumenApp(database: <opened at startup>))
 lib/src/app.dart                    LumenApp: loads the profile, builds the router and theme
 lib/src/routing/app_router.dart     routes and buildModuleScreen
 lib/src/onboarding/                 OnboardingScreen, OnboardingController, ModuleInfo catalog
@@ -65,8 +65,8 @@ lib/src/l10n/app_strings.dart       all user facing text
 
 ## Startup sequence
 
-1. `main` calls `WidgetsFlutterBinding.ensureInitialized` and runs `LumenApp` with an in-memory
-   database.
+1. `main` calls `WidgetsFlutterBinding.ensureInitialized` and runs `LumenApp` with the encrypted
+   SQLCipher database, or an in-memory one if the keystore fails.
 2. `LumenApp` creates the repositories, loads the stored profile once, and shows the loading screen
    until that finishes.
 3. It builds the router with the initial location `/onboarding` if no profile exists, or `/home`.

@@ -24,8 +24,8 @@ modules that have no stored config, which callers treat as disabled with no cons
 
 | Class | Used by | Notes |
 |---|---|---|
-| `InMemoryAppDatabase` | `main()` and every test | Keeps data in memory only |
-| `SqlCipherAppDatabase` | Not wired in yet | Encrypted at rest with SQLCipher via `sqflite_sqlcipher` |
+| `InMemoryAppDatabase` | Every test, and the fallback if the keystore fails | Keeps data in memory only |
+| `SqlCipherAppDatabase` | `main()` since v0.6.0 | Encrypted at rest with SQLCipher via `sqflite_sqlcipher` |
 
 ### Why SQLCipher is not wired in
 

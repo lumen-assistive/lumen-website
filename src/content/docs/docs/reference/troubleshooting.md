@@ -66,7 +66,7 @@ exists yet.
 
 ## My settings disappear on restart
 
-Expected today: the app uses in-memory storage. See [Storage](/docs/app/storage/).
+Since v0.6.0 they should persist. If they do not, the Android keystore may have failed and the app fell back to memory. Also uninstall 0.5.0 before installing 0.6.0. See [Storage](/docs/app/storage/).
 
 ## The commit hook is ignored
 

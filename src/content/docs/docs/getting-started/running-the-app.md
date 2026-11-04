@@ -33,11 +33,9 @@ flutter run
 
 ## Things that are deliberately not there
 
-- **Persistence.** The app starts on `InMemoryAppDatabase`, so nothing you set survives a restart.
-  The encrypted `SqlCipherAppDatabase` exists but needs a per-device passphrase source and a
-  documents directory path before it can be wired in. See [Storage](/docs/app/storage/).
-- **Live sensors.** Tools take pasted text or preset sample data, not camera, microphone or
-  accelerometer input.
+- **Camera and microphone.** Vision and Hearing take pasted text or preset sample data. Safety and
+  Mobility can use the live accelerometer. Data persists in an encrypted database, see
+  [Storage](/docs/app/storage/).
 - **Real SMS.** The SOS tool counts down for five seconds and then reports a message ready to send
   through a fake sender. No message is ever sent.
 

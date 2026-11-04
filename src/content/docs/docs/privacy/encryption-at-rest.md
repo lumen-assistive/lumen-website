@@ -28,14 +28,14 @@ storing it securely.
 
 ## What runs today
 
-`main()` constructs `InMemoryAppDatabase`. Nothing is written to disk and nothing survives a restart. This
-was chosen over shipping a build that crashes on launch or fakes persistence it does not have.
+Since v0.6.0, `main()` opens `SqlCipherAppDatabase` in the app documents directory. The passphrase is
+generated per device and held in the Android keystore through `flutter_secure_storage`. If that fails the
+app falls back to `InMemoryAppDatabase`.
 
 ## Verification status
 
-`SqlCipherAppDatabase` is not covered by the test suite, because `flutter test` has no platform channel
-and SQLCipher needs a real device, emulator or desktop runtime. It has not been verified end to end. It
-should be reviewed with extra care and exercised on a device before being wired in.
+`SqlCipherAppDatabase` is not covered by `flutter test`, which has no platform channel. It was verified in
+an Android 15 emulator: state survived killing the app. It has not been tried on a physical phone.
 
 ## What encryption at rest does and does not give
 

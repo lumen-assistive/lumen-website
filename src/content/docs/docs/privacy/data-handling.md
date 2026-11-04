@@ -24,8 +24,7 @@ device.
 | `ModuleConfig` | Per module enabled and consent flags | `AppDatabase` |
 | Module working state | Phrase usage, flashcards, people, reminders, calendar, status | Memory only, not persisted |
 
-The production database implementation is encrypted at rest with SQLCipher, but the running app uses an
-in-memory database today, so nothing survives a restart. See [Storage](/docs/app/storage/) and
+The production database implementation is encrypted at rest with SQLCipher, and since v0.6.0 the running app uses it, with the passphrase held in the Android keystore. See [Storage](/docs/app/storage/) and
 [Encryption at rest](/docs/privacy/encryption-at-rest/).
 
 ## What leaves the device, and when
