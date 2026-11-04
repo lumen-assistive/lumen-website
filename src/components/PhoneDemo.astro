@@ -1,213 +1,1337 @@
 ---
-// A simulated Lumen home screen inside a phone frame. The module list and
-// descriptions are the same real data as the Modules page (see
-// src/lib/modules.ts). Every one of the eight modules below runs real
-// compiled plugin logic from /demo/lumen-demo.js (wired up by the parent
-// page): nothing here is a reimplementation or a static mockup screenshot.
-import { getModules } from '../lib/modules';
-import { MODULE_ICONS, MODULE_COLORS } from '../lib/moduleVisuals';
+// The interactive demo: a phone running a faithful HTML/CSS port of the real
+// Flutter app (lumen-app), wired to the real plugin logic compiled to
+// JavaScript (public/demo/lumen-demo.js, built from tools/web-demo).
+//
+// Everything the phone shows comes from three real sources, embedded below as
+// data for public/demo/phone.js to render:
+//  - appStrings.json: the app's exact English UI strings, extracted from
+//    lumen-app/lib/src/l10n/app_strings.dart by tools/web-demo/extract_strings.py;
+//  - the palette from lumen-app/lib/src/theme/app_colors.dart;
+//  - the per-module icons, identical to the app's `ModuleIcon` geometry.
+import strings from '../lib/appStrings.json';
+import { MODULE_ICONS } from '../lib/moduleVisuals';
 
-const modules = await getModules();
+// lumen-app/lib/src/theme/app_colors.dart: AppColors.moduleColors.
+const colors = {
+  vision: '#22B8D4',
+  hearing: '#9D7CF5',
+  safety: '#F2637B',
+  family: '#F070AC',
+  speech: '#F3914F',
+  reading: '#4FCB7C',
+  memory: '#8B93F7',
+  mobility: '#D9A93B',
+};
+
+// lumen-app/lib/src/onboarding/module_catalog.dart: fixed display order.
+const modules = [
+  ['vision', 'moduleNameVision', 'moduleDescriptionVision'],
+  ['hearing', 'moduleNameHearing', 'moduleDescriptionHearing'],
+  ['safety', 'moduleNameSafety', 'moduleDescriptionSafety'],
+  ['family', 'moduleNameFamily', 'moduleDescriptionFamily'],
+  ['speech', 'moduleNameSpeech', 'moduleDescriptionSpeech'],
+  ['reading', 'moduleNameReading', 'moduleDescriptionReading'],
+  ['memory', 'moduleNameMemory', 'moduleDescriptionMemory'],
+  ['mobility', 'moduleNameMobility', 'moduleDescriptionMobility'],
+].map(([id, nameKey, descriptionKey]) => ({ id, nameKey, descriptionKey }));
+
+const data = { strings, colors, modules, icons: MODULE_ICONS };
 ---
 
-<div class="phone-demo">
-  <div class="phone">
-    <div class="phone-side-button phone-side-power" aria-hidden="true"></div>
-    <div class="phone-side-button phone-side-volume-up" aria-hidden="true"></div>
-    <div class="phone-side-button phone-side-volume-down" aria-hidden="true"></div>
-
-    <div class="phone-notch" aria-hidden="true"></div>
-    <div class="phone-statusbar" aria-hidden="true">
-      <span>9:41</span>
-      <span class="phone-statusbar-icons">
-        <svg viewBox="0 0 24 24" width="15" height="11">
-          <path d="M2 9 Q12 0 22 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
-          <circle cx="12" cy="9.5" r="1.3" fill="currentColor" />
-        </svg>
-        <svg viewBox="0 0 24 24" width="20" height="11">
-          <rect x="1" y="1.5" width="18" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="1.3" />
-          <rect x="20" y="4" width="1.6" height="3" fill="currentColor" />
-          <rect x="2.3" y="2.8" width="13" height="5.4" fill="currentColor" />
-        </svg>
-      </span>
-    </div>
-
-    <div class="phone-screen" role="group" aria-label="Simulated Lumen app">
-      <header class="phone-app-header">
-        <svg class="phone-mark" viewBox="0 0 48 48" aria-hidden="true">
-          <path d="M 33.2 10.9 A 16 16 0 1 1 14.8 10.9" />
-        </svg>
-        <span>Lumen</span>
-      </header>
-
-      <div class="phone-view" data-view="home">
-        <p class="phone-view-title" tabindex="-1">Your modules</p>
-        {modules.map((mod) => (
-          <button class="phone-row" type="button" data-open={mod.id} aria-label={`Open ${mod.nameEn}`}>
-            <span
-              class="phone-row-icon"
-              style={`--module-color: ${MODULE_COLORS[mod.id] ?? 'var(--lumen)'}`}
-              set:html={`<svg viewBox="0 0 24 24">${MODULE_ICONS[mod.id]}</svg>`}
-            />
-            <span class="phone-row-name">{mod.nameEn}</span>
-            <span class={`phone-row-status ${mod.repoUrl ? 'available' : 'planned'}`}>
-              {mod.repoUrl ? 'Available' : 'Planned'}
-            </span>
-          </button>
-        ))}
+<div class="lp-demo" id="lumen-demo-root">
+  <div class="lp-stage" id="lumen-demo-stage">
+    <div class="lp-device" id="lumen-demo-device">
+      <span class="lp-side lp-side-power" aria-hidden="true"></span>
+      <span class="lp-side lp-side-up" aria-hidden="true"></span>
+      <span class="lp-side lp-side-down" aria-hidden="true"></span>
+      <div class="lp-screen" id="lumen-demo" role="group" aria-label="Interactive Lumen app demo">
+        <noscript>
+          <p class="lp-noscript">
+            The demo runs the real plugin logic in your browser and needs JavaScript. Without it,
+            see the <a href="/screenshots/">screenshots</a> of the same screens.
+          </p>
+        </noscript>
       </div>
-
-      {modules.map((mod) => (
-        <div class="phone-view" data-view={mod.id} hidden>
-          <button class="phone-back" type="button" data-back>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
-            Modules
-          </button>
-          <h3 class="phone-module-title" style={`--module-color: ${MODULE_COLORS[mod.id] ?? 'var(--lumen)'}`}>
-            {mod.nameEn}
-          </h3>
-          {mod.description && <p class="phone-module-desc">{mod.description}</p>}
-
-          {mod.id === 'vision' && (
-            <Fragment>
-              <div class="phone-tool">
-                <p class="phone-tool-label">Expiry date reader</p>
-                <textarea id="expiry-input" rows="2">Da consumarsi preferibilmente entro il 25/12/2026</textarea>
-                <button class="phone-tool-run" type="button" id="expiry-run">Find date</button>
-                <p class="phone-tool-output" id="expiry-output" aria-live="polite"></p>
-              </div>
-              <div class="phone-tool">
-                <p class="phone-tool-label">Color namer</p>
-                <div class="phone-tool-row">
-                  <input id="color-r" type="number" min="0" max="255" value="225" aria-label="Red, 0 to 255" />
-                  <input id="color-g" type="number" min="0" max="255" value="25" aria-label="Green, 0 to 255" />
-                  <input id="color-b" type="number" min="0" max="255" value="15" aria-label="Blue, 0 to 255" />
-                </div>
-                <button class="phone-tool-run" type="button" id="color-run">Name color</button>
-                <p class="phone-tool-output" id="color-output" aria-live="polite"></p>
-              </div>
-              <div class="phone-tool">
-                <p class="phone-tool-label">Contrast checker</p>
-                <p class="phone-tool-note">Checks the color above against a white and a black background.</p>
-                <button class="phone-tool-run" type="button" id="contrast-run">Check contrast</button>
-                <p class="phone-tool-output" id="contrast-output" aria-live="polite"></p>
-              </div>
-            </Fragment>
-          )}
-
-          {mod.id === 'hearing' && (
-            <div class="phone-tool">
-              <p class="phone-tool-label">Transcript summarizer</p>
-              <textarea id="summary-input" rows="3">Il gatto dorme sul divano. Il cane corre in giardino con il gatto. Oggi piove molto a Milano. Il gatto e il cane giocano insieme in giardino.</textarea>
-              <button class="phone-tool-run" type="button" id="summary-run">Summarize</button>
-              <p class="phone-tool-output" id="summary-output" aria-live="polite"></p>
-            </div>
-          )}
-
-          {mod.id === 'safety' && (
-            <div class="phone-tool">
-              <p class="phone-tool-label">Scam message checker</p>
-              <textarea id="scam-input" rows="2">Il tuo conto e bloccato. Invia subito il codice OTP per sbloccarlo.</textarea>
-              <button class="phone-tool-run" type="button" id="scam-run">Check message</button>
-              <p class="phone-tool-output" id="scam-output" aria-live="polite"></p>
-            </div>
-          )}
-
-          {mod.id === 'family' && (
-            <Fragment>
-              <div class="phone-tool">
-                <p class="phone-tool-label">Caregiver pairing code</p>
-                <button class="phone-tool-run" type="button" id="pairing-run">Generate pairing code</button>
-                <p class="phone-tool-output" id="pairing-output" aria-live="polite"></p>
-              </div>
-              <div class="phone-tool">
-                <p class="phone-tool-label">Today's status</p>
-                <div class="phone-tool-row">
-                  <button class="phone-tool-run" type="button" id="status-ok-run">All ok</button>
-                  <button class="phone-tool-run secondary" type="button" id="status-attention-run">Needs attention</button>
-                </div>
-                <p class="phone-tool-output" id="status-output" aria-live="polite">No status set for today yet</p>
-              </div>
-            </Fragment>
-          )}
-
-          {mod.id === 'speech' && (
-            <div class="phone-tool">
-              <p class="phone-tool-label">Phrase board</p>
-              <div class="phone-chip-row" id="phrase-chips" aria-label="Quick phrases"></div>
-              <p class="phone-tool-note">Tapping a phrase records its use and adds it to the sentence below; the top suggestions rank phrases by how recently and often they were used.</p>
-              <p class="phone-tool-output" id="phrase-output" aria-live="polite">No phrase used yet.</p>
-              <div class="phone-tool-row">
-                <button class="phone-tool-run" type="button" id="sentence-build-run">Build sentence</button>
-                <button class="phone-tool-run secondary" type="button" id="sentence-clear-run">Clear</button>
-              </div>
-              <p class="phone-tool-output" id="sentence-output" aria-live="polite">No phrase selected yet.</p>
-            </div>
-          )}
-
-          {mod.id === 'reading' && (
-            <Fragment>
-              <div class="phone-tool">
-                <p class="phone-tool-label">Syllable splitter</p>
-                <textarea id="syllable-input" rows="1">patria</textarea>
-                <button class="phone-tool-run" type="button" id="syllable-run">Split into syllables</button>
-                <p class="phone-tool-output" id="syllable-output" aria-live="polite"></p>
-              </div>
-              <div class="phone-tool">
-                <p class="phone-tool-label">Flashcard review</p>
-                <p class="phone-flashcard">What is the capital of Italy?</p>
-                <p class="phone-tool-note">Rate how well you recalled it; the schedule below follows the SM-2 algorithm.</p>
-                <div class="phone-chip-row" id="flashcard-buttons" aria-label="Recall quality, 0 to 5"></div>
-                <p class="phone-tool-output" id="flashcard-output" aria-live="polite">Not reviewed yet.</p>
-              </div>
-            </Fragment>
-          )}
-
-          {mod.id === 'memory' && (
-            <Fragment>
-              <div class="phone-tool">
-                <p class="phone-tool-label">Add a person</p>
-                <input id="person-name" type="text" placeholder="Name" value="Maria" />
-                <input id="person-relationship" type="text" placeholder="Relationship" value="daughter" />
-                <label class="phone-checkbox-row">
-                  <input id="person-consent" type="checkbox" />
-                  Consent to future on-device recognition
-                </label>
-                <button class="phone-tool-run" type="button" id="person-run">Add person</button>
-                <p class="phone-tool-output" id="person-output" aria-live="polite">No one added yet.</p>
-              </div>
-              <div class="phone-tool">
-                <p class="phone-tool-label">Add a reminder</p>
-                <input id="reminder-title" type="text" placeholder="Reminder" value="Take medicine" />
-                <div class="phone-tool-row">
-                  <input id="reminder-minutes" type="number" min="0" value="0" aria-label="Minutes from now" />
-                  <select id="reminder-recurrence" aria-label="Recurrence">
-                    <option value="none">One time</option>
-                    <option value="daily">Daily</option>
-                    <option value="weekly">Weekly</option>
-                  </select>
-                </div>
-                <button class="phone-tool-run" type="button" id="reminder-run">Add reminder</button>
-                <p class="phone-tool-output" id="reminder-output" aria-live="polite">No reminders due.</p>
-              </div>
-            </Fragment>
-          )}
-
-          {mod.id === 'mobility' && (
-            <div class="phone-tool">
-              <p class="phone-tool-label">Gait stability monitor</p>
-              <p class="phone-tool-note">Simulates a window of accelerometer samples, since there is no live sensor in a browser.</p>
-              <div class="phone-tool-row">
-                <button class="phone-tool-run" type="button" id="gait-steady-run">Simulate steady walk</button>
-                <button class="phone-tool-run secondary" type="button" id="gait-unsteady-run">Simulate unsteady walk</button>
-              </div>
-              <p class="phone-tool-output" id="gait-output" aria-live="polite"></p>
-            </div>
-          )}
-        </div>
-      ))}
     </div>
-
-    <div class="phone-home-indicator" aria-hidden="true"></div>
   </div>
+  <p class="lp-controls">
+    <button type="button" class="lp-restart" id="lumen-demo-restart">Restart the demo</button>
+    <span class="lp-hint">Scroll inside the phone. Escape goes back.</span>
+  </p>
+  <script type="application/json" id="lumen-demo-data" set:html={JSON.stringify(data)} />
 </div>
+
+<style is:global>
+  /* ---- Stage and device ------------------------------------------------ */
+  .lp-demo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem 0 2rem;
+  }
+
+  .lp-stage {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow-x: clip;
+    overflow-clip-margin: 80px;
+    /* Height is set by phone.js from the scaled device height. */
+  }
+
+  .lp-device {
+    position: relative;
+    flex: none;
+    width: 414px;
+    padding: 12px;
+    border-radius: 58px;
+    background: #090806;
+    box-shadow:
+      inset 0 0 0 1px #3a3424,
+      0 0 0 1px #1c1810,
+      0 40px 120px -30px rgba(245, 185, 66, 0.35),
+      0 24px 60px -20px rgba(0, 0, 0, 0.8);
+    transform-origin: top center;
+  }
+
+  .lp-side {
+    position: absolute;
+    width: 4px;
+    border-radius: 2px;
+    background: #1c1810;
+  }
+
+  .lp-side-power {
+    right: -4px;
+    top: 150px;
+    height: 80px;
+  }
+
+  .lp-side-up {
+    left: -4px;
+    top: 130px;
+    height: 56px;
+  }
+
+  .lp-side-down {
+    left: -4px;
+    top: 200px;
+    height: 56px;
+  }
+
+  .lp-device.lp-compact {
+    width: 390px;
+    padding: 0;
+    border-radius: 30px;
+  }
+
+  .lp-device.lp-compact .lp-side {
+    display: none;
+  }
+
+  /* ---- Screen: tokens mirror lumen-app/lib/src/theme/app_colors.dart --- */
+  .lp-screen {
+    --bg: #0d0b08;
+    --surface: #17140f;
+    --raised: #221e16;
+    --text: #f3efe2;
+    --muted: #b7ae99;
+    --border: #3a3424;
+    --amber: #e3a94a;
+    --glow: #f5b942;
+    --warning: #e8a33d;
+    --primary-container: #614000;
+    --on-primary-container: #ffddaf;
+    --accent: var(--amber);
+    --ts: 1;
+
+    --fs-display-s: calc(36px * var(--ts));
+    --fs-headline-m: calc(28px * var(--ts));
+    --fs-headline-s: calc(24px * var(--ts));
+    --fs-title-l: calc(22px * var(--ts));
+    --fs-title-m: calc(16px * var(--ts));
+    --fs-body-l: calc(16px * var(--ts));
+    --fs-body-m: calc(14px * var(--ts));
+    --fs-body-s: calc(12px * var(--ts));
+
+    position: relative;
+    width: 390px;
+    height: 800px;
+    overflow: hidden;
+    border-radius: 46px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: var(--fs-body-m);
+    line-height: 1.43;
+    letter-spacing: 0.25px;
+    -webkit-font-smoothing: antialiased;
+    isolation: isolate;
+  }
+
+  .lp-compact .lp-screen {
+    border-radius: 30px;
+  }
+
+  .lp-screen *,
+  .lp-screen *::before,
+  .lp-screen *::after {
+    box-sizing: border-box;
+  }
+
+  /* Resets use :where() so they never outrank the component classes below. */
+  :where(.lp-screen) :is(button, input, select, textarea) {
+    font: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+  }
+
+  :where(.lp-screen) :is(p, h1, h2, h3) {
+    margin: 0;
+    max-width: none;
+  }
+
+  .lp-screen :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .lp-noscript {
+    padding: 80px 24px;
+    text-align: center;
+  }
+
+  /* ---- System status bar (device chrome, not part of the app) --------- */
+  .lp-status {
+    position: absolute;
+    z-index: 30;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    padding: 12px 28px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0;
+    pointer-events: none;
+    color: var(--text);
+  }
+
+  .lp-status-icons {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .lp-notch {
+    position: absolute;
+    z-index: 31;
+    top: 10px;
+    left: 50%;
+    width: 96px;
+    height: 26px;
+    transform: translateX(-50%);
+    border-radius: 14px;
+    background: #000;
+    pointer-events: none;
+  }
+
+  /* ---- Pages ----------------------------------------------------------- */
+  .lp-page {
+    position: absolute;
+    inset: 0;
+    padding-top: 40px;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+  }
+
+  .lp-page[hidden] {
+    display: none;
+  }
+
+  .lp-glow {
+    position: absolute;
+    z-index: 0;
+    top: -300px;
+    left: -200px;
+    right: -200px;
+    height: 700px;
+    pointer-events: none;
+    background: radial-gradient(
+      circle 350px at 50% 350px,
+      color-mix(in srgb, var(--glow-color, var(--glow)) var(--glow-alpha, 30%), transparent),
+      transparent
+    );
+  }
+
+  .lp-appbar {
+    position: relative;
+    z-index: 2;
+    flex: none;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+  }
+
+  .lp-appbar-title {
+    margin-left: 16px;
+    font-size: calc(26px * var(--ts));
+    font-weight: 700;
+    letter-spacing: -0.4px;
+    line-height: 1.2;
+  }
+
+  .lp-scroll {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+  }
+
+  .lp-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .lp-list {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .lp-iconbtn {
+    flex: none;
+    width: 48px;
+    height: 48px;
+    display: inline-grid;
+    place-items: center;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--raised);
+    cursor: pointer;
+    transition: background-color 160ms ease;
+  }
+
+  .lp-iconbtn:hover {
+    background: #2a251b;
+  }
+
+  .lp-iconbtn svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+  }
+
+  /* ---- Entrance motion: FadeSlideIn in the app ------------------------- */
+  @keyframes lp-in {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .lp-page.lp-enter .lp-card,
+  .lp-page.lp-enter .lp-home-card,
+  .lp-page.lp-enter .lp-phrase {
+    animation: lp-in 420ms cubic-bezier(0.215, 0.61, 0.355, 1) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lp-page.lp-enter .lp-card,
+    .lp-page.lp-enter .lp-home-card,
+    .lp-page.lp-enter .lp-phrase {
+      animation: none;
+    }
+  }
+
+  /* ---- Glow badge: ModuleGlowBadge ------------------------------------ */
+  .lp-badge {
+    flex: none;
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: var(--d);
+    height: var(--d);
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--c);
+    border: 1px solid color-mix(in srgb, var(--c) 45%, transparent);
+    box-shadow: 0 0 calc(var(--d) * 0.6) calc(var(--d) * 0.05)
+      color-mix(in srgb, var(--c) 35%, transparent);
+  }
+
+  .lp-badge svg {
+    width: calc(var(--d) * 0.46);
+    height: calc(var(--d) * 0.46);
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .lp-mark {
+    flex: none;
+    fill: none;
+    stroke-linecap: round;
+  }
+
+  /* ---- Home ------------------------------------------------------------ */
+  .lp-home-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px 0;
+  }
+
+  .lp-home-top .lp-iconbtn {
+    margin-left: auto;
+  }
+
+  .lp-wordmark {
+    font-size: var(--fs-title-l);
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    line-height: 1.27;
+  }
+
+  .lp-home-body {
+    padding: 28px 20px 32px;
+  }
+
+  .lp-headline {
+    font-size: var(--fs-display-s);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -1px;
+  }
+
+  .lp-subtitle {
+    margin-top: 12px;
+    font-size: var(--fs-body-l);
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+  }
+
+  .lp-section-label {
+    margin-top: 32px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: var(--fs-body-m);
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .lp-count {
+    padding: 2px 10px;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    background: var(--raised);
+    color: var(--text);
+    font-size: var(--fs-body-s);
+    letter-spacing: 0.5px;
+    font-weight: 400;
+  }
+
+  .lp-home-list {
+    margin-top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .lp-home-card {
+    appearance: none;
+    width: 100%;
+    min-height: 88px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 16px;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 24px;
+    border: 1px solid color-mix(in srgb, var(--c) 28%, transparent);
+    background: linear-gradient(
+      to right,
+      color-mix(in srgb, var(--c) 16%, transparent),
+      var(--surface)
+    );
+    transition: filter 160ms ease, transform 160ms ease;
+  }
+
+  .lp-home-card:hover {
+    filter: brightness(1.12);
+  }
+
+  .lp-home-card:active {
+    transform: scale(0.99);
+  }
+
+  .lp-home-card-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .lp-home-card-name {
+    display: block;
+    font-size: var(--fs-title-m);
+    font-weight: 700;
+    line-height: 1.5;
+    letter-spacing: 0.15px;
+  }
+
+  .lp-home-card-desc {
+    display: block;
+    margin-top: 2px;
+    font-size: var(--fs-body-s);
+    line-height: 1.33;
+    letter-spacing: 0.4px;
+    color: var(--muted);
+  }
+
+  .lp-home-card svg.lp-arrow {
+    flex: none;
+    width: 24px;
+    height: 24px;
+    fill: var(--c);
+  }
+
+  .lp-empty {
+    padding: 32px 0;
+    text-align: center;
+    font-size: var(--fs-title-m);
+    line-height: 1.5;
+  }
+
+  /* ---- Module screens: ModuleScope + ModuleHeader + ModuleNote ---------- */
+  .lp-module {
+    --accent: var(--c);
+    --glow-color: var(--c);
+    --glow-alpha: 28%;
+  }
+
+  .lp-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 26px 22px;
+    border-radius: 32px;
+    border: 1px solid color-mix(in srgb, var(--c) 35%, transparent);
+    background: linear-gradient(
+      to bottom right,
+      color-mix(in srgb, var(--c) 30%, transparent),
+      color-mix(in srgb, var(--c) 6%, transparent)
+    );
+  }
+
+  .lp-header-name {
+    font-size: var(--fs-headline-m);
+    font-weight: 700;
+    line-height: 1.29;
+    letter-spacing: -0.3px;
+  }
+
+  .lp-header-desc {
+    margin-top: 4px;
+    font-size: var(--fs-body-m);
+    letter-spacing: 0.25px;
+    color: var(--muted);
+  }
+
+  .lp-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+  }
+
+  .lp-note svg {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    fill: var(--muted);
+  }
+
+  .lp-note p {
+    font-size: var(--fs-body-s);
+    line-height: 1.45;
+    letter-spacing: 0.4px;
+    color: var(--muted);
+  }
+
+  /* ---- ToolCard --------------------------------------------------------- */
+  .lp-card {
+    padding: 20px 20px 22px;
+    border-radius: 28px;
+    background: var(--surface);
+    border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+  }
+
+  .lp-card-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .lp-card-title::before {
+    content: '';
+    flex: none;
+    width: 5px;
+    height: 22px;
+    border-radius: 3px;
+    background: var(--accent);
+  }
+
+  .lp-card-title h3 {
+    font-size: var(--fs-title-m);
+    font-weight: 700;
+    line-height: 1.5;
+    letter-spacing: -0.2px;
+  }
+
+  .lp-gap-12 {
+    margin-top: 12px;
+  }
+
+  .lp-gap-8 {
+    margin-top: 8px;
+  }
+
+  .lp-text {
+    font-size: var(--fs-body-m);
+    line-height: 1.43;
+    letter-spacing: 0.25px;
+  }
+
+  .lp-text-row {
+    margin-top: 8px;
+  }
+
+  /* ---- Text fields: filled, rounded, floating label on the border ------- */
+  .lp-field {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .lp-field input,
+  .lp-field textarea {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    background: var(--raised);
+    font-size: var(--fs-body-l);
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+    resize: none;
+    overflow: hidden;
+  }
+
+  .lp-field input {
+    height: 56px;
+  }
+
+  .lp-field input:focus,
+  .lp-field textarea:focus {
+    outline: none;
+    border: 2px solid var(--accent);
+    padding: 15px;
+  }
+
+  .lp-field label {
+    position: absolute;
+    left: 12px;
+    top: -9px;
+    padding: 0 4px;
+    font-size: var(--fs-body-s);
+    line-height: 1.33;
+    letter-spacing: 0.4px;
+    color: var(--muted);
+    background: var(--surface);
+    pointer-events: none;
+    transition: all 120ms ease;
+    max-width: calc(100% - 24px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .lp-field input:placeholder-shown:not(:focus) + label,
+  .lp-field textarea:placeholder-shown:not(:focus) + label {
+    top: 16px;
+    left: 16px;
+    padding: 0;
+    font-size: var(--fs-body-l);
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+    background: transparent;
+  }
+
+  .lp-field input:focus + label,
+  .lp-field textarea:focus + label {
+    color: var(--accent);
+  }
+
+  .lp-fields-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  /* ---- Buttons ----------------------------------------------------------- */
+  .lp-btn {
+    appearance: none;
+    width: 100%;
+    min-height: 54px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 28px;
+    /* A stadium for the usual 54px height; stays a rounded bar when large text wraps the label. */
+    border-radius: 27px;
+    border: 1px solid transparent;
+    font-size: calc(16px * var(--ts));
+    font-weight: 700;
+    line-height: 1.5;
+    letter-spacing: 0.15px;
+    cursor: pointer;
+    transition: filter 160ms ease, transform 160ms ease, background-color 160ms ease;
+  }
+
+  .lp-btn span {
+    text-align: left;
+  }
+
+  .lp-btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  .lp-btn-tonal {
+    padding: 0 16px;
+    color: var(--text);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+
+  .lp-btn-plain {
+    padding: 0 16px;
+    color: var(--text);
+    background: var(--raised);
+    border-color: var(--border);
+  }
+
+  .lp-btn:hover:not(:disabled) {
+    filter: brightness(1.1);
+  }
+
+  .lp-btn:active:not(:disabled) {
+    transform: scale(0.985);
+  }
+
+  .lp-btn:disabled {
+    cursor: default;
+  }
+
+  .lp-btn-primary:disabled {
+    background: color-mix(in srgb, var(--text) 12%, transparent);
+    color: color-mix(in srgb, var(--text) 38%, transparent);
+  }
+
+  .lp-btn-tonal:disabled,
+  .lp-btn-plain:disabled {
+    background: transparent;
+    border-color: color-mix(in srgb, var(--text) 12%, transparent);
+    color: color-mix(in srgb, var(--text) 38%, transparent);
+  }
+
+  .lp-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  .lp-row > * {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .lp-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* ---- ToolOutput -------------------------------------------------------- */
+  .lp-out {
+    margin-top: 14px;
+    display: flex;
+    overflow: hidden;
+    border-radius: 18px;
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+
+  .lp-out[hidden] {
+    display: none;
+  }
+
+  .lp-out::before {
+    content: '';
+    flex: none;
+    width: 4px;
+    background: var(--accent);
+  }
+
+  .lp-out p {
+    flex: 1;
+    min-width: 0;
+    padding: 16px;
+    font-size: var(--fs-body-l);
+    line-height: 1.4;
+    letter-spacing: 0.5px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .lp-swatch {
+    margin-top: 8px;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  .lp-swatch[hidden] {
+    display: none;
+  }
+
+  /* ---- Dropdown: StyledDropdown ----------------------------------------- */
+  .lp-select {
+    position: relative;
+  }
+
+  .lp-select select {
+    appearance: none;
+    width: 100%;
+    height: 50px;
+    padding: 0 44px 0 16px;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    background: var(--raised);
+    font-size: var(--fs-body-l);
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    color-scheme: dark;
+  }
+
+  .lp-select svg {
+    position: absolute;
+    right: 12px;
+    top: 13px;
+    width: 24px;
+    height: 24px;
+    fill: var(--muted);
+    pointer-events: none;
+  }
+
+  /* ---- Checkbox and switch tiles ---------------------------------------- */
+  .lp-check {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 56px;
+    cursor: pointer;
+    font-size: var(--fs-body-l);
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+  }
+
+  .lp-check input {
+    appearance: none;
+    flex: none;
+    width: 18px;
+    height: 18px;
+    margin: 0 15px 0 0;
+    border-radius: 2px;
+    border: 2px solid color-mix(in srgb, var(--text) 82%, transparent);
+    background: transparent;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+
+  .lp-check input:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .lp-check input:checked::after {
+    content: '';
+    width: 5px;
+    height: 10px;
+    margin-top: -2px;
+    border: solid var(--bg);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  /* ---- Chips ------------------------------------------------------------- */
+  .lp-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .lp-chip {
+    appearance: none;
+    min-height: 34px;
+    padding: 0 14px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    font-size: var(--fs-body-m);
+    font-weight: 700;
+    letter-spacing: 0.1px;
+    color: var(--text);
+  }
+
+  button.lp-chip {
+    cursor: pointer;
+    transition: filter 160ms ease, transform 160ms ease;
+  }
+
+  button.lp-chip:hover {
+    filter: brightness(1.15);
+  }
+
+  button.lp-chip:active {
+    transform: scale(0.96);
+  }
+
+  .lp-phrase {
+    padding: 36px 24px;
+    border-radius: 32px;
+    text-align: center;
+    font-size: var(--fs-headline-m);
+    font-weight: 700;
+    line-height: 1.29;
+    letter-spacing: 0;
+    color: var(--bg);
+    background: linear-gradient(
+      to bottom right,
+      var(--accent),
+      color-mix(in srgb, var(--accent) 65%, transparent)
+    );
+  }
+
+  .lp-phrase[hidden] {
+    display: none;
+  }
+
+  .lp-flashcard {
+    align-self: flex-start;
+    margin-bottom: 8px;
+    padding: 16px;
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    background: var(--primary-container);
+    color: var(--on-primary-container);
+    font-size: var(--fs-title-m);
+    line-height: 1.5;
+    letter-spacing: 0.15px;
+  }
+
+  /* ---- Onboarding --------------------------------------------------------- */
+  .lp-onboarding {
+    --glow-color: var(--glow);
+    --glow-alpha: 28%;
+    padding-bottom: 24px;
+  }
+
+  .lp-ob-head {
+    position: relative;
+    z-index: 1;
+    padding: 16px 24px 0;
+  }
+
+  .lp-ob-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .lp-ob-title {
+    font-size: var(--fs-title-l);
+    font-weight: 700;
+    line-height: 1.27;
+  }
+
+  .lp-ob-step {
+    margin-left: auto;
+    font-size: var(--fs-body-m);
+    font-weight: 700;
+    letter-spacing: 0.1px;
+    color: var(--muted);
+  }
+
+  .lp-progress {
+    margin-top: 16px;
+    display: flex;
+    gap: 6px;
+  }
+
+  .lp-progress span {
+    flex: 1;
+    height: 5px;
+    border-radius: 3px;
+    background: var(--raised);
+    transition: background-color 250ms ease;
+  }
+
+  .lp-progress span.on {
+    background: var(--amber);
+  }
+
+  .lp-ob-body {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    min-height: 0;
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+  }
+
+  .lp-ob-badge {
+    align-self: center;
+    --d: 112px;
+    border-width: 1.5px;
+    border-color: color-mix(in srgb, var(--c) 50%, transparent);
+    box-shadow: 0 0 56px 6px color-mix(in srgb, var(--c) 40%, transparent);
+    margin-bottom: 22px;
+  }
+
+  .lp-ob-badge svg {
+    width: 50px;
+    height: 50px;
+  }
+
+  .lp-question {
+    margin-bottom: 22px;
+    text-align: center;
+    font-size: var(--fs-headline-s);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.4px;
+  }
+
+  .lp-ob-body .lp-btn {
+    min-height: 64px;
+    font-size: calc(19px * var(--ts));
+  }
+
+  .lp-skip {
+    appearance: none;
+    align-self: center;
+    margin-top: 6px;
+    padding: 8px 16px;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    font-size: var(--fs-body-m);
+    color: var(--muted);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .lp-skip:hover {
+    color: var(--text);
+  }
+
+  /* ---- Settings and diagnostics ------------------------------------------ */
+  .lp-set-label {
+    padding: 4px 4px 10px;
+    font-size: var(--fs-body-m);
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .lp-set-label.lp-spaced {
+    padding-top: 28px;
+  }
+
+  .lp-set-card {
+    padding: 8px 0;
+    border-radius: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+
+  .lp-tile {
+    padding: 8px 16px;
+  }
+
+  .lp-tile-title {
+    font-size: var(--fs-body-l);
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+  }
+
+  .lp-tile-sub {
+    font-size: var(--fs-body-m);
+    line-height: 1.43;
+    color: var(--muted);
+  }
+
+  .lp-slider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  .lp-slider output {
+    min-width: 3ch;
+    font-size: var(--fs-body-m);
+    color: var(--muted);
+  }
+
+  .lp-slider input {
+    appearance: none;
+    flex: 1;
+    height: 20px;
+    margin: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .lp-slider input::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+  }
+
+  .lp-slider input::-moz-range-track {
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+  }
+
+  .lp-slider input::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    margin-top: -8px;
+    border-radius: 50%;
+    border: 2px solid var(--surface);
+    background: var(--amber);
+  }
+
+  .lp-slider input::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--surface);
+    background: var(--amber);
+  }
+
+  .lp-set-module {
+    margin-bottom: 12px;
+    padding: 4px 8px;
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    background: linear-gradient(
+      to right,
+      color-mix(in srgb, var(--c) 10%, transparent),
+      var(--surface)
+    );
+  }
+
+  .lp-switch-tile {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 8px;
+    cursor: pointer;
+  }
+
+  .lp-switch-tile .lp-tile-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .lp-switch {
+    appearance: none;
+    flex: none;
+    position: relative;
+    width: 52px;
+    height: 32px;
+    margin: 0;
+    border-radius: 16px;
+    border: 2px solid var(--muted);
+    background: var(--raised);
+    cursor: pointer;
+    transition: background-color 160ms ease, border-color 160ms ease;
+  }
+
+  .lp-switch::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--muted);
+    transition: all 160ms ease;
+  }
+
+  .lp-switch:checked {
+    background: var(--sw, var(--amber));
+    border-color: var(--sw, var(--amber));
+  }
+
+  .lp-switch:checked::after {
+    top: 2px;
+    left: 22px;
+    width: 24px;
+    height: 24px;
+    background: var(--bg);
+  }
+
+  .lp-disclaimer {
+    margin-top: 16px;
+    display: flex;
+    gap: 14px;
+    padding: 18px;
+    border-radius: 24px;
+    border: 1px solid color-mix(in srgb, var(--warning) 40%, transparent);
+    background: color-mix(in srgb, var(--warning) 10%, transparent);
+  }
+
+  .lp-disclaimer svg {
+    flex: none;
+    width: 24px;
+    height: 24px;
+    fill: var(--warning);
+  }
+
+  .lp-disclaimer h3 {
+    font-size: var(--fs-title-m);
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  .lp-disclaimer p {
+    margin-top: 6px;
+    font-size: var(--fs-body-m);
+    color: var(--muted);
+  }
+
+  .lp-nav-tile {
+    appearance: none;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    text-align: left;
+    font-size: var(--fs-body-l);
+    letter-spacing: 0.5px;
+  }
+
+  .lp-nav-tile svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--muted);
+  }
+
+  .lp-diag-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    font-size: var(--fs-body-l);
+    letter-spacing: 0.5px;
+  }
+
+  .lp-diag-row span:last-child {
+    font-size: var(--fs-body-m);
+    color: var(--muted);
+    text-align: right;
+  }
+
+  .lp-divider {
+    height: 1px;
+    margin: 32px 0;
+    background: var(--border);
+  }
+
+  /* ---- Controls under the phone ------------------------------------------ */
+  .lp-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+    margin: 0;
+  }
+
+  .lp-restart {
+    appearance: none;
+    padding: 0.55rem 1.2rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--paper-dim);
+    color: var(--ink);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color 160ms ease, transform 160ms ease;
+  }
+
+  .lp-restart:hover,
+  .lp-restart:focus-visible {
+    border-color: var(--lumen);
+    transform: translateY(-1px);
+  }
+
+  .lp-hint {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+</style>

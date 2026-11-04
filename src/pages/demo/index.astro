@@ -5,242 +5,77 @@ import PhoneDemo from '../../components/PhoneDemo.astro';
 
 <Layout
   title="Demo"
-  description="A simulated Lumen home screen, running the real plugin logic compiled to JavaScript in your browser."
+  description="The Lumen app running in your browser: the same screens, wording and plugin logic as the real app, computed locally."
 >
   <div class="hero page-hero">
     <div class="hero-glow" aria-hidden="true"></div>
     <p class="eyebrow">Demo</p>
-    <h1 class="hero-enter">Try the real logic in your browser</h1>
+    <h1 class="hero-enter">The real app, in your browser</h1>
     <p class="lead hero-enter" style="animation-delay: 160ms">
-      A simulation of Lumen's module host, listing all eight modules exactly as they stand today.
-      Tap an available one to run the real logic from <a href="https://github.com/lumen-assistive/lumen-plugins">lumen-plugins</a>,
-      compiled to JavaScript: nothing below is a mockup screenshot or a reimplementation.
+      This phone is a faithful copy of the Lumen app's screens, running the real logic from
+      <a href="https://github.com/lumen-assistive/lumen-plugins">lumen-plugins</a> compiled to
+      JavaScript. Answer the five onboarding questions, or skip them, then open any of the eight
+      modules and use its tools.
     </p>
   </div>
 
+  <PhoneDemo />
+
   <section>
     <div class="notice">
-      This only demonstrates the parts of each module that do not depend on a camera or
-      microphone, since those native bridges do not exist yet (see <a href="/docs/introduction/status/">project status</a>). Nothing you type here leaves
-      your device: every result is computed locally in your browser, with no network request.
+      Nothing you type leaves your device: every result is computed locally in your browser, with no
+      network request. Like the app itself, this demo only runs the parts of each module that do not
+      need a camera, microphone or motion sensor, since those native bridges do not exist yet (see
+      <a href="/docs/introduction/status/">project status</a>). The SOS tool uses the plugin's fake
+      message sender and can never send a real message, and the fall and walking tools run on
+      simulated sensor readings.
     </div>
   </section>
 
-  <PhoneDemo />
+  <section class="band">
+    <h2>What is real here</h2>
+    <p>
+      The screens follow the Flutter app's own code: the same palette, spacing, components and wording
+      (the English strings are extracted from <code>lumen-app</code>), the same onboarding rules that
+      decide which modules are enabled and which interface mode applies, and the same settings. Every
+      tool calls the real plugin classes: <code>ExpiryDateParser</code>, <code>ColorNamer</code> and
+      <code>ContrastChecker</code> for Vision; <code>Summarizer</code>, <code>CaptionFormatter</code> and
+      <code>AlertPresentationMapper</code> for Hearing; <code>ScamFilter</code>, <code>FallDetector</code>,
+      <code>CheckInScheduler</code> and <code>SosController</code> for Safety;
+      <code>PairingCodeGenerator</code>, <code>InMemoryCalendarStore</code>,
+      <code>DailyStatusTracker</code> and <code>CaregiverNotificationComposer</code> for Family;
+      <code>PhraseBoard</code>, <code>PhraseUsageTracker</code> and <code>SentenceBuilder</code> for
+      Speech; <code>ItalianSyllableSplitter</code>, <code>SpacedRepetitionScheduler</code> and
+      <code>ReadingTimeEstimator</code> for Reading; <code>PersonDirectory</code>,
+      <code>ReminderScheduler</code> and <code>RoutineChecklistTracker</code> for Memory; and
+      <code>GaitStabilityMonitor</code>, <code>MobilityProfile</code> and <code>RestBreakPlanner</code>
+      for Mobility.
+    </p>
+    <p>
+      State lasts for the visit, as in a real session: the flashcard schedule, reminders, people,
+      routine checklist, phrase usage and calendar all persist while you move between screens. Use
+      <strong>Restart the demo</strong> under the phone to go back to onboarding.
+    </p>
+  </section>
 
   <section class="band">
     <h2>How this demo is built</h2>
     <p>
       A small build tool, <a href="https://github.com/lumen-assistive/lumen-website/tree/main/tools/web-demo">tools/web-demo</a>,
-      imports the real business logic of all eight modules, pinned to the same <code>lumen-plugins</code> tag every other consumer uses, and compiles it with <code>dart compile js</code> into the script loaded on this page. The module list and
-      descriptions above are fetched directly from each package's <code>pubspec.yaml</code> at
-      build time, the same data the <a href="/modules/">Modules</a> page uses.
+      imports the business logic of all eight modules, pinned to the same <code>lumen-plugins</code> tag
+      every other consumer uses, and compiles it with <code>dart compile js</code> into the script
+      loaded on this page. The screens themselves are plain HTML, CSS and JavaScript that mirror the
+      app's widgets; they never compute a result on their own.
     </p>
   </section>
 </Layout>
 
-<script is:inline src="/demo/lumen-demo.js"></script>
-<script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
-    const phone = document.querySelector('.phone-demo');
-    if (phone) {
-      const views = phone.querySelectorAll('.phone-view');
-      const showView = (id) => {
-        views.forEach((view) => {
-          view.hidden = view.dataset.view !== id;
-        });
-        const active = phone.querySelector(`.phone-view[data-view="${id}"]`);
-        const focusTarget = active && (active.querySelector('.phone-back') || active.querySelector('.phone-view-title'));
-        if (focusTarget) focusTarget.focus();
-      };
+<script is:inline src="/demo/lumen-demo.js" defer></script>
+<script is:inline src="/demo/phone.js" defer></script>
 
-      phone.querySelectorAll('[data-open]').forEach((row) => {
-        row.addEventListener('click', () => showView(row.dataset.open));
-      });
-
-      phone.querySelectorAll('[data-back]').forEach((button) => {
-        button.addEventListener('click', () => showView('home'));
-      });
-    }
-
-    // A short, deliberate delay before showing a result: real enough to read
-    // as the app actually having done the work, short enough to never feel
-    // slow. The computation itself is already done by the time this fires.
-    const withDelay = (outputEl, render) => {
-      outputEl.classList.add('loading');
-      outputEl.textContent = 'Working...';
-      setTimeout(() => {
-        outputEl.classList.remove('loading');
-        render();
-      }, 180);
-    };
-
-    const run = (buttonId, handler) => {
-      const button = document.getElementById(buttonId);
-      if (button) button.addEventListener('click', handler);
-    };
-
-    run('expiry-run', () => {
-      const text = document.getElementById('expiry-input').value;
-      const output = document.getElementById('expiry-output');
-      withDelay(output, () => { output.textContent = lumenParseExpiry(text); });
-    });
-
-    run('color-run', () => {
-      const r = Number(document.getElementById('color-r').value);
-      const g = Number(document.getElementById('color-g').value);
-      const b = Number(document.getElementById('color-b').value);
-      const output = document.getElementById('color-output');
-      withDelay(output, () => {
-        const name = lumenNameColor(r, g, b);
-        output.innerHTML = '';
-        const swatch = document.createElement('span');
-        swatch.className = 'phone-color-swatch';
-        swatch.style.background = `rgb(${r}, ${g}, ${b})`;
-        output.appendChild(swatch);
-        output.appendChild(document.createTextNode(`Nearest match: ${name}`));
-      });
-    });
-
-    run('contrast-run', () => {
-      const r = Number(document.getElementById('color-r').value);
-      const g = Number(document.getElementById('color-g').value);
-      const b = Number(document.getElementById('color-b').value);
-      const output = document.getElementById('contrast-output');
-      withDelay(output, () => { output.textContent = lumenCheckContrast(r, g, b); });
-    });
-
-    run('scam-run', () => {
-      const text = document.getElementById('scam-input').value;
-      const output = document.getElementById('scam-output');
-      withDelay(output, () => { output.textContent = lumenAssessMessage(text); });
-    });
-
-    run('summary-run', () => {
-      const text = document.getElementById('summary-input').value;
-      const output = document.getElementById('summary-output');
-      withDelay(output, () => { output.textContent = lumenSummarize(text); });
-    });
-
-    run('pairing-run', () => {
-      const output = document.getElementById('pairing-output');
-      withDelay(output, () => { output.textContent = lumenGeneratePairingCode(); });
-    });
-
-    run('status-ok-run', () => {
-      const output = document.getElementById('status-output');
-      withDelay(output, () => { output.textContent = lumenSetDailyStatus('ok'); });
-    });
-
-    run('status-attention-run', () => {
-      const output = document.getElementById('status-output');
-      withDelay(output, () => { output.textContent = lumenSetDailyStatus('needsAttention'); });
-    });
-
-    const phraseChips = document.getElementById('phrase-chips');
-    const phraseOutput = document.getElementById('phrase-output');
-    const sentenceOutput = document.getElementById('sentence-output');
-    const sentencePhraseIds = [];
-    if (phraseChips && typeof lumenPhraseBoardJson === 'function') {
-      const phrases = JSON.parse(lumenPhraseBoardJson());
-      phrases.forEach((phrase) => {
-        const chip = document.createElement('button');
-        chip.type = 'button';
-        chip.className = 'phone-chip';
-        chip.textContent = phrase.textEn;
-        chip.addEventListener('click', () => {
-          lumenRecordPhraseUse(phrase.id);
-          sentencePhraseIds.push(phrase.id);
-          withDelay(phraseOutput, () => {
-            const top = JSON.parse(lumenTopPhraseSuggestionsJson(3));
-            phraseOutput.textContent = `Top suggestions now: ${top.join(', ')}`;
-          });
-        });
-        phraseChips.appendChild(chip);
-      });
-    }
-
-    run('sentence-build-run', () => {
-      if (sentenceOutput) withDelay(sentenceOutput, () => {
-        if (sentencePhraseIds.length === 0) {
-          sentenceOutput.textContent = 'Tap a phrase above first.';
-          return;
-        }
-        const result = JSON.parse(lumenBuildSentenceJson(sentencePhraseIds.join(',')));
-        sentenceOutput.textContent = result.sentence;
-      });
-    });
-
-    run('sentence-clear-run', () => {
-      sentencePhraseIds.length = 0;
-      if (sentenceOutput) sentenceOutput.textContent = 'No phrase selected yet.';
-    });
-
-    run('syllable-run', () => {
-      const word = document.getElementById('syllable-input').value;
-      const output = document.getElementById('syllable-output');
-      withDelay(output, () => { output.textContent = lumenSplitSyllables(word); });
-    });
-
-    const flashcardButtons = document.getElementById('flashcard-buttons');
-    const flashcardOutput = document.getElementById('flashcard-output');
-    let flashcardState = { repetitionCount: 0, intervalDays: 1, easinessFactor: 2.5 };
-    if (flashcardButtons) {
-      for (let quality = 0; quality <= 5; quality++) {
-        const chip = document.createElement('button');
-        chip.type = 'button';
-        chip.className = 'phone-chip';
-        chip.textContent = String(quality);
-        chip.addEventListener('click', () => {
-          withDelay(flashcardOutput, () => {
-            const outcome = JSON.parse(
-              lumenReviewFlashcard(
-                quality,
-                flashcardState.repetitionCount,
-                flashcardState.intervalDays,
-                flashcardState.easinessFactor,
-              ),
-            );
-            flashcardState = outcome;
-            flashcardOutput.textContent =
-              `Next review in ${outcome.intervalDays} day(s), easiness ${outcome.easinessFactor}, ` +
-              `${outcome.repetitionCount} successful review(s) in a row.`;
-          });
-        });
-        flashcardButtons.appendChild(chip);
-      }
-    }
-
-    run('person-run', () => {
-      const name = document.getElementById('person-name').value;
-      const relationship = document.getElementById('person-relationship').value;
-      const consent = document.getElementById('person-consent').checked;
-      const output = document.getElementById('person-output');
-      withDelay(output, () => { output.textContent = lumenAddPerson(name, relationship, consent); });
-    });
-
-    run('reminder-run', () => {
-      const title = document.getElementById('reminder-title').value;
-      const minutes = Number(document.getElementById('reminder-minutes').value);
-      const recurrence = document.getElementById('reminder-recurrence').value;
-      const output = document.getElementById('reminder-output');
-      withDelay(output, () => {
-        lumenAddReminder(title, minutes, recurrence);
-        const due = JSON.parse(lumenDueRemindersJson());
-        output.textContent = due.length
-          ? `Due now: ${due.join(', ')}`
-          : 'Added. Not due yet: try 0 minutes to see it appear here.';
-      });
-    });
-
-    run('gait-steady-run', () => {
-      const output = document.getElementById('gait-output');
-      withDelay(output, () => { output.textContent = lumenAnalyzeGait('steady'); });
-    });
-
-    run('gait-unsteady-run', () => {
-      const output = document.getElementById('gait-output');
-      withDelay(output, () => { output.textContent = lumenAnalyzeGait('unsteady'); });
-    });
-  });
-</script>
+<style>
+  /* Long class names must wrap on phone widths instead of widening the page. */
+  .band code {
+    overflow-wrap: anywhere;
+  }
+</style>
