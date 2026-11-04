@@ -1,0 +1,120 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getModules } from '../../lib/modules';
+import { getPluginAssets } from '../../lib/pluginAssets';
+import { OFFICIAL_COLORS, SPEC } from '../../lib/pluginSpec';
+
+const [modules, assets] = await Promise.all([getModules(), getPluginAssets()]);
+const descriptions = Object.fromEntries(modules.map((m) => [m.id, m.description]));
+const repoUrls = Object.fromEntries(modules.map((m) => [m.id, m.repoUrl]));
+const plugins = assets.map((a) => ({ ...a, description: descriptions[a.id] ?? '', repoUrl: repoUrls[a.id] }));
+---
+
+<Layout
+  title="Plugins"
+  description="The eight official Lumen plugins with their icons and colors, and how to build and submit your own."
+>
+  <div class="hero page-hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <p class="eyebrow">Plugins</p>
+    <h1 class="hero-enter">Plugins</h1>
+    <p class="lead hero-enter" style="animation-delay: 160ms">
+      Every module in Lumen is a plugin with its own icon and its own color. Here are the official
+      ones, and everything you need to build and submit your own.
+    </p>
+    <div class="cta-row hero-enter" style="animation-delay: 300ms">
+      <a class="button primary" href="/plugins/icon-studio/">Open the Icon Studio</a>
+      <a class="button secondary" href="/docs/contributing/plugins/">Plugin guide</a>
+    </div>
+  </div>
+
+  <section class="band">
+    <div class="section-head">
+      <p class="eyebrow">Official plugins</p>
+      <h2>Eight plugins, eight colors</h2>
+      <p>
+        Icons and colors come from each package's <code>plugin.json</code> and <code>icon.svg</code> in
+        {' '}<a href="https://github.com/lumen-assistive/lumen-plugins">lumen-plugins</a>. They are the same
+        ones the app draws on its home screen.
+      </p>
+    </div>
+    <div class="module-detail-grid">
+      {plugins.map((p) => (
+        <article class="module-card module-detail" style={`--module-color: ${p.color}`}>
+          <div class="module-head">
+            <span class="module-icon" aria-hidden="true" set:html={`<svg viewBox="0 0 24 24">${p.iconInner}</svg>`} />
+            <span class="status available">Official</span>
+          </div>
+          <h3>{p.name}</h3>
+          {p.description && <p>{p.description}</p>}
+          <p class="plugin-swatch"><code>{p.id}</code> <code>{p.color}</code></p>
+          <p class="module-links">
+            <a href={`/docs/plugins/${p.id}/`}>Package reference</a>
+            <a href={`/docs/app/modules/${p.id}/`}>App screen</a>
+            {p.repoUrl && <a href={p.repoUrl}>Source</a>}
+          </p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="section-head">
+      <p class="eyebrow">Build your own</p>
+      <h2>From idea to pull request</h2>
+    </div>
+    <ol class="steps">
+      <li><h3>Write the package</h3><p>Follow the <a href="/docs/sdk/writing-a-plugin/">step by step guide</a>. Logic, tests and an honest README about what is and is not implemented.</p></li>
+      <li><h3>Draw the icon</h3><p>Use the <a href="/plugins/icon-studio/">Icon Studio</a> to draw a 24 by 24 line icon and choose a color that is free and readable with ink on top.</p></li>
+      <li><h3>Check it</h3><p>The studio checks every rule live. The same rules run again on your pull request, so a passing studio means a passing check.</p></li>
+      <li><h3>Open the pull request</h3><p>Add <code>icon.svg</code> and <code>plugin.json</code> next to your package, and paste the preview image into the pull request description.</p></li>
+    </ol>
+  </section>
+
+  <section class="band">
+    <div class="section-head">
+      <p class="eyebrow">The rules</p>
+      <h2>What a valid icon and color are</h2>
+    </div>
+    <div class="status-grid">
+      <div class="status-card">
+        <h3>Icon</h3>
+        <ul>
+          <li>An <code>icon.svg</code> with <code>viewBox="0 0 24 24"</code></li>
+          <li>Only svg, g, path, circle, ellipse, rect, line, polyline and polygon</li>
+          <li>Root has <code>fill="none"</code>, <code>stroke="currentColor"</code>, <code>stroke-width="1.6"</code>, round caps and joins</li>
+          <li>No scripts, styles, images, links, ids or transforms</li>
+          <li>Every coordinate inside {SPEC.minCoord} to {SPEC.maxCoord}</li>
+          <li>{SPEC.minShapes} to {SPEC.maxShapes} shapes, at most {SPEC.maxBytes} bytes</li>
+        </ul>
+      </div>
+      <div class="status-card">
+        <h3>Color</h3>
+        <ul>
+          <li>Written as uppercase <code>#RRGGBB</code> in <code>plugin.json</code></li>
+          <li>Ink <code>#1A1815</code> on it has contrast of at least {SPEC.minContrast}:1</li>
+          <li>Colour difference (CIE76 delta E) of at least {SPEC.minDeltaE} from every registered module color and from the paper <code>#F3EEE3</code></li>
+          <li>Taken colors: {Object.entries(OFFICIAL_COLORS).map(([id, c]) => `${id} ${c}`).join(', ')}</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top: 1.25rem">
+      Example <code>plugin.json</code>: <code>{`{ "id": "my-plugin", "name": "My plugin", "color": "#8EE0D0", "icon": "icon.svg" }`}</code>
+    </p>
+  </section>
+
+  <section class="band">
+    <div class="section-head">
+      <p class="eyebrow">Community plugins</p>
+      <h2>None yet</h2>
+      <p>
+        Lumen has no community plugins today. The eight above are the official ones. The first
+        accepted pull request will be listed here with its icon and color.
+      </p>
+    </div>
+    <div class="cta-row">
+      <a class="button primary" href="https://github.com/lumen-assistive/lumen-plugins">lumen-plugins on GitHub</a>
+      <a class="button secondary" href="/docs/contributing/pull-requests/">Opening a pull request</a>
+    </div>
+  </section>
+</Layout>

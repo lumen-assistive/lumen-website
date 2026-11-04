@@ -1,0 +1,256 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { MODULE_COLORS, MODULE_ICONS, MODULE_NAMES } from '../../../lib/moduleVisuals';
+import { OFFICIAL_COLORS, SPEC } from '../../../lib/pluginSpec';
+
+const official = Object.fromEntries(
+  Object.keys(OFFICIAL_COLORS).map((id) => [id, { name: MODULE_NAMES[id], color: MODULE_COLORS[id], inner: MODULE_ICONS[id] }]),
+);
+const tools = [
+  { id: 'select', label: 'Select', key: 'V', hint: 'Select and move shapes' },
+  { id: 'line', label: 'Line', key: 'L', hint: 'Click or drag from one point to another' },
+  { id: 'polyline', label: 'Polyline', key: 'P', hint: 'Click points, then finish. Open shape' },
+  { id: 'polygon', label: 'Polygon', key: 'G', hint: 'Click points, then finish. Closed shape' },
+  { id: 'circle', label: 'Circle', key: 'C', hint: 'Click the center, then a point on the edge' },
+  { id: 'ellipse', label: 'Ellipse', key: 'E', hint: 'Click the center, then a corner of its box' },
+  { id: 'rect', label: 'Rectangle', key: 'R', hint: 'Click one corner, then the opposite corner' },
+];
+---
+
+<Layout
+  title="Icon Studio"
+  description="Draw, check and preview a Lumen plugin icon in your browser, then copy the preview into your pull request."
+>
+  <div class="hero page-hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <p class="eyebrow">Plugins</p>
+    <h1 class="hero-enter">Icon Studio</h1>
+    <p class="lead hero-enter" style="animation-delay: 160ms">
+      Draw your plugin's icon on the same 24 by 24 grid the app uses, pick its color, check it against
+      the rules, and copy a preview image straight into your pull request.
+    </p>
+  </div>
+
+  <section class="band wide studio-steps-band">
+    <ol class="studio-steps">
+      <li><strong>Draw</strong> the icon with the tools below.</li>
+      <li><strong>Check</strong> that every rule passes.</li>
+      <li><strong>Copy the preview image.</strong></li>
+      <li><strong>Open a pull request</strong> to <a href="https://github.com/lumen-assistive/lumen-plugins">lumen-plugins</a> with <code>icon.svg</code> and <code>plugin.json</code>.</li>
+      <li><strong>Paste the image</strong> into the pull request description and tick the icon checkbox.</li>
+    </ol>
+  </section>
+
+  <section class="band wide" id="studio-root" aria-label="Icon Studio">
+    <noscript><p class="notice">The Icon Studio needs JavaScript. Without it you can still write <code>icon.svg</code> by hand following the rules in the <a href="/docs/contributing/plugins/">plugin guide</a>.</p></noscript>
+    <script type="application/json" id="studio-official" set:html={JSON.stringify(official)}></script>
+    <script type="application/json" id="studio-spec" set:html={JSON.stringify({ colors: OFFICIAL_COLORS, maxShapes: SPEC.maxShapes, maxBytes: SPEC.maxBytes })}></script>
+
+    <div class="studio">
+      <div class="studio-main">
+        <div class="st-card st-tools" role="toolbar" aria-label="Drawing tools">
+          <div class="st-group" role="group" aria-label="Tool">
+            {tools.map((t) => (
+              <button type="button" class="st-btn" data-tool={t.id} aria-pressed="false" title={`${t.hint} (${t.key})`}>
+                <span>{t.label}</span><kbd>{t.key}</kbd>
+              </button>
+            ))}
+          </div>
+          <div class="st-group" role="group" aria-label="History">
+            <button type="button" class="st-btn" id="st-undo" title="Undo (Ctrl+Z)">Undo</button>
+            <button type="button" class="st-btn" id="st-redo" title="Redo (Ctrl+Shift+Z)">Redo</button>
+            <button type="button" class="st-btn" id="st-clear" title="Remove every shape">Clear</button>
+          </div>
+          <label class="st-snap">Snap
+            <select id="st-snap">
+              <option value="1">1 unit</option>
+              <option value="0.5">0.5 unit</option>
+              <option value="0.25">0.25 unit</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="st-canvas-wrap">
+          <svg id="st-canvas" viewBox="-1 -1 26 26" tabindex="0" role="application" aria-label="Icon drawing grid, 24 by 24 units. Use the arrow keys to move the cursor and Enter to place a point." aria-describedby="st-hint">
+          </svg>
+          <p class="st-coords" id="st-coords" aria-hidden="true">x 12 y 12</p>
+        </div>
+        <p class="st-hint" id="st-hint" aria-live="polite">Pick a tool and click the grid.</p>
+        <div class="st-drawbar" id="st-drawbar" hidden>
+          <button type="button" class="st-btn" id="st-finish">Finish shape</button>
+          <button type="button" class="st-btn" id="st-back">Remove last point</button>
+          <button type="button" class="st-btn" id="st-cancel">Cancel</button>
+        </div>
+        <p class="st-keys">Keyboard: arrows move the cursor, Enter or Space places a point, F finishes a polyline or polygon, Backspace removes the last point, Escape cancels, Delete removes the selected shape.</p>
+
+        <div class="st-card">
+          <h2 class="st-h">Shapes</h2>
+          <ol class="st-shapes" id="st-shapes" aria-label="Shapes, first is drawn at the bottom"></ol>
+          <p class="st-empty" id="st-shapes-empty">No shapes yet.</p>
+          <div id="st-rect-edit" class="st-inline" hidden>
+            <label>Corner radius <input type="number" id="st-rect-rx" min="0" max="12" step="0.5" value="0" /></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="studio-side">
+        <div class="st-card">
+          <h2 class="st-h">Plugin</h2>
+          <label class="st-field">Name
+            <input type="text" id="st-name" maxlength="40" autocomplete="off" placeholder="My plugin" />
+          </label>
+          <label class="st-field">Id (lowercase letters, digits, hyphens)
+            <input type="text" id="st-id" maxlength="32" autocomplete="off" spellcheck="false" placeholder="my-plugin" />
+          </label>
+          <label class="st-field">Description (shown on the preview tile)
+            <input type="text" id="st-desc" maxlength="80" autocomplete="off" placeholder="What does your plugin do?" />
+          </label>
+          <fieldset class="st-colors">
+            <legend>Color</legend>
+            <div class="st-swatches" id="st-swatches" role="group" aria-label="Official module colors"></div>
+            <div class="st-inline">
+              <label class="st-field st-hex">Hex
+                <input type="text" id="st-hex" maxlength="7" autocomplete="off" spellcheck="false" />
+              </label>
+              <input type="color" id="st-picker" aria-label="Pick a color" />
+              <button type="button" class="st-btn" id="st-suggest">Suggest a free color</button>
+            </div>
+            <p class="st-note">A new plugin needs its own color. The official colors are shown so you can see what is taken.</p>
+          </fieldset>
+        </div>
+
+        <div class="st-card">
+          <h2 class="st-h">Checks <span class="st-count" id="st-rule-count"></span></h2>
+          <ul class="st-rules" id="st-rules" aria-live="polite"></ul>
+        </div>
+
+        <div class="st-card">
+          <h2 class="st-h">Preview</h2>
+          <div class="pv-paper" id="st-preview"></div>
+        </div>
+
+        <div class="st-card">
+          <h2 class="st-h">Export</h2>
+          <p class="st-note" id="st-export-note"></p>
+          <div class="st-export">
+            <button type="button" class="button primary st-copy" id="st-copy">Copy preview image</button>
+            <button type="button" class="button secondary" id="st-dl-png">Download preview.png</button>
+            <button type="button" class="button secondary" id="st-dl-svg">Download icon.svg</button>
+            <button type="button" class="button secondary" id="st-dl-json">Download plugin.json</button>
+          </div>
+          <p class="st-status" id="st-status" role="status" aria-live="polite"></p>
+          <div id="st-fallback" hidden>
+            <p class="st-note">Your browser did not allow copying an image. Right-click or long-press the picture below, copy it, and paste it into the pull request.</p>
+            <img id="st-fallback-img" alt="Preview of the icon, to copy into the pull request" />
+          </div>
+        </div>
+
+        <div class="st-card">
+          <h2 class="st-h">Start from an existing icon</h2>
+          <div class="st-inline">
+            <label class="st-field st-grow">Official icon
+              <select id="st-example">
+                <option value="">Choose one</option>
+                {Object.entries(official).map(([id, v]) => <option value={id}>{v.name}</option>)}
+              </select>
+            </label>
+            <label class="st-field st-grow">Or import an SVG file
+              <input type="file" id="st-import-file" accept=".svg,image/svg+xml" />
+            </label>
+          </div>
+          <label class="st-field">Or paste SVG code
+            <textarea id="st-import-text" rows="3" spellcheck="false" placeholder="<svg viewBox=&quot;0 0 24 24&quot;>...</svg>"></textarea>
+          </label>
+          <button type="button" class="st-btn" id="st-import-btn">Import pasted code</button>
+          <div id="st-import-report" class="st-report" hidden></div>
+        </div>
+
+        <div class="st-card">
+          <h2 class="st-h">SVG code</h2>
+          <pre class="st-code"><code id="st-code"></code></pre>
+          <button type="button" class="st-btn" id="st-copy-code">Copy code</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import '../../../scripts/icon-studio.ts';
+</script>
+
+<style is:global>
+  .studio-steps-band { padding-bottom: 0; }
+  .studio-steps { display: grid; gap: 0.6rem; margin: 0; padding-left: 1.4rem; font-size: 1.05rem; }
+  .studio { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 1.5rem; align-items: start; }
+  .studio-main, .studio-side { display: grid; gap: 1rem; min-width: 0; }
+  .st-card { background: var(--paper-dim); border: 1px solid var(--border); border-radius: 1.1rem; padding: 1.1rem 1.2rem; }
+  .st-h { margin: 0 0 0.8rem; font-size: 1.15rem; display: flex; align-items: baseline; gap: 0.6rem; }
+  .st-count { font-size: 0.9rem; font-weight: 400; color: var(--muted); }
+  .st-tools { display: flex; flex-wrap: wrap; gap: 0.6rem 1rem; align-items: center; }
+  .st-group { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .st-btn { font: inherit; font-weight: 700; font-size: 0.95rem; color: var(--ink); background: var(--paper); border: 1px solid var(--border); border-radius: 0.7rem; padding: 0.5rem 0.8rem; min-height: 44px; display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer; transition: border-color 150ms ease, background-color 150ms ease; }
+  .st-btn:hover { border-color: var(--lumen); }
+  .st-btn[aria-pressed='true'] { background: var(--lumen); color: #1a1815; border-color: var(--lumen); }
+  .st-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .st-btn:focus-visible, .st-canvas-wrap svg:focus-visible, .st-card input:focus-visible, .st-card select:focus-visible, .st-card textarea:focus-visible, .st-swatch:focus-visible, .st-shape-btn:focus-visible { outline: 3px solid var(--lumen); outline-offset: 2px; }
+  .st-btn kbd { font: inherit; font-size: 0.75rem; opacity: 0.65; border: 1px solid currentColor; border-radius: 0.3rem; padding: 0 0.3rem; }
+  .st-snap { display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 0.95rem; margin-left: auto; }
+  .st-card select, .st-card input[type='text'], .st-card input[type='number'], .st-card textarea, .st-card input[type='file'] { font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--border); border-radius: 0.6rem; padding: 0.5rem 0.65rem; min-height: 44px; max-width: 100%; }
+  .st-card textarea { width: 100%; min-height: 5rem; font-family: ui-monospace, monospace; font-size: 0.9rem; }
+  .st-canvas-wrap { position: relative; background: #fffcf5; border: 2px solid #1a1815; border-radius: 1.1rem; padding: 0.5rem; max-width: 36rem; width: 100%; margin: 0 auto; }
+  #st-canvas { display: block; width: 100%; height: auto; aspect-ratio: 1; touch-action: none; border-radius: 0.7rem; user-select: none; -webkit-user-select: none; }
+  .st-coords { pointer-events: none; position: absolute; right: 1rem; bottom: 0.8rem; margin: 0; font-size: 0.8rem; color: #5b554a; background: #f3eee3; border: 1px solid #d3cbb8; border-radius: 0.4rem; padding: 0 0.4rem; }
+  .st-hint { margin: 0; min-height: 1.5em; color: var(--ink); }
+  .st-keys, .st-note { margin: 0; color: var(--muted); font-size: 0.92rem; }
+  .st-drawbar { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .st-shapes { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.4rem; }
+  .st-shapes li { display: grid; grid-template-columns: 1fr auto auto auto; gap: 0.3rem; align-items: center; }
+  .st-shape-btn { font: inherit; text-align: left; color: var(--ink); background: var(--paper); border: 1px solid var(--border); border-radius: 0.6rem; padding: 0.5rem 0.7rem; min-height: 44px; cursor: pointer; }
+  .st-shape-btn[aria-current='true'] { border-color: var(--lumen); box-shadow: inset 0 0 0 1px var(--lumen); }
+  .st-mini { font: inherit; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: var(--ink); background: var(--paper); border: 1px solid var(--border); border-radius: 0.6rem; cursor: pointer; }
+  .st-mini:disabled { opacity: 0.35; cursor: not-allowed; }
+  .st-mini:hover:not(:disabled) { border-color: var(--lumen); }
+  .st-empty { margin: 0; color: var(--muted); }
+  .st-field { display: grid; gap: 0.3rem; margin-bottom: 0.8rem; font-weight: 700; font-size: 0.95rem; }
+  .st-field input, .st-field select, .st-field textarea { font-weight: 400; }
+  .st-inline { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: end; }
+  .st-grow { flex: 1 1 11rem; }
+  .st-colors { border: 0; margin: 0; padding: 0; }
+  .st-colors legend { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.5rem; padding: 0; }
+  .st-swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-bottom: 0.8rem; }
+  .st-swatch { font: inherit; font-size: 0.8rem; font-weight: 700; color: #1a1815; border: 2px solid #1a1815; border-radius: 0.8rem; padding: 0.6rem 0.2rem; min-height: 44px; cursor: pointer; position: relative; }
+  .st-swatch[aria-pressed='true'] { box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--lumen); }
+  .st-swatch[data-taken='true']::after { content: ''; position: absolute; right: 0.35rem; top: 0.35rem; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: #1a1815; }
+  .st-hex input { width: 8rem; font-family: ui-monospace, monospace; text-transform: uppercase; }
+  #st-picker { width: 48px; height: 44px; padding: 0; border: 1px solid var(--border); border-radius: 0.6rem; background: var(--paper); }
+  .st-rules { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
+  .st-rules li { display: grid; grid-template-columns: 2.4rem 1fr; gap: 0.6rem; font-size: 0.95rem; line-height: 1.35; }
+  .st-rules .st-mark { font-weight: 700; text-align: center; border-radius: 999px; height: 1.4rem; line-height: 1.4rem; font-size: 0.75rem; align-self: start; }
+  .st-rules li.ok .st-mark { background: #7adb98; color: #1a1815; }
+  .st-rules li.fail .st-mark { background: #ff8fa3; color: #1a1815; }
+  .st-rules .st-detail { display: block; color: var(--muted); font-size: 0.88rem; }
+  .pv-paper { background: #f3eee3; color: #1a1815; border: 2px solid #1a1815; border-radius: 1.1rem; padding: 1rem; display: grid; gap: 1rem; }
+  .pv-row { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end; }
+  .pv-badge { display: inline-flex; align-items: center; justify-content: center; border: 2px solid #1a1815; color: #1a1815; flex: none; }
+  .pv-badge svg, .pv-tile svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; display: block; }
+  .pv-cap { font-size: 0.75rem; color: #5b554a; margin-top: 0.25rem; text-align: center; }
+  .pv-phone { background: #fffcf5; border: 2px solid #1a1815; border-radius: 1.6rem; padding: 0.9rem; }
+  .pv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+  .pv-tile { border: 2px solid #1a1815; border-radius: 1.5rem; padding: 0.9rem; display: flex; flex-direction: column; min-height: 9.5rem; color: #1a1815; }
+  .pv-tile-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .pv-tile-name { margin: 1.2rem 0 0.25rem; font-size: 1.15rem; font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; overflow-wrap: anywhere; }
+  .pv-tile-desc { margin: 0; font-size: 0.78rem; line-height: 1.3; overflow-wrap: anywhere; }
+  .pv-tile.is-ghost { opacity: 0.55; }
+  .st-export { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .st-export .button { cursor: pointer; font: inherit; font-weight: 700; }
+  .st-export .button[aria-disabled='true'] { opacity: 0.4; cursor: not-allowed; }
+  .st-status { margin: 0.8rem 0 0; min-height: 1.5em; font-weight: 700; }
+  #st-fallback img { max-width: 100%; border-radius: 0.6rem; border: 1px solid var(--border); background: #f3eee3; }
+  .st-report { margin-top: 0.8rem; padding: 0.8rem; border: 1px solid var(--border); border-radius: 0.7rem; font-size: 0.92rem; }
+  .st-report ul { margin: 0.4rem 0 0; padding-left: 1.2rem; }
+  .st-code { margin: 0 0 0.6rem; max-height: 14rem; overflow: auto; white-space: pre-wrap; word-break: break-all; font-size: 0.85rem; background: var(--paper); border: 1px solid var(--border); border-radius: 0.6rem; padding: 0.7rem; }
+  @media (max-width: 960px) { .studio { grid-template-columns: 1fr; } }
+  @media (max-width: 520px) { .st-swatches { grid-template-columns: repeat(2, 1fr); } .st-snap { margin-left: 0; } }
+  @media (prefers-reduced-motion: reduce) { .st-btn { transition: none; } }
+</style>
