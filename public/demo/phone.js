@@ -28,7 +28,7 @@
   // ---- Material icon paths used by the app ---------------------------------
   var ICON = {
     back: 'M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z',
-    forward: 'M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z',
+    outward: 'M6.4 18L5 16.6 14.6 7H6V5h12v12h-2V8.4z',
     expand: 'M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z',
     info: 'M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z',
     chevron: 'M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z',
@@ -136,13 +136,9 @@
     return h(
       'header',
       { class: 'lp-header', style: '--c:' + data.colors[moduleId] },
-      badge(moduleId, 72),
-      h(
-        'div',
-        {},
-        h('h2', { class: 'lp-header-name', text: S(mod.nameKey) }),
-        h('p', { class: 'lp-header-desc', text: S(mod.descriptionKey) })
-      )
+      h('span', { 'aria-hidden': 'true', html: '<svg viewBox="0 0 24 24">' + data.icons[moduleId] + '</svg>' }),
+      h('h2', { class: 'lp-header-name', text: S(mod.nameKey) }),
+      h('p', { class: 'lp-header-desc', text: S(mod.descriptionKey) })
     );
   }
 
@@ -301,9 +297,8 @@
     return h('div', { class: 'lp-appbar' }, children);
   }
 
-  function page(id, extraClass, glow) {
+  function page(id, extraClass) {
     var node = h('div', { class: 'lp-page ' + (extraClass || ''), 'data-page': id, hidden: true });
-    if (glow) node.appendChild(h('div', { class: 'lp-glow', 'aria-hidden': 'true' }));
     return node;
   }
 
@@ -317,7 +312,7 @@
   ];
 
   builders.onboarding = function () {
-    var root = page('onboarding', 'lp-onboarding', true);
+    var root = page('onboarding', 'lp-onboarding');
     var stepLabel = h('span', { class: 'lp-ob-step' });
     var segments = QUESTIONS.map(function () { return h('span'); });
     var body = h('div', { class: 'lp-ob-body' });
@@ -326,7 +321,7 @@
       h(
         'div',
         { class: 'lp-ob-head' },
-        h('div', { class: 'lp-ob-top' }, logoMark(26, '#f5b942'), h('h1', { class: 'lp-ob-title', tabindex: '-1', text: S('onboardingTitle') }), stepLabel),
+        h('div', { class: 'lp-ob-top' }, logoMark(26, '#1a1815'), h('h1', { class: 'lp-ob-title', tabindex: '-1', text: S('onboardingTitle') }), stepLabel),
         h('div', { class: 'lp-progress', 'aria-hidden': 'true' }, segments)
       )
     );
@@ -337,11 +332,10 @@
       stepLabel.textContent = state.step + 1 + ' / ' + QUESTIONS.length;
       segments.forEach(function (seg, i) { seg.className = i <= state.step ? 'on' : ''; });
       body.textContent = '';
-      var color = q.module ? data.colors[q.module] : '#f5b942';
       var mark = q.module
-        ? badge(q.module, 112, 'lp-ob-badge')
-        : h('span', { class: 'lp-badge lp-ob-badge', style: '--d:112px;--c:' + color, 'aria-hidden': 'true' });
-      if (!q.module) mark.appendChild(logoMark(48, color));
+        ? badge(q.module, 96, 'lp-ob-badge')
+        : h('span', { class: 'lp-badge lp-ob-badge', style: '--d:96px;--c:#f2b138', 'aria-hidden': 'true' });
+      if (!q.module) mark.appendChild(logoMark(44, '#1a1815'));
       append(body, mark);
       append(body, h('p', { class: 'lp-question', text: S(q.text) }));
 
@@ -354,6 +348,7 @@
         yes = button(S('answerYes'), { kind: 'primary', onClick: function () { answer(true); } });
         no = button(S('answerNo'), { kind: 'plain', onClick: function () { answer(false); } });
       }
+      append(body, h('span', { class: 'lp-ob-spacer', 'aria-hidden': 'true' }));
       append(body, [yes, no]);
       append(body, h('button', { type: 'button', class: 'lp-skip', onclick: skip, text: 'Skip' }));
     }
@@ -401,7 +396,7 @@
 
   // -- Home (lib/src/home/home_screen.dart) --------------------------------------
   builders.home = function () {
-    var root = page('home', '', true);
+    var root = page('home', '');
     var count = h('span', { class: 'lp-count' });
     var list = h('div', { class: 'lp-home-list' });
     var body = h(
@@ -415,7 +410,7 @@
     var top = h(
       'div',
       { class: 'lp-home-top' },
-      logoMark(30, '#f5b942'),
+      logoMark(28, '#1a1815'),
       h('span', { class: 'lp-wordmark', text: S('appTitle') }),
       h('button', { type: 'button', class: 'lp-iconbtn', 'aria-label': S('settingsTitle'), onclick: function () { push('settings'); } }, icon(ICON.settings))
     );
@@ -424,6 +419,7 @@
     root.refresh = function () {
       var enabled = data.modules.filter(function (m) { return state.enabled[m.id]; });
       count.textContent = String(enabled.length);
+      list.classList.toggle('lp-single', state.mode === 'voice' || state.mode === 'simple');
       list.textContent = '';
       if (!enabled.length) {
         list.appendChild(h('p', { class: 'lp-empty', text: S('homeNoModules') }));
@@ -439,14 +435,14 @@
             'aria-label': S(mod.nameKey),
             onclick: function () { push('module:' + mod.id); }
           },
-          badge(mod.id, 52),
           h(
             'span',
-            { class: 'lp-home-card-text' },
-            h('span', { class: 'lp-home-card-name', text: S(mod.nameKey) }),
-            h('span', { class: 'lp-home-card-desc', text: S(mod.descriptionKey) })
+            { class: 'lp-home-card-top', 'aria-hidden': 'true' },
+            h('span', { html: '<svg viewBox="0 0 24 24">' + data.icons[mod.id] + '</svg>' }),
+            icon(ICON.outward, 'lp-arrow')
           ),
-          icon(ICON.forward, 'lp-arrow')
+          h('span', { class: 'lp-home-card-name', text: S(mod.nameKey) }),
+          h('span', { class: 'lp-home-card-desc', text: S(mod.descriptionKey) })
         );
         list.appendChild(card);
       });
@@ -457,7 +453,7 @@
 
   // -- Module screens (lib/src/modules/*_screen.dart) ----------------------------
   function modulePage(moduleId, cards) {
-    var root = page('module:' + moduleId, 'lp-module', true);
+    var root = page('module:' + moduleId, 'lp-module');
     root.style.setProperty('--c', data.colors[moduleId]);
     var list = h('div', { class: 'lp-list' }, moduleHeader(moduleId), note(S(moduleId + 'Note')), cards);
     root.appendChild(appBar('', back, 'Back'));
@@ -1212,7 +1208,7 @@
   ];
 
   builders.settings = function () {
-    var root = page('settings', '', false);
+    var root = page('settings', '');
     var modeLabel = h('p', { class: 'lp-tile-sub' });
     var scaleOut = h('output', { text: '1.00' });
     var dev = h('div');
@@ -1221,7 +1217,6 @@
       'div',
       { class: 'lp-tile' },
       h('p', { class: 'lp-tile-title', text: S('settingsUiMode') }),
-      modeLabel,
       withGap(
         dropdown(MODES, state.mode, function (value) {
           state.mode = value;
@@ -1245,15 +1240,18 @@
     slider.addEventListener('input', function () {
       state.textScale = parseFloat(slider.value);
       scaleOut.textContent = state.textScale.toFixed(2);
+      sliderTrack.style.setProperty('--pct', ((state.textScale - 1) * 100) + '%');
       applyTheme();
     });
+    var sliderTrack = h('div', { class: 'lp-slider' }, slider, scaleOut);
     var scaleTile = h(
       'div',
       { class: 'lp-tile' },
       h('p', { class: 'lp-tile-title', text: S('settingsTextScale') }),
-      h('div', { class: 'lp-slider' }, slider, scaleOut)
+      sliderTrack
     );
     root.slider = slider;
+    root.sliderTrack = sliderTrack;
     root.scaleOut = scaleOut;
 
     var modules = h('div');
@@ -1360,7 +1358,9 @@
   function applyTheme() {
     var base = { voice: 1.3, simple: 1.15, visual: 1, complete: 1 }[state.mode];
     screen.style.setProperty('--ts', String(base * state.textScale));
-    screen.style.setProperty('--amber', state.mode === 'voice' || state.mode === 'simple' ? '#f2c878' : '#e3a94a');
+    var single = state.mode === 'voice' || state.mode === 'simple';
+    var homeList = screen.querySelector('.lp-home-list');
+    if (homeList) homeList.classList.toggle('lp-single', single);
     fitDevice();
   }
 
@@ -1453,6 +1453,7 @@
       if (pages.settings) {
         pages.settings.slider.value = '1';
         pages.settings.scaleOut.textContent = '1.00';
+        pages.settings.sliderTrack.style.setProperty('--pct', '0%');
       }
       replaceStack('onboarding');
     });

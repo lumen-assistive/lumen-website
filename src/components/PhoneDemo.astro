@@ -12,16 +12,16 @@
 import strings from '../lib/appStrings.json';
 import { MODULE_ICONS } from '../lib/moduleVisuals';
 
-// lumen-app/lib/src/theme/app_colors.dart: AppColors.moduleColors.
+// lumen-app/lib/src/theme/app_colors.dart: AppColors.moduleColors, one solid fill per module.
 const colors = {
-  vision: '#22B8D4',
-  hearing: '#9D7CF5',
-  safety: '#F2637B',
-  family: '#F070AC',
-  speech: '#F3914F',
-  reading: '#4FCB7C',
-  memory: '#8B93F7',
-  mobility: '#D9A93B',
+  vision: '#5CC8E0',
+  hearing: '#B9A2FF',
+  safety: '#FF8FA3',
+  family: '#FF9FCB',
+  speech: '#FFA860',
+  reading: '#7ADB98',
+  memory: '#9FA9FF',
+  mobility: '#F2C94E',
 };
 
 // lumen-app/lib/src/onboarding/module_catalog.dart: fixed display order.
@@ -92,8 +92,7 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     box-shadow:
       inset 0 0 0 1px #3a3424,
       0 0 0 1px #1c1810,
-      0 40px 120px -30px rgba(245, 185, 66, 0.35),
-      0 24px 60px -20px rgba(0, 0, 0, 0.8);
+      0 32px 80px -24px rgba(0, 0, 0, 0.75);
     transform-origin: top center;
   }
 
@@ -134,23 +133,19 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
 
   /* ---- Screen: tokens mirror lumen-app/lib/src/theme/app_colors.dart --- */
   .lp-screen {
-    --bg: #0d0b08;
-    --surface: #17140f;
-    --raised: #221e16;
-    --text: #f3efe2;
-    --muted: #b7ae99;
-    --border: #3a3424;
-    --amber: #e3a94a;
-    --glow: #f5b942;
-    --warning: #e8a33d;
-    --primary-container: #614000;
-    --on-primary-container: #ffddaf;
+    --bg: #f3eee3;
+    --surface: #fffcf5;
+    --ink: #1a1815;
+    --muted: #5b554a;
+    --hairline: #d3cbb8;
+    --amber: #f2b138;
+    --critical: #c1272d;
     --accent: var(--amber);
     --ts: 1;
 
+    --fs-display-m: calc(45px * var(--ts));
     --fs-display-s: calc(36px * var(--ts));
     --fs-headline-m: calc(28px * var(--ts));
-    --fs-headline-s: calc(24px * var(--ts));
     --fs-title-l: calc(22px * var(--ts));
     --fs-title-m: calc(16px * var(--ts));
     --fs-body-l: calc(16px * var(--ts));
@@ -163,7 +158,7 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     overflow: hidden;
     border-radius: 46px;
     background: var(--bg);
-    color: var(--text);
+    color: var(--ink);
     font-family: var(--font);
     font-size: var(--fs-body-m);
     line-height: 1.43;
@@ -195,7 +190,7 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
   }
 
   .lp-screen :focus-visible {
-    outline: 2px solid var(--accent);
+    outline: 3px solid var(--ink);
     outline-offset: 2px;
   }
 
@@ -220,7 +215,7 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     font-weight: 700;
     letter-spacing: 0;
     pointer-events: none;
-    color: var(--text);
+    color: var(--ink);
   }
 
   .lp-status-icons {
@@ -256,21 +251,6 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     display: none;
   }
 
-  .lp-glow {
-    position: absolute;
-    z-index: 0;
-    top: -300px;
-    left: -200px;
-    right: -200px;
-    height: 700px;
-    pointer-events: none;
-    background: radial-gradient(
-      circle 350px at 50% 350px,
-      color-mix(in srgb, var(--glow-color, var(--glow)) var(--glow-alpha, 30%), transparent),
-      transparent
-    );
-  }
-
   .lp-appbar {
     position: relative;
     z-index: 2;
@@ -278,14 +258,13 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     height: 56px;
     display: flex;
     align-items: center;
-    padding: 0 4px;
+    padding: 0 16px;
   }
 
   .lp-appbar-title {
     margin-left: 16px;
-    font-size: calc(26px * var(--ts));
+    font-size: calc(24px * var(--ts));
     font-weight: 700;
-    letter-spacing: -0.4px;
     line-height: 1.2;
   }
 
@@ -310,6 +289,7 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     gap: 16px;
   }
 
+  /* IconButton: a paper square with a 2px ink outline, radius 14. */
   .lp-iconbtn {
     flex: none;
     width: 48px;
@@ -317,15 +297,15 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     display: inline-grid;
     place-items: center;
     padding: 0;
-    border-radius: 50%;
-    border: 1px solid var(--border);
-    background: var(--raised);
+    border-radius: 14px;
+    border: 2px solid var(--ink);
+    background: var(--surface);
     cursor: pointer;
     transition: background-color 160ms ease;
   }
 
   .lp-iconbtn:hover {
-    background: #2a251b;
+    background: var(--hairline);
   }
 
   .lp-iconbtn svg {
@@ -360,25 +340,22 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     }
   }
 
-  /* ---- Glow badge: ModuleGlowBadge ------------------------------------ */
+  /* ---- Module badge: ModuleBadge --------------------------------------- */
   .lp-badge {
     flex: none;
-    position: relative;
     display: grid;
     place-items: center;
     width: var(--d);
     height: var(--d);
-    border-radius: 50%;
-    background: var(--surface);
-    color: var(--c);
-    border: 1px solid color-mix(in srgb, var(--c) 45%, transparent);
-    box-shadow: 0 0 calc(var(--d) * 0.6) calc(var(--d) * 0.05)
-      color-mix(in srgb, var(--c) 35%, transparent);
+    border-radius: calc(var(--d) * 0.3);
+    background: var(--c);
+    color: var(--ink);
+    border: 2px solid var(--ink);
   }
 
   .lp-badge svg {
-    width: calc(var(--d) * 0.46);
-    height: calc(var(--d) * 0.46);
+    width: calc(var(--d) * 0.5);
+    height: calc(var(--d) * 0.5);
     fill: none;
     stroke: currentColor;
     stroke-width: 1.6;
@@ -412,18 +389,18 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
   }
 
   .lp-home-body {
-    padding: 28px 20px 32px;
+    padding: 32px 20px 32px;
   }
 
   .lp-headline {
-    font-size: var(--fs-display-s);
+    font-size: var(--fs-display-m);
     font-weight: 700;
-    line-height: 1.05;
-    letter-spacing: -1px;
+    line-height: 1;
+    letter-spacing: -1.5px;
   }
 
   .lp-subtitle {
-    margin-top: 12px;
+    margin-top: 14px;
     font-size: var(--fs-body-l);
     line-height: 1.5;
     letter-spacing: 0.5px;
@@ -434,7 +411,7 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     margin-top: 32px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     font-size: var(--fs-body-m);
     font-weight: 700;
     letter-spacing: 1.4px;
@@ -442,82 +419,98 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     color: var(--muted);
   }
 
+  .lp-section-label::after {
+    content: '';
+    order: 1;
+    flex: 1;
+    height: 1px;
+    background: var(--hairline);
+  }
+
   .lp-count {
-    padding: 2px 10px;
-    border-radius: 99px;
-    border: 1px solid var(--border);
-    background: var(--raised);
-    color: var(--text);
-    font-size: var(--fs-body-s);
-    letter-spacing: 0.5px;
-    font-weight: 400;
+    order: 2;
+    color: var(--ink);
+    letter-spacing: 0.1px;
   }
 
   .lp-home-list {
-    margin-top: 14px;
-    display: flex;
-    flex-direction: column;
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 12px;
+    align-items: stretch;
+  }
+
+  .lp-home-list.lp-single {
+    grid-template-columns: 1fr;
   }
 
   .lp-home-card {
     appearance: none;
     width: 100%;
-    min-height: 88px;
     display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 14px 16px;
+    flex-direction: column;
+    gap: 0;
+    padding: 18px;
     text-align: left;
     cursor: pointer;
     border-radius: 24px;
-    border: 1px solid color-mix(in srgb, var(--c) 28%, transparent);
-    background: linear-gradient(
-      to right,
-      color-mix(in srgb, var(--c) 16%, transparent),
-      var(--surface)
-    );
-    transition: filter 160ms ease, transform 160ms ease;
+    border: 2px solid var(--ink);
+    background: var(--c);
+    color: var(--ink);
+    transition: transform 160ms ease;
   }
 
   .lp-home-card:hover {
-    filter: brightness(1.12);
+    transform: translateY(-2px);
   }
 
   .lp-home-card:active {
-    transform: scale(0.99);
+    transform: scale(0.985);
   }
 
-  .lp-home-card-text {
-    flex: 1;
-    min-width: 0;
+  .lp-home-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+
+  .lp-home-card-top svg {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    width: 36px;
+    height: 36px;
+  }
+
+  .lp-home-card-top svg.lp-arrow {
+    width: 24px;
+    height: 24px;
+    fill: var(--ink);
+    stroke: none;
   }
 
   .lp-home-card-name {
     display: block;
-    font-size: var(--fs-title-m);
+    font-size: var(--fs-title-l);
     font-weight: 700;
-    line-height: 1.5;
-    letter-spacing: 0.15px;
+    line-height: 1.1;
+    letter-spacing: -0.4px;
   }
 
   .lp-home-card-desc {
     display: block;
-    margin-top: 2px;
+    margin-top: 6px;
     font-size: var(--fs-body-s);
-    line-height: 1.33;
+    line-height: 1.35;
     letter-spacing: 0.4px;
-    color: var(--muted);
-  }
-
-  .lp-home-card svg.lp-arrow {
-    flex: none;
-    width: 24px;
-    height: 24px;
-    fill: var(--c);
   }
 
   .lp-empty {
+    grid-column: 1 / -1;
     padding: 32px 0;
     text-align: center;
     font-size: var(--fs-title-m);
@@ -527,36 +520,40 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
   /* ---- Module screens: ModuleScope + ModuleHeader + ModuleNote ---------- */
   .lp-module {
     --accent: var(--c);
-    --glow-color: var(--c);
-    --glow-alpha: 28%;
   }
 
   .lp-header {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    padding: 26px 22px;
-    border-radius: 32px;
-    border: 1px solid color-mix(in srgb, var(--c) 35%, transparent);
-    background: linear-gradient(
-      to bottom right,
-      color-mix(in srgb, var(--c) 30%, transparent),
-      color-mix(in srgb, var(--c) 6%, transparent)
-    );
+    display: block;
+    padding: 22px;
+    border-radius: 28px;
+    border: 2px solid var(--ink);
+    background: var(--c);
+  }
+
+  .lp-header svg {
+    display: block;
+    width: 44px;
+    height: 44px;
+    margin-bottom: 28px;
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
 
   .lp-header-name {
-    font-size: var(--fs-headline-m);
+    font-size: var(--fs-display-s);
     font-weight: 700;
-    line-height: 1.29;
-    letter-spacing: -0.3px;
+    line-height: 1;
+    letter-spacing: -1px;
   }
 
   .lp-header-desc {
-    margin-top: 4px;
-    font-size: var(--fs-body-m);
-    letter-spacing: 0.25px;
-    color: var(--muted);
+    margin-top: 8px;
+    font-size: var(--fs-body-l);
+    line-height: 1.5;
+    letter-spacing: 0.5px;
   }
 
   .lp-note {
@@ -564,8 +561,8 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     align-items: flex-start;
     gap: 12px;
     padding: 16px;
-    border: 1px solid var(--border);
-    border-radius: 20px;
+    border: 1.5px solid var(--hairline);
+    border-radius: 14px;
   }
 
   .lp-note svg {
@@ -576,18 +573,18 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
   }
 
   .lp-note p {
-    font-size: var(--fs-body-s);
+    font-size: var(--fs-body-m);
     line-height: 1.45;
-    letter-spacing: 0.4px;
+    letter-spacing: 0.25px;
     color: var(--muted);
   }
 
   /* ---- ToolCard --------------------------------------------------------- */
   .lp-card {
-    padding: 20px 20px 22px;
-    border-radius: 28px;
+    padding: 20px;
+    border-radius: 20px;
     background: var(--surface);
-    border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+    border: 2px solid var(--ink);
   }
 
   .lp-card-title {
@@ -600,9 +597,10 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
   .lp-card-title::before {
     content: '';
     flex: none;
-    width: 5px;
-    height: 22px;
-    border-radius: 3px;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 2px solid var(--ink);
     background: var(--accent);
   }
 
@@ -631,7 +629,7 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     margin-top: 8px;
   }
 
-  /* ---- Text fields: filled, rounded, floating label on the border ------- */
+  /* ---- Text fields: paper fill, 1.5px ink outline, floating label ------- */
   .lp-field {
     position: relative;
     flex: 1;
@@ -643,9 +641,9 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     display: block;
     width: 100%;
     padding: 16px;
-    border-radius: 18px;
-    border: 1px solid var(--border);
-    background: var(--raised);
+    border-radius: 14px;
+    border: 1.5px solid var(--ink);
+    background: var(--surface);
     font-size: var(--fs-body-l);
     line-height: 1.5;
     letter-spacing: 0.5px;
@@ -660,8 +658,8 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
   .lp-field input:focus,
   .lp-field textarea:focus {
     outline: none;
-    border: 2px solid var(--accent);
-    padding: 15px;
+    border: 3px solid var(--ink);
+    padding: 14.5px;
   }
 
   .lp-field label {
@@ -695,7 +693,7 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
 
   .lp-field input:focus + label,
   .lp-field textarea:focus + label {
-    color: var(--accent);
+    color: var(--ink);
   }
 
   .lp-fields-row {
@@ -703,51 +701,48 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     gap: 8px;
   }
 
-  /* ---- Buttons ----------------------------------------------------------- */
+  /* ---- Buttons: ink-filled primary, outlined secondary, radius 14 -------- */
   .lp-btn {
     appearance: none;
     width: 100%;
-    min-height: 54px;
+    min-height: 56px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0 28px;
-    /* A stadium for the usual 54px height; stays a rounded bar when large text wraps the label. */
-    border-radius: 27px;
-    border: 1px solid transparent;
+    padding: 0 20px;
+    border-radius: 14px;
+    border: 2px solid var(--ink);
     font-size: calc(16px * var(--ts));
     font-weight: 700;
     line-height: 1.5;
     letter-spacing: 0.15px;
     cursor: pointer;
-    transition: filter 160ms ease, transform 160ms ease, background-color 160ms ease;
+    transition: transform 160ms ease, background-color 160ms ease;
   }
 
   .lp-btn span {
-    text-align: left;
+    text-align: center;
   }
 
   .lp-btn-primary {
-    background: var(--accent);
+    background: var(--ink);
     color: var(--bg);
   }
 
-  .lp-btn-tonal {
-    padding: 0 16px;
-    color: var(--text);
-    background: color-mix(in srgb, var(--accent) 12%, transparent);
-    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
-  }
-
+  .lp-btn-tonal,
   .lp-btn-plain {
     padding: 0 16px;
-    color: var(--text);
-    background: var(--raised);
-    border-color: var(--border);
+    color: var(--ink);
+    background: var(--surface);
   }
 
   .lp-btn:hover:not(:disabled) {
-    filter: brightness(1.1);
+    transform: translateY(-1px);
+  }
+
+  .lp-btn-tonal:hover:not(:disabled),
+  .lp-btn-plain:hover:not(:disabled) {
+    background: var(--bg);
   }
 
   .lp-btn:active:not(:disabled) {
@@ -759,15 +754,16 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
   }
 
   .lp-btn-primary:disabled {
-    background: color-mix(in srgb, var(--text) 12%, transparent);
-    color: color-mix(in srgb, var(--text) 38%, transparent);
+    border-color: transparent;
+    background: color-mix(in srgb, var(--ink) 12%, transparent);
+    color: color-mix(in srgb, var(--ink) 38%, transparent);
   }
 
   .lp-btn-tonal:disabled,
   .lp-btn-plain:disabled {
     background: transparent;
-    border-color: color-mix(in srgb, var(--text) 12%, transparent);
-    color: color-mix(in srgb, var(--text) 38%, transparent);
+    border-color: color-mix(in srgb, var(--ink) 12%, transparent);
+    color: color-mix(in srgb, var(--ink) 38%, transparent);
   }
 
   .lp-row {
@@ -786,32 +782,23 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     gap: 8px;
   }
 
-  /* ---- ToolOutput -------------------------------------------------------- */
+  /* ---- ToolOutput: a solid block in the module color --------------------- */
   .lp-out {
     margin-top: 14px;
-    display: flex;
-    overflow: hidden;
-    border-radius: 18px;
-    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border-radius: 14px;
+    border: 2px solid var(--ink);
+    background: var(--accent);
   }
 
   .lp-out[hidden] {
     display: none;
   }
 
-  .lp-out::before {
-    content: '';
-    flex: none;
-    width: 4px;
-    background: var(--accent);
-  }
-
   .lp-out p {
-    flex: 1;
-    min-width: 0;
     padding: 16px;
     font-size: var(--fs-body-l);
-    line-height: 1.4;
+    font-weight: 700;
+    line-height: 1.35;
     letter-spacing: 0.5px;
     white-space: pre-wrap;
     overflow-wrap: anywhere;
@@ -822,7 +809,7 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     width: 32px;
     height: 32px;
     border-radius: 4px;
-    border: 1px solid var(--border);
+    border: 2px solid var(--ink);
   }
 
   .lp-swatch[hidden] {
@@ -837,28 +824,27 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
   .lp-select select {
     appearance: none;
     width: 100%;
-    height: 50px;
+    height: 52px;
     padding: 0 44px 0 16px;
-    border-radius: 18px;
-    border: 1px solid var(--border);
-    background: var(--raised);
+    border-radius: 14px;
+    border: 1.5px solid var(--ink);
+    background: var(--surface);
     font-size: var(--fs-body-l);
     letter-spacing: 0.5px;
     cursor: pointer;
-    color-scheme: dark;
   }
 
   .lp-select svg {
     position: absolute;
     right: 12px;
-    top: 13px;
+    top: 14px;
     width: 24px;
     height: 24px;
-    fill: var(--muted);
+    fill: var(--ink);
     pointer-events: none;
   }
 
-  /* ---- Checkbox and switch tiles ---------------------------------------- */
+  /* ---- Checkbox tiles ---------------------------------------------------- */
   .lp-check {
     display: flex;
     align-items: center;
@@ -878,7 +864,7 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     height: 18px;
     margin: 0 15px 0 0;
     border-radius: 2px;
-    border: 2px solid color-mix(in srgb, var(--text) 82%, transparent);
+    border: 2px solid var(--ink);
     background: transparent;
     cursor: pointer;
     display: grid;
@@ -886,8 +872,7 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
   }
 
   .lp-check input:checked {
-    background: var(--accent);
-    border-color: var(--accent);
+    background: var(--ink);
   }
 
   .lp-check input:checked::after {
@@ -900,7 +885,7 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     transform: rotate(45deg);
   }
 
-  /* ---- Chips ------------------------------------------------------------- */
+  /* ---- Chips: radius 12, 1.5px ink outline ------------------------------- */
   .lp-wrap {
     display: flex;
     flex-wrap: wrap;
@@ -909,26 +894,26 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
 
   .lp-chip {
     appearance: none;
-    min-height: 34px;
+    min-height: 40px;
     padding: 0 14px;
     display: inline-flex;
     align-items: center;
-    border-radius: 999px;
-    border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
-    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border-radius: 12px;
+    border: 1.5px solid var(--ink);
+    background: var(--surface);
     font-size: var(--fs-body-m);
     font-weight: 700;
     letter-spacing: 0.1px;
-    color: var(--text);
+    color: var(--ink);
   }
 
   button.lp-chip {
     cursor: pointer;
-    transition: filter 160ms ease, transform 160ms ease;
+    transition: background-color 160ms ease, transform 160ms ease;
   }
 
   button.lp-chip:hover {
-    filter: brightness(1.15);
+    background: var(--bg);
   }
 
   button.lp-chip:active {
@@ -937,32 +922,30 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
 
   .lp-phrase {
     padding: 36px 24px;
-    border-radius: 32px;
+    border-radius: 28px;
+    border: 2px solid var(--ink);
     text-align: center;
     font-size: var(--fs-headline-m);
     font-weight: 700;
     line-height: 1.29;
     letter-spacing: 0;
-    color: var(--bg);
-    background: linear-gradient(
-      to bottom right,
-      var(--accent),
-      color-mix(in srgb, var(--accent) 65%, transparent)
-    );
+    color: var(--ink);
+    background: var(--accent);
   }
 
   .lp-phrase[hidden] {
     display: none;
   }
 
+  /* The app's flashcard is a Card in the scheme's primary container: ink. */
   .lp-flashcard {
     align-self: flex-start;
     margin-bottom: 8px;
     padding: 16px;
-    border-radius: 24px;
-    border: 1px solid var(--border);
-    background: var(--primary-container);
-    color: var(--on-primary-container);
+    border-radius: 20px;
+    border: 2px solid var(--ink);
+    background: var(--ink);
+    color: var(--bg);
     font-size: var(--fs-title-m);
     line-height: 1.5;
     letter-spacing: 0.15px;
@@ -970,8 +953,6 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
 
   /* ---- Onboarding --------------------------------------------------------- */
   .lp-onboarding {
-    --glow-color: var(--glow);
-    --glow-alpha: 28%;
     padding-bottom: 24px;
   }
 
@@ -998,7 +979,6 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     font-size: var(--fs-body-m);
     font-weight: 700;
     letter-spacing: 0.1px;
-    color: var(--muted);
   }
 
   .lp-progress {
@@ -1009,14 +989,13 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
 
   .lp-progress span {
     flex: 1;
-    height: 5px;
-    border-radius: 3px;
-    background: var(--raised);
-    transition: background-color 250ms ease;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--hairline);
   }
 
   .lp-progress span.on {
-    background: var(--amber);
+    background: var(--ink);
   }
 
   .lp-ob-body {
@@ -1024,45 +1003,44 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     z-index: 1;
     flex: 1;
     min-height: 0;
-    padding: 0 24px;
+    padding: 40px 24px 0;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     gap: 14px;
   }
 
   .lp-ob-badge {
-    align-self: center;
-    --d: 112px;
-    border-width: 1.5px;
-    border-color: color-mix(in srgb, var(--c) 50%, transparent);
-    box-shadow: 0 0 56px 6px color-mix(in srgb, var(--c) 40%, transparent);
-    margin-bottom: 22px;
+    align-self: flex-start;
+    --d: 96px;
+    border-radius: 28px;
+    margin-bottom: 14px;
   }
 
   .lp-ob-badge svg {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
   }
 
   .lp-question {
-    margin-bottom: 22px;
-    text-align: center;
-    font-size: var(--fs-headline-s);
+    font-size: var(--fs-headline-m);
     font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: -0.4px;
+    line-height: 1.1;
+    letter-spacing: -0.8px;
+  }
+
+  .lp-ob-spacer {
+    flex: 1;
   }
 
   .lp-ob-body .lp-btn {
-    min-height: 64px;
+    min-height: 68px;
     font-size: calc(19px * var(--ts));
   }
 
   .lp-skip {
     appearance: none;
     align-self: center;
-    margin-top: 6px;
+    margin-top: 0;
     padding: 8px 16px;
     border: 0;
     background: none;
@@ -1074,7 +1052,7 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
   }
 
   .lp-skip:hover {
-    color: var(--text);
+    color: var(--ink);
   }
 
   /* ---- Settings and diagnostics ------------------------------------------ */
@@ -1093,19 +1071,19 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
 
   .lp-set-card {
     padding: 8px 0;
-    border-radius: 24px;
+    border-radius: 20px;
     background: var(--surface);
-    border: 1px solid var(--border);
+    border: 2px solid var(--ink);
   }
 
   .lp-tile {
-    padding: 8px 16px;
+    padding: 12px 16px;
   }
 
   .lp-tile-title {
-    font-size: var(--fs-body-l);
+    font-size: var(--fs-title-m);
     line-height: 1.5;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.15px;
   }
 
   .lp-tile-sub {
@@ -1115,6 +1093,7 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
   }
 
   .lp-slider {
+    --pct: 0%;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -1139,13 +1118,19 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
   .lp-slider input::-webkit-slider-runnable-track {
     height: 4px;
     border-radius: 2px;
-    background: var(--border);
+    background: linear-gradient(to right, var(--ink) var(--pct), var(--hairline) var(--pct));
   }
 
   .lp-slider input::-moz-range-track {
     height: 4px;
     border-radius: 2px;
-    background: var(--border);
+    background: var(--hairline);
+  }
+
+  .lp-slider input::-moz-range-progress {
+    height: 4px;
+    border-radius: 2px;
+    background: var(--ink);
   }
 
   .lp-slider input::-webkit-slider-thumb {
@@ -1154,28 +1139,24 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     height: 20px;
     margin-top: -8px;
     border-radius: 50%;
-    border: 2px solid var(--surface);
-    background: var(--amber);
+    border: 0;
+    background: var(--ink);
   }
 
   .lp-slider input::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
-    border: 2px solid var(--surface);
-    background: var(--amber);
+    border: 0;
+    background: var(--ink);
   }
 
   .lp-set-module {
     margin-bottom: 12px;
     padding: 4px 8px;
-    border-radius: 24px;
-    border: 1px solid var(--border);
-    background: linear-gradient(
-      to right,
-      color-mix(in srgb, var(--c) 10%, transparent),
-      var(--surface)
-    );
+    border-radius: 20px;
+    border: 2px solid var(--ink);
+    background: var(--surface);
   }
 
   .lp-switch-tile {
@@ -1191,6 +1172,17 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     min-width: 0;
   }
 
+  .lp-set-module .lp-tile-title {
+    font-weight: 700;
+  }
+
+  .lp-set-module label + label .lp-tile-title {
+    font-weight: 400;
+    font-size: var(--fs-body-l);
+    letter-spacing: 0.5px;
+  }
+
+  /* Switch: ink thumb, 2px ink outline, track in the module color when on. */
   .lp-switch {
     appearance: none;
     flex: none;
@@ -1199,10 +1191,10 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     height: 32px;
     margin: 0;
     border-radius: 16px;
-    border: 2px solid var(--muted);
-    background: var(--raised);
+    border: 2px solid var(--ink);
+    background: var(--surface);
     cursor: pointer;
-    transition: background-color 160ms ease, border-color 160ms ease;
+    transition: background-color 160ms ease;
   }
 
   .lp-switch::after {
@@ -1213,13 +1205,12 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background: var(--muted);
+    background: var(--ink);
     transition: all 160ms ease;
   }
 
   .lp-switch:checked {
     background: var(--sw, var(--amber));
-    border-color: var(--sw, var(--amber));
   }
 
   .lp-switch:checked::after {
@@ -1227,7 +1218,6 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     left: 22px;
     width: 24px;
     height: 24px;
-    background: var(--bg);
   }
 
   .lp-disclaimer {
@@ -1235,16 +1225,16 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
     display: flex;
     gap: 14px;
     padding: 18px;
-    border-radius: 24px;
-    border: 1px solid color-mix(in srgb, var(--warning) 40%, transparent);
-    background: color-mix(in srgb, var(--warning) 10%, transparent);
+    border-radius: 20px;
+    border: 2px solid var(--ink);
+    background: var(--amber);
   }
 
   .lp-disclaimer svg {
     flex: none;
     width: 24px;
     height: 24px;
-    fill: var(--warning);
+    fill: var(--ink);
   }
 
   .lp-disclaimer h3 {
@@ -1256,7 +1246,6 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
   .lp-disclaimer p {
     margin-top: 6px;
     font-size: var(--fs-body-m);
-    color: var(--muted);
   }
 
   .lp-nav-tile {
@@ -1277,7 +1266,7 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
   .lp-nav-tile svg {
     width: 24px;
     height: 24px;
-    fill: var(--muted);
+    fill: var(--ink);
   }
 
   .lp-diag-row {
@@ -1291,14 +1280,13 @@ const data = { strings, colors, modules, icons: MODULE_ICONS };
 
   .lp-diag-row span:last-child {
     font-size: var(--fs-body-m);
-    color: var(--muted);
     text-align: right;
   }
 
   .lp-divider {
     height: 1px;
     margin: 32px 0;
-    background: var(--border);
+    background: var(--hairline);
   }
 
   /* ---- Controls under the phone ------------------------------------------ */
