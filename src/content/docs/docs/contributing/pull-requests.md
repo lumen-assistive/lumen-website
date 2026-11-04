@@ -19,6 +19,8 @@ description: "What happens from opening a pull request to it being merged, and h
 - [ ] No emoji, no AI tool references, English only
 - [ ] Documentation and the changelog are updated where relevant
 - [ ] Accessibility and privacy rules are respected
+- [ ] For a new plugin: `plugin.json` and `icon.svg` are included, and the preview image from the
+  [Icon Studio](/plugins/icon-studio/) is pasted in the description
 
 ## What runs automatically
 

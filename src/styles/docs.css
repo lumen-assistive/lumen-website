@@ -33,3 +33,104 @@
   --sl-color-gray-6: #17140f;
   --sl-color-black: #0d0b08;
 }
+
+
+/* Sidebar category icons. Every top-level group gets a 24px line icon in the
+   same stroke style as the module icons; the groups are matched by position
+   (Starlight gives them no hook), so keep this list in step with the sidebar
+   order in astro.config.mjs. A build check in the repo's test notes lists the
+   order. */
+.sidebar-content ul.top-level > li > details > summary .group-label,
+.sidebar-content details details > summary .group-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.sidebar-content ul.top-level > li > details > summary .group-label::before,
+.sidebar-content details details > summary .group-label::before {
+  content: '';
+  flex: none;
+  width: 1.2rem;
+  height: 1.2rem;
+  background-color: var(--sl-color-accent);
+  -webkit-mask: var(--cat-icon, none) center / contain no-repeat;
+  mask: var(--cat-icon, none) center / contain no-repeat;
+}
+
+.sidebar-content details details > summary .group-label::before {
+  width: 1rem;
+  height: 1rem;
+  background-color: var(--sl-color-gray-3);
+  --cat-icon: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.8'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Crect%20x='4'%20y='4'%20width='7'%20height='7'%20rx='1.5'/%3E%3Crect%20x='13'%20y='4'%20width='7'%20height='7'%20rx='1.5'/%3E%3Crect%20x='4'%20y='13'%20width='7'%20height='7'%20rx='1.5'/%3E%3Crect%20x='13'%20y='13'%20width='7'%20height='7'%20rx='1.5'/%3E%3C/svg%3E");
+}
+
+/* Introduction */
+.sidebar-content ul.top-level > li:nth-child(1) > details > summary .group-label {
+  --cat-icon: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.8'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M12%207L4%205.8V17.8L12%2019L20%2017.8V5.8Z'/%3E%3Cpath%20d='M12%207V19'/%3E%3C/svg%3E");
+}
+
+/* Getting started */
+.sidebar-content ul.top-level > li:nth-child(2) > details > summary .group-label {
+  --cat-icon: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.8'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M6%2021V4'/%3E%3Cpath%20d='M6%205H17L15%209L17%2013H6'/%3E%3C/svg%3E");
+}
+
+/* Architecture */
+.sidebar-content ul.top-level > li:nth-child(3) > details > summary .group-label {
+  --cat-icon: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.8'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M12%203L21%208L12%2013L3%208Z'/%3E%3Cpath%20d='M3%2012L12%2017L21%2012'/%3E%3Cpath%20d='M3%2016L12%2021L21%2016'/%3E%3C/svg%3E");
+}
+
+/* App guide */
+.sidebar-content ul.top-level > li:nth-child(4) > details > summary .group-label {
+  --cat-icon: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.8'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Crect%20x='7'%20y='2.5'%20width='10'%20height='19'%20rx='2.5'/%3E%3Cpath%20d='M10.5%2018.5H13.5'/%3E%3C/svg%3E");
+}
+
+/* Plugin packages */
+.sidebar-content ul.top-level > li:nth-child(5) > details > summary .group-label {
+  --cat-icon: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.8'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M12%203L20%207.5V16.5L12%2021L4%2016.5V7.5Z'/%3E%3Cpath%20d='M4%207.5L12%2012L20%207.5'/%3E%3Cpath%20d='M12%2012V21'/%3E%3C/svg%3E");
+}
+
+/* SDK reference */
+.sidebar-content ul.top-level > li:nth-child(6) > details > summary .group-label {
+  --cat-icon: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.8'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpolyline%20points='8%2C7%203%2C12%208%2C17'/%3E%3Cpolyline%20points='16%2C7%2021%2C12%2016%2C17'/%3E%3Cpath%20d='M14%205L10%2019'/%3E%3C/svg%3E");
+}
+
+/* Core reference */
+.sidebar-content ul.top-level > li:nth-child(7) > details > summary .group-label {
+  --cat-icon: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.8'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Crect%20x='7'%20y='7'%20width='10'%20height='10'%20rx='2'/%3E%3Cpath%20d='M10%203V7M14%203V7M10%2017V21M14%2017V21M3%2010H7M3%2014H7M17%2010H21M17%2014H21'/%3E%3C/svg%3E");
+}
+
+/* Server reference */
+.sidebar-content ul.top-level > li:nth-child(8) > details > summary .group-label {
+  --cat-icon: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.8'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Crect%20x='3'%20y='4'%20width='18'%20height='7'%20rx='2'/%3E%3Crect%20x='3'%20y='13'%20width='18'%20height='7'%20rx='2'/%3E%3Ccircle%20cx='7'%20cy='7.5'%20r='0.3'/%3E%3Ccircle%20cx='7'%20cy='16.5'%20r='0.3'/%3E%3C/svg%3E");
+}
+
+/* Models */
+.sidebar-content ul.top-level > li:nth-child(9) > details > summary .group-label {
+  --cat-icon: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.8'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Ccircle%20cx='6'%20cy='6'%20r='2'/%3E%3Ccircle%20cx='6'%20cy='18'%20r='2'/%3E%3Ccircle%20cx='18'%20cy='12'%20r='2'/%3E%3Cpath%20d='M8%206.5L16%2011.5M8%2017.5L16%2012.5'/%3E%3C/svg%3E");
+}
+
+/* Design system */
+.sidebar-content ul.top-level > li:nth-child(10) > details > summary .group-label {
+  --cat-icon: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.8'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M4%2020L5%2015L15%205A2.1%202.1%200%200%201%2018%208L8%2018Z'/%3E%3Cpath%20d='M13.5%206.5L16.5%209.5'/%3E%3C/svg%3E");
+}
+
+/* Accessibility */
+.sidebar-content ul.top-level > li:nth-child(11) > details > summary .group-label {
+  --cat-icon: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.8'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Ccircle%20cx='12'%20cy='5'%20r='1.6'/%3E%3Cpath%20d='M5%209H19M12%209V14M12%2014L8%2020M12%2014L16%2020'/%3E%3C/svg%3E");
+}
+
+/* Privacy and safety */
+.sidebar-content ul.top-level > li:nth-child(12) > details > summary .group-label {
+  --cat-icon: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.8'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M12%203.4L18.4%205.7V10.9C18.4%2015.4%2015.7%2018.5%2012%2019.8C8.3%2018.5%205.6%2015.4%205.6%2010.9V5.7Z'/%3E%3C/svg%3E");
+}
+
+/* Contributing */
+.sidebar-content ul.top-level > li:nth-child(13) > details > summary .group-label {
+  --cat-icon: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.8'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Ccircle%20cx='6'%20cy='6'%20r='2'/%3E%3Ccircle%20cx='6'%20cy='18'%20r='2'/%3E%3Ccircle%20cx='18'%20cy='18'%20r='2'/%3E%3Cpath%20d='M6%208V16M18%2016V10A3%203%200%200%200%2015%207H11'/%3E%3C/svg%3E");
+}
+
+/* Reference */
+.sidebar-content ul.top-level > li:nth-child(14) > details > summary .group-label {
+  --cat-icon: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.8'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Ccircle%20cx='12'%20cy='12'%20r='9'/%3E%3Cpath%20d='M9.5%209.5A2.5%202.5%200%201%201%2013%2011.8C12.3%2012.2%2012%2012.7%2012%2013.5'/%3E%3Ccircle%20cx='12'%20cy='17'%20r='0.3'/%3E%3C/svg%3E");
+}
