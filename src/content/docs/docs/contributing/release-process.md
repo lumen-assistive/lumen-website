@@ -23,10 +23,16 @@ All packages are released together under one tag (for example `v0.3.0`). Each pa
 
 ## The app (`lumen-app`)
 
-The app is tagged for releases of the codebase. A signed Android release is not possible yet: there is
-no signing keystore and no release workflow.
+The app is tagged for releases of the codebase (the latest is `v0.5.0`). Signed Android APKs are built
+by hand and attached to the matching GitHub release together with a `SHA256SUMS.txt` file.
 
-When release signing is added, it needs these repository secrets:
+To build one, install the Android SDK and a JDK 17, then run `flutter build apk --release`, optionally
+with `--split-per-abi`. Release signing reads `android/key.properties` (`storeFile`, `storePassword`,
+`keyAlias`, `keyPassword`), which is ignored by git. Without it the build falls back to the debug key,
+which is fine for local testing but cannot update an installed release. The signing key must be kept
+backed up: if it is lost, users have to uninstall before installing a build signed with a new key.
+
+There is no automated release workflow yet. If one is added, it needs these repository secrets:
 
 | Secret | Purpose |
 |---|---|

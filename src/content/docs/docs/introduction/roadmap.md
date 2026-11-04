@@ -34,8 +34,9 @@ four modules.
 5. **Real permission flow**: back `CapabilityGate` with actual operating system permission
    requests.
 6. **Family sync**: connect the Family module to `lumen-server` using client-side encryption.
-7. **Release engineering**: a signing keystore, a release workflow, and manual TalkBack and
-   VoiceOver testing.
+7. **Release engineering**: an automated release workflow with CI-held signing secrets, a Google Play
+   listing, and manual TalkBack and VoiceOver testing. Hand-built signed APKs already exist on GitHub
+   Releases.
 
 ## SDK additions that unblock modules
 

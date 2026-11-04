@@ -1,55 +1,120 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+
+const VERSION = '0.5.0';
+const BASE = `https://github.com/lumen-assistive/lumen-app/releases/download/v${VERSION}`;
+
+const BUILDS = [
+  { file: `lumen-${VERSION}-arm64-v8a.apk`, label: 'arm64-v8a', size: '21.5 MB', note: 'Most phones from the last several years. Recommended.' },
+  { file: `lumen-${VERSION}-armeabi-v7a.apk`, label: 'armeabi-v7a', size: '17.6 MB', note: 'Older 32-bit ARM phones.' },
+  { file: `lumen-${VERSION}-x86_64.apk`, label: 'x86_64', size: '23.4 MB', note: 'Emulators and x86 devices.' },
+  { file: `lumen-${VERSION}-universal.apk`, label: 'Universal', size: '61.6 MB', note: 'Any supported device, in a much larger file.' },
+];
 ---
 
-<Layout title="Download" description="Lumen does not have a signed app release yet.">
+<Layout
+  title="Download"
+  description="Download the signed Lumen Android APK, with checksums and installation steps."
+>
   <div class="hero page-hero">
     <div class="hero-glow" aria-hidden="true"></div>
     <p class="eyebrow">Download</p>
-    <h1 class="hero-enter">No signed release yet</h1>
+    <h1 class="hero-enter">Lumen for Android</h1>
     <p class="lead hero-enter" style="animation-delay: 160ms">
-      There is no signed APK to download. When the minimum viable product milestone is reached, it
-      will appear here.
+      Version {VERSION}. Signed APK, Android 7.0 or newer, English interface. Not on Google Play.
     </p>
+    <div class="cta-row hero-enter" style="animation-delay: 300ms">
+      <a class="button primary" href={`${BASE}/lumen-${VERSION}-arm64-v8a.apk`}>Download for most phones (arm64)</a>
+      <a class="button secondary" href={`https://github.com/lumen-assistive/lumen-app/releases/tag/v${VERSION}`}>All files and release notes</a>
+    </div>
   </div>
 
   <section class="band">
+    <div class="section-head">
+      <p class="eyebrow">Builds</p>
+      <h2>Pick the file for your phone</h2>
+      <p>If you are not sure, take the arm64 build. If it does not install, try the universal one.</p>
+    </div>
     <div class="status-grid">
-      <div class="status-card">
-        <h3>What exists</h3>
-        <ul>
-          <li>Onboarding, adaptive interface, and settings</li>
-          <li>A screen for each of the eight modules, running real logic on sample input</li>
-          <li>Automated tests and CI for the app</li>
-        </ul>
-      </div>
-      <div class="status-card pending">
-        <h3>What is missing</h3>
-        <ul>
-          <li>A signed Android build and its release workflow</li>
-          <li>Live camera, microphone, and sensor input</li>
-          <li>Saved data between launches</li>
-        </ul>
-      </div>
+      {BUILDS.map((build) => (
+        <div class="status-card">
+          <h3>{build.label}</h3>
+          <p>{build.note}</p>
+          <p><a href={`${BASE}/${build.file}`}>{build.file}</a> ({build.size})</p>
+        </div>
+      ))}
     </div>
   </section>
 
   <section class="band">
     <div class="section-head">
-      <p class="eyebrow">In the meantime</p>
-      <h2>Run it from source</h2>
+      <p class="eyebrow">Install</p>
+      <h2>Three steps</h2>
+    </div>
+    <ol>
+      <li>Download the APK on the phone.</li>
+      <li>Open it and, when Android asks, allow installs from your browser or file manager.</li>
+      <li>Open Lumen and answer the five first-launch questions.</li>
+    </ol>
+  </section>
+
+  <section class="band">
+    <div class="section-head">
+      <p class="eyebrow">Verify</p>
+      <h2>Check what you downloaded</h2>
       <p>
-        With the <a href="https://docs.flutter.dev/get-started/install">Flutter SDK</a> installed and a
-        device, emulator, or desktop target available:
+        Every release has a <a href={`${BASE}/SHA256SUMS.txt`}>SHA256SUMS.txt</a> file. On a computer,
+        put it next to the APK and run:
+      </p>
+    </div>
+    <pre class="code-block"><code>sha256sum -c SHA256SUMS.txt --ignore-missing</code></pre>
+    <p>The APKs are signed with the project key. Its certificate SHA-256 fingerprint is:</p>
+    <pre class="code-block"><code>AC:8B:8C:33:5D:06:BA:82:AE:5B:62:97:0B:C6:5F:A5:60:03:23:D1:11:8E:97:A2:0F:4D:E8:38:D8:1F:84:96</code></pre>
+    <p>Compare it with the output of <code>apksigner verify --print-certs</code> on the file.</p>
+  </section>
+
+  <section class="band">
+    <div class="status-grid">
+      <div class="status-card">
+        <h3>What this build does</h3>
+        <ul>
+          <li>Onboarding, adaptive interface, and settings</li>
+          <li>A screen for each of the eight modules, running real logic on sample input</li>
+          <li>Works with no internet connection</li>
+        </ul>
+      </div>
+      <div class="status-card pending">
+        <h3>What it does not do yet</h3>
+        <ul>
+          <li>Live camera, microphone, and sensor input</li>
+          <li>Real SMS: SOS uses a fake sender and can never send a message</li>
+          <li>Saved data between launches: settings reset when the app restarts</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top: 1.25rem">
+      This build was compiled and its signature checked, but it has not been tried on a physical phone
+      and has had no screen reader testing. Lumen helps but does not replace a doctor or the emergency
+      number, and it is not a certified medical device.
+    </p>
+  </section>
+
+  <section class="band">
+    <div class="section-head">
+      <p class="eyebrow">From source</p>
+      <h2>Build it yourself</h2>
+      <p>
+        With the <a href="https://docs.flutter.dev/get-started/install">Flutter SDK</a>, the Android SDK and
+        a JDK 17 installed:
       </p>
     </div>
     <pre class="code-block"><code>git clone https://github.com/lumen-assistive/lumen-app.git
 cd lumen-app
 flutter pub get
-flutter run</code></pre>
+flutter build apk --release --split-per-abi</code></pre>
     <p>
-      The <a href="/docs/getting-started/running-the-app/">running the app</a> page explains what you
-      will see and what is intentionally not there yet.
+      The <a href="/docs/getting-started/running-the-app/">running the app</a> page covers running it on a device or
+      emulator, and the <a href="/docs/contributing/release-process/">release process</a> explains signing.
     </p>
     <div class="cta-row">
       <a class="button primary" href="https://github.com/lumen-assistive/lumen-app">lumen-app on GitHub</a>

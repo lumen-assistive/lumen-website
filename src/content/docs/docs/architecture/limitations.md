@@ -57,4 +57,5 @@ module at a time.
 
 ## Release
 
-- No signed Android build and no release workflow.
+- No Google Play listing and no automated release workflow. Signed APKs are built by hand and
+  published on GitHub Releases, and the app has not been tried on a physical phone.

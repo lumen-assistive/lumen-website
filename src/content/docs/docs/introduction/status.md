@@ -39,7 +39,8 @@ listed in each package's own `README.md` and on each module page of this wiki.
   it needs a per-device passphrase source and a documents directory path.
 - **Real SMS sending, text-to-speech and pictograms.** The SOS flow uses a fake sender.
 - **Syncing the Family module with `lumen-server`.** Both exist, they are not connected.
-- **A signed Android release**, and a release workflow. No signing keystore exists.
+- **An automated release workflow and a Google Play listing.** Signed APKs exist (see
+  [Download](/download/)) but are built by hand and have not been tried on a physical phone.
 - **Manual accessibility testing** with TalkBack and VoiceOver. Semantic labels, touch target sizes
   and text scaling are implemented but not manually verified with a screen reader. This is a
   required step before any release.

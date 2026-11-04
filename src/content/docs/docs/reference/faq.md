@@ -7,8 +7,8 @@ description: "Frequently asked questions about Lumen, answered from the actual s
 
 ### Is there an app I can install?
 
-Not yet. `lumen-app` exists and runs from source, but there is no signed Android release. See
-[Download](/download/).
+Yes, on Android. A signed APK is attached to each release of `lumen-app`; see [Download](/download/).
+It runs every module on sample input, with no live camera, microphone or sensor input yet.
 
 ### Does Lumen replace a doctor or emergency services?
 
